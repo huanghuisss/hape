@@ -187,16 +187,16 @@
 </form>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="17" valign="top" background="images/mail_leftbg.gif"><img src="images/left-top-right.gif" width="17" height="29" /></td>
-    <td valign="top" background="images/content-bg.gif"><table width="100%" height="31" border="0" cellpadding="0" cellspacing="0" class="left_topbg" id="table2">
+    <td width="17" valign="top" background="../images/mail_leftbg.gif"><img src="../images/left-top-right.gif" width="17" height="29" /></td>
+    <td valign="top" background="../images/content-bg.gif"><table width="100%" height="31" border="0" cellpadding="0" cellspacing="0" class="left_topbg" id="table2">
       <tr>
         <td height="31"><div class="titlebt">显示角色</div></td>
       </tr>
     </table></td>
-    <td width="16" valign="top" background="images/mail_rightbg.gif"><img src="images/nav-right-bg.gif" width="16" height="29" /></td>
+    <td width="16" valign="top" background="../images/mail_rightbg.gif"><img src="../images/nav-right-bg.gif" width="16" height="29" /></td>
   </tr>
   <tr>
-    <td valign="middle" background="images/mail_leftbg.gif">&nbsp;</td>
+    <td valign="middle" background="../images/mail_leftbg.gif">&nbsp;</td>
     <td valign="top" bgcolor="#F7F8F9"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
       <tr>
         <td colspan="2" valign="top">&nbsp;</td>
@@ -210,9 +210,9 @@
   <tr>
     <td height="30"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td width="15" height="30"><img src="images/tab_03.gif" width="15" height="30" /></td>
-        <td width="1101" background="images/tab_05.gif"><img src="images/311.gif" width="16" height="16" /> <span class="STYLE4">查询角色显示列表</span></td>
-        <td width="281" background="images/tab_05.gif"><table border="0" align="right" cellpadding="0" cellspacing="0">
+        <td width="15" height="30"><img src="../images/tab_03.gif" width="15" height="30" /></td>
+        <td width="1101" background="../images/tab_05.gif"><img src="../images/311.gif" width="16" height="16" /> <span class="STYLE4">查询角色显示列表</span></td>
+        <td width="281" background="../images/tab_05.gif"><table border="0" align="right" cellpadding="0" cellspacing="0">
             <tr>
               <td width="60"><table width="87%" border="0" cellpadding="0" cellspacing="0">
                   <tr>
@@ -224,7 +224,7 @@
               </table></td>
               <td width="60"><table width="90%" border="0" cellpadding="0" cellspacing="0">
                   <tr>
-                    <td class="STYLE1"><div align="center"><img src="images/001.gif" width="14" height="14" /></div></td>
+                    <td class="STYLE1"><div align="center"><img src="../images/001.gif" width="14" height="14" /></div></td>
                     <td class="STYLE1"><div align="center">新增</div></td>
                   </tr>
               </table></td>
@@ -242,21 +242,21 @@
               </table></td>
             </tr>
         </table></td>
-        <td width="14"><img src="images/tab_07.gif" width="14" height="30" /></td>
+        <td width="14"><img src="../images/tab_07.gif" width="14" height="30" /></td>
       </tr>
     </table></td>
   </tr>
   <tr>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td width="9" background="images/tab_12.gif">&nbsp;</td>
+        <td width="9" background="../images/tab_12.gif">&nbsp;</td>
         <td bgcolor="#f3ffe3"><table width="99%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#c0de98" onmouseover="changeto()"  onmouseout="changeback()">
           <tr>
-            <td width="4%" height="26" background="images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>
-            <td width="8%" height="18" background="images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色编号</div></td>
-            <td width="10%" height="18" background="images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色名</div></td>
-            <td width="7%" height="18" background="images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">编辑</div></td>
-            <td width="7%" height="18" background="images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">删除</div></td>
+            <td width="4%" height="26" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>
+            <td width="8%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色编号</div></td>
+            <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色名</div></td>
+            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">编辑</div></td>
+            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">删除</div></td>
           </tr>
            <c:forEach var="role" items="${roleList}" varStatus="st">
            <tr>
@@ -266,45 +266,45 @@
 
             <td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">${role.roleid }</div></td>
             <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">${role.rolename }</div></td>
-            <td height="18" bgcolor="#FFFFFF"><div align="center"><img src="images/037.gif" width="9" height="9" /><span class="STYLE1"> [</span><a onclick="preUpdateRole('${role.roleid }')" style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1">]</span></div></td>
-            <td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a onclick="deleteRole('${role.roleid }')" style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>
+            <td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> [</span><a onclick="preUpdateRole('${role.roleid }')" style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1">]</span></div></td>
+            <td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="../images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a onclick="deleteRole('${role.roleid }')" style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>
           </tr>
            </c:forEach>
         </table></td>
-        <td width="9" background="images/tab_16.gif">&nbsp;</td>
+        <td width="9" background="../images/tab_16.gif">&nbsp;</td>
       </tr>
     </table></td>
   </tr>
   <tr>
     <td height="29"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td width="15" height="29"><img src="images/tab_20.gif" width="15" height="29" /></td>
-        <td background="images/tab_21.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <td width="15" height="29"><img src="../images/tab_20.gif" width="15" height="29" /></td>
+        <td background="../images/tab_21.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="25%" height="29" nowrap="nowrap"><span class="STYLE1">共${page.totalCount }条纪录，当前第${page.index }/${page.totalPageCount }页，每页${page.size }条纪录</span></td>
             <td width="75%" valign="top" class="STYLE1"><div align="right">
               <table width="352" height="20" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <c:if test="${pageIndex > 1}">
-                  <td width="62" height="22" valign="middle"><div align="right"><a onclick="subForm('${1}')" style="cursor: hand;"><img src="images/first.gif" width="37" height="15"/></a></div></td>
-                  <td width="50" height="22" valign="middle"><div align="right"><a onclick="subForm('${pageIndex -1 }')" style="cursor: hand;"><img src="images/back2.gif" width="43" height="15" /></a></div></td>
+                  <td width="62" height="22" valign="middle"><div align="right"><a onclick="subForm('${1}')" style="cursor: hand;"><img src="../images/first.gif" width="37" height="15"/></a></div></td>
+                  <td width="50" height="22" valign="middle"><div align="right"><a onclick="subForm('${pageIndex -1 }')" style="cursor: hand;"><img src="../images/back2.gif" width="43" height="15" /></a></div></td>
                   </c:if>
                   <c:if test="${pageIndex < page.totalPage}">
-                  <td width="54" height="22" valign="middle"><div align="right"><a onclick="subForm('${pageIndex +1 }')" style="cursor: hand;"><img src="images/next.gif" width="43" height="15" /></a></div></td>
-                  <td width="49" height="22" valign="middle"><div align="right"><a onclick="subForm('${page.totalPage}')" style="cursor: hand;"><img src="images/last.gif" width="37" height="15" /></a></div></td>
+                  <td width="54" height="22" valign="middle"><div align="right"><a onclick="subForm('${pageIndex +1 }')" style="cursor: hand;"><img src="../images/next.gif" width="43" height="15" /></a></div></td>
+                  <td width="49" height="22" valign="middle"><div align="right"><a onclick="subForm('${page.totalPage}')" style="cursor: hand;"><img src="../images/last.gif" width="37" height="15" /></a></div></td>
                  	</c:if>
                   <td width="59" height="22" valign="middle"><div align="right" class="STYLE2 STYLE1">转到第</div></td>
                   <td width="25" height="22" valign="middle"><span class="STYLE7">
                     <input name="textfield" type="text" class="STYLE1" style="height:20px; width:25px;" size="5" value="${page.index }" id="goPage"/>
                   </span></td>
                   <td width="23" height="22" valign="middle" class="STYLE2 STYLE1">页</td>
-                  <td width="30" height="22" valign="middle"><a onclick="subGo('${page.totalPageCount}')" style="cursor: hand;"><img src="images/go.gif" width="37" height="15" /></a></td>
+                  <td width="30" height="22" valign="middle"><a onclick="subGo('${page.totalPageCount}')" style="cursor: hand;"><img src="../images/go.gif" width="37" height="15" /></a></td>
                 </tr>
               </table>
             </div></td>
           </tr>
         </table></td>
-        <td width="14"><img src="images/tab_22.gif" width="14" height="29" /></td>
+        <td width="14"><img src="../images/tab_22.gif" width="14" height="29" /></td>
       </tr>
     </table></td>
   </tr>
@@ -325,9 +325,9 @@
     <td background="images/mail_rightbg.gif">&nbsp;</td>
   </tr>
   <tr>
-    <td valign="bottom" background="images/mail_leftbg.gif"><img src="images/buttom_left2.gif" width="17" height="17" /></td>
-    <td background="images/buttom_bgs.gif"><img src="images/buttom_bgs.gif" width="17" height="17"></td>
-    <td valign="bottom" background="images/mail_rightbg.gif"><img src="images/buttom_right2.gif" width="16" height="17" /></td>
+    <td valign="bottom" background="../images/mail_leftbg.gif"><img src="../images/buttom_left2.gif" width="17" height="17" /></td>
+    <td background="../images/buttom_bgs.gif"><img src="../images/buttom_bgs.gif" width="17" height="17"></td>
+    <td valign="bottom" background="../images/mail_rightbg.gif"><img src="../images/buttom_right2.gif" width="16" height="17" /></td>
   </tr>
 </table>
 </body>
