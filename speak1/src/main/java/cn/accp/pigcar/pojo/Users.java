@@ -8,6 +8,8 @@ public class Users implements Serializable {
 
     //分页字段
     private int start;
+    private int end;
+
     public int getStart() {
         return start;
     }
@@ -24,8 +26,9 @@ public class Users implements Serializable {
         this.end = end;
     }
 
-    private int end;
+
     private static final long serialVersionUID = 1L;
+
     private String username;
     private Roles roles;
     private String identity;
@@ -35,6 +38,12 @@ public class Users implements Serializable {
     private String phone;
     private String position;
     private int userLevel;
+    private String userpwd;
+
+    private Set renttables = new HashSet(0);
+    private Set checktables = new HashSet(0);
+
+
     public int getUserLevel() {
         return userLevel;
     }
@@ -43,9 +52,8 @@ public class Users implements Serializable {
         this.userLevel = userLevel;
     }
 
-    private String userpwd;
-    private Set renttables = new HashSet(0);
-    private Set checktables = new HashSet(0);
+
+
 
 
     public Users() {

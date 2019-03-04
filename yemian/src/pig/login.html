@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<script src="js/vue.min.js"></script>
 <head>
   <meta charset="UTF-8">
 
@@ -259,7 +260,7 @@
                                                cellspacing="0">
           <tr>
             <td width="4%">&nbsp;</td>
-            <td width="96%" height="38"><span class="login_txt_bt">${requestScope.msg}</span></td>
+              <td width="96%" height="38"><span class="login_txt_bt">${requestScope.msg}</span></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
@@ -271,7 +272,7 @@
                         onsubmit="subForm()">
                     <table cellSpacing="0" cellPadding="0" width="100%"
                            border="0" height="143" id="table212">
-                      <span>${errors }</span>
+                      <span id="errors"></span>
                       <tr>
 
                         <td width="13%" height="38" class="top_hui_text"><span
@@ -294,7 +295,7 @@
                           src="images/luck.gif" width="19" height="18"><span
                           id="userloginpassword"></span></td>
                       </tr>
-                      <tr>
+             <!--         <tr>
                         <td width="13%" height="35"><span class="login_txt">验证码：</span></td>
                         <td height="35" colspan="2" class="top_hui_text"><input
                           class=wenbenkuang name="code" id="code" type=text
@@ -306,7 +307,7 @@
                           style="color: blue;text-decoration: underline;cursor: hand;"
                           class="left_txt">换一张</a> <span id="uservalidate"></span>
                         </td>
-                      </tr>
+                      </tr>-->
                       <tr>
                         <td height="35">&nbsp;</td>
                         <td width="20%" height="35"><input name="Submit"
