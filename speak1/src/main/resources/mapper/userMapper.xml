@@ -3,9 +3,54 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.accp.demo.dao.UserDao">
-    <select id="select" resultType="cn.accp.demo.pojo.User">
-        SELECT * FROM user;
+<mapper namespace="cn.accp.pigcar.dao.UserDao">
+    <select id="select" resultType="cn.accp.pigcar.pojo.Users">
+       select * from Users as a
+        <where>
+            <if test="users.username!=null and users.username!=''">AND a.username =#{users.username} </if>
+            <if test="users.identity!=null and users.identity!=''">AND a.identity = #{users.identity}</if>
+            <if test="users.fullname!=null and users.fullname!=''">AND a.fullname LIKE CONCAT('%',#{users.fullname},'%')</if>
+            <if test="users.sex!=null and users.sex!=''">AND a.sex = #{users.sex}</if>
+            <if test="users.address!=null and users.address!=''">AND a.address LIKE
+                CONCAT('%',#{users.address},'%')</if>
+            <if test="users.phone!=null and users.phone!=''">AND a.phone=#{users.phone}</if>
+            <if test="users.position!=null and users.position!=''">AND a.position=#{users.position}</if>
+            <if test="users.userLevel!=null">AND a.userLevel=#{users.userLevel}</if>
+            <if test="users.userpwd!=null and users.userpwd!=''">AND a.userpwd=#{users.userpwd}</if>
+           </where>
+
+           <if test="sta!=-1">limit #{sta},#{end}</if>
+
+    </select>
+
+    <insert id="insert" parameterType="cn.accp.pigcar.pojo.Users">
+
+      insert into users values (#{username},#{identity},#{fullName},#{sex},#{address},#{position},#{userlevel},#{userpwd})
+	</insert>
+
+    <update id="update" parameterType="cn.accp.pigcar.pojo.Users" >
+        update app_info
+
+        <set>
+            <if test="username!=null and username!=''"> username = #{username} </if>
+            <if test="identity!=null and identity!=''"> identity = #{identity}</if>
+            <if test="fullname!=null and fullname!=''"> fullname=#{fullname}</if>
+            <if test="sex!=null and sex!=''"> sex = #{sex}</if>
+            <if test="address!=null and address!=''"> address =#{address}</if>
+            <if test="phone!=null and phone!=''"> phone=#{phone}</if>
+            <if test="position!=null and position!=''"> position=#{position}</if>
+            <if test="userLevel!=null"> userLevel=#{userLevel}</if>
+            <if test="userpwd!=null and userpwd!=''"> userpwd=#{userpwd}</if>
+        </set>
+        where  identity = #{identity}
+    </update>
+
+    <delete id="delete" parameterType="cn.accp.pigcar.pojo.Users">
+		delete from users where identity =#{identity }
+	</delete>
+
+    <select id="selectCount" resultType="int">
+        select count(*) from users
     </select>
 </mapper>
 
