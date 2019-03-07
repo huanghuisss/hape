@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="cn.accp.pigcar.dao.CustDao">
+	
+<!-- 一,添加客户信息菜单 -->
+
+	<!-- 新增一个cust -->
+	<insert id="saveCust">
+		insert into customers 
+			values(#{identity},#{custname},#{sex},#{address},#{phone},#{career},#{custpwd})
+	</insert>
+	
+	<!-- 查询所有cust  为分页做准备-->
+	<select id="getAllCust" resultType="cn.accp.pigcar.pojo.Customers">
+		select * from customers
+			<where>
+		 	<if test="identity != null and identity !='' ">
+		 		and  identity like '%'||#{identity}||'%'
+		 	</if>
+		 	<if test="custname != null and custname !=''">
+		 		and  custname like '%'||#{custname}||'%'
+		 	</if>
+		 	<if test="phone != null and phone !=''">
+		 		and  phone like '%'||#{phone}||'%'
+		 	</if>
+		 	<if test="career != null and career !=''">
+		 		and  career like '%'||#{career}||'%'
+		 	</if>
+		 	<if test="address != null and address !=''">
+		 		and  address like '%'||#{address}||'%'
+		 	</if>
+		 	<if test="sex != null and sex !=''">
+		 		and  sex = #{sex}
+		 	</if>
+		 </where>
+			
+	</select>
+	
+	<!-- 查询所有cust   分页 111111   -->
+	
+	<select id="getAllCustByPage" resultType="cn.accp.pigcar.pojo.Customers">
+		<!-- select * from 
+			(select t.*, rownum r from (select * from customers) t where rownum &lt;= #{end})
+			 where r &gt; #{start} -->
+		select * from 
+			(select t.*, rownum r from (
+			
+			select * from customers
+			<where>
+		 	<if test="identity != null and identity !='' ">
+		 		and  identity like '%'||#{identity}||'%'
+		 	</if>
+		 	<if test="custname != null and custname !=''">
+		 		and  custname like '%'||#{custname}||'%'
+		 	</if>
+		 	<if test="phone != null and phone !=''">
+		 		and  phone like '%'||#{phone}||'%'
+		 	</if>
+		 	<if test="career != null and career !=''">
+		 		and  career like '%'||#{career}||'%'
+		 	</if>
+		 	<if test="address != null and address !=''">
+		 		and  address like '%'||#{address}||'%'
+		 	</if>
+		 	<if test="sex != null and sex !=''">
+		 		and  sex = #{sex}
+		 	</if>
+		 </where>
+			) t where rownum &lt;= #{end})
+			 where r &gt; #{start}
+			 
+	</select>
+	
+	
+	<!-- 查询所有cust   分页 22222222    专门为了选择页数时使用,接收seesion后，继续查询 -->
+	<select id="getAllCustByPage2" resultType="cn.accp.pigcar.pojo.Customers">
+		<!-- select * from 
+			(select t.*, rownum r from (select * from customers) t where rownum &lt;= #{end})
+			 where r &gt; #{start} -->
+		select * from 
+			(select t.*, rownum r from (
+			
+			select * from customers
+			<where>
+		 	<if test="identity != null and identity !='' ">
+		 		and  identity like '%'||#{identity}||'%'
+		 	</if>
+		 	<if test="custname != null and custname !=''">
+		 		and  custname like '%'||#{custname}||'%'
+		 	</if>
+		 	<if test="phone != null and phone !=''">
+		 		and  phone like '%'||#{phone}||'%'
+		 	</if>
+		 	<if test="career != null and career !=''">
+		 		and  career like '%'||#{career}||'%'
+		 	</if>
+		 	<if test="address != null and address !=''">
+		 		and  address like '%'||#{address}||'%'
+		 	</if>
+		 	<if test="sex != null and sex !=''">
+		 		and  sex = #{sex}
+		 	</if>
+		 </where>
+			) t where rownum &lt;= #{end})
+			 where r &gt; #{start}
+			 
+			 
+	</select>
+	
+	
+	
+	<!-- 删除一个客户 -->
+	<delete id="deleteCust">
+		delete customers where identity = #{_parameter}
+	</delete>
+	
+	<!-- 修改1  先查询一个 -->
+	<select id="findOne" resultType="cn.accp.pigcar.pojo.Customers">
+		select * from customers where identity = #{_parameter}
+	</select>
+	
+	<select id="findOne1" resultType="cn.accp.pigcar.pojo.Customers">
+		select * from customers where identity = #{_parameter}
+	</select>
+	
+	
+	<!-- 修改2   执行update -->
+	<update id="updateCust">
+		update customers c
+			<set>
+			 	<if test="custname != null and custname !=''">
+			 		custname = #{custname},
+			 	</if>
+			 	<if test="phone != null and phone !=''">
+			 		phone = #{phone},
+			 	</if>
+			 	<if test="career != null and career !=''">
+			 		career = #{career},
+			 	</if>
+			 	<if test="address != null and address !=''">
+			 		address = #{address},
+			 	</if>
+			 	<if test="sex != null and sex !=''">
+			 		and  sex = #{sex},
+			 	</if>
+			 	<if test="custpwd != null and custpwd !=''">
+			 		custpwd = #{custpwd},
+			 	</if>
+		 	</set>
+			<!-- custname = #{custname},sex = #{sex},address = #{address},phone = #{phone},
+			career = #{career},custpwd = #{custpwd} -->
+				where c.identity = #{identity}
+	</update>
+	
+<!-- 二,查询客户信息菜单 -->	
+
+	<!-- 模糊查询 -->
+	<select id="selectLike" resultType="cn.accp.pigcar.pojo.Customers">
+	
+		select * from 
+			(select t.*, rownum r from (
+			
+			select * from customers
+			<where>
+		 	<if test="name != null and name !='' ">
+		 		and  identity like '%'||#{identity}||'%'
+		 	</if>
+		 	<if test="custname != null and custname !=''">
+		 		and  custname like '%'||#{custname}||'%'
+		 	</if>
+		 	<if test="phone != null and phone !=''">
+		 		and  phone like '%'||#{phone}||'%'
+		 	</if>
+		 	<if test="career != null and career !=''">
+		 		and  career like '%'||#{career}||'%'
+		 	</if>
+		 	<if test="address != null and address !=''">
+		 		and  address like '%'||#{address}||'%'
+		 	</if>
+		 	<if test="sex != null and sex !=''">
+		 		and  sex = #{sex}
+		 	</if>
+		 </where>
+		 
+			) t where rownum &lt;= #{end})
+			 where r &gt; #{start}
+	
+	
+		 
+	</select>
+	
+	
+	<!-- 通过主键查询，使用对象传递参数 -->
+	<select id="selectByPrimaryKey" resultType="cn.accp.pigcar.pojo.Customers">
+		select * from customers where identity=#{identity}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+

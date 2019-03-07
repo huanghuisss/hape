@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.accp.pigcar.dao.CheckTableDao">
+	<resultMap type="cn.accp.pigcar.pojo.Checktable" id="ChecktableMap">
+		<id column="checkid" property="checkid"/>
+		<result column="checkdate" property="checkdate"/>
+		<result column="paying" property="paying"/>
+		<result column="problem" property="problem"/>
+		<result column="rentid" property="tableid"/>
+		<result column="checkuserid" property="checkUserId"/>
+		<result column="field" property="field"/>
+	</resultMap>
+	<resultMap type="cn.accp.pigcar.pojo.Checktable" id="selectCheckByIfMap">
+		<association property="users" javaType="Users" 
+			select="com.bjsxt.car.mapper.UserMapper.selectOneUserByUname"
+			column="checkuserid"
+		></association>
+		<association property="renttable" javaType="Renttable"
+			select="com.bjsxt.car.mapper.RentalTableMapper.selectRentaalTableByPrimaryKey"
+			column="tableid"
+		></association>
+	</resultMap>
+	<!-- 多条件查询 
+		此处关系分析：
+			一个检查单对应一个出租单，一个检查单对应一个用户，所以
+			检查单对出租单是一对一，对用户也是一对一
+		
+	-->
+	<select id="selectCheckByIf" resultMap="selectCheckByIfMap">
+		select *
+		from 
+		checktable ct join renttable r
+		on ct.rentid=r.tableid
+		join users u
+		on u.username=ct.checkuserid
+		<where>
+			<if test="checkid != null and checkid != ''">
+				ct.checkid=#{checkid}
+			</if>
+			<if test="checkUserId != null and checkUserId != ''">
+				and ct.checkuserid=#{checkUserId}
+			</if>
+			<if test="checkdate != null and checkdate != ''">
+				and ct.checkdate=#{checkdate}
+			</if>
+			<if test="tableid != null and tableid != ''">
+				and ct.rentid=#{tableid}
+			</if>
+		</where>
+		
+	</select>
+	<!-- 通过主键查询检查单表的信息  他的查询和多条件查询很类似，所以共用一个resultmap-->
+	<select id="selectCheckByPrimaryKey" resultMap="selectCheckByIfMap">
+		select *
+		from 
+		checktable ct join renttable r
+		on ct.rentid=r.tableid
+		join users u
+		on u.username=ct.checkuserid
+		where ct.checkid=#{checkid}
+	</select>
+	
+	<update id="updateCheckTable">
+		update checktable
+		<set>
+			<if test="problem != null and problem != ''">
+				problem=#{problem},
+			</if>	
+			<if test="field != null and field != ''">
+				field=#{field},
+			</if>
+			<if test="paying != null and paying != ''">
+				paying=#{paying}
+			</if>
+		</set>
+		<where>
+			checkid=#{checkid}
+		</where>
+	</update>
+	
+	<delete id="deleteCheckTableById">
+		delete from checktable where checkid=#{checkid}
+	</delete>
+	
+	<insert id="insertCheckTable">
+		insert into checktable 
+		(checkid,checkdate,field,problem,paying,checkuserid,rentid)
+		values
+		(#{checkid},#{checkdate},#{field},#{problem},#{paying},#{checkUserId},#{tableid})
+	</insert>
+</mapper>

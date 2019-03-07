@@ -7,24 +7,9 @@ import java.util.Set;
 public class Users implements Serializable {
 
     //分页字段
-    private int start;
-    private int end;
+    private Integer start;
+    private Integer end;
 
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public int getEnd() {
-        return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
-    }
 
 
     private static final long serialVersionUID = 1L;
@@ -37,24 +22,36 @@ public class Users implements Serializable {
     private String address;
     private String phone;
     private String position;
-    private int userLevel;
+    private Integer userLevel;
     private String userpwd;
 
     private Set renttables = new HashSet(0);
     private Set checktables = new HashSet(0);
 
 
-    public int getUserLevel() {
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
+    }
+
+    public Integer getEnd() {
+        return end;
+    }
+
+    public void setEnd(Integer end) {
+        this.end = end;
+    }
+
+    public Integer getUserLevel() {
         return userLevel;
     }
 
-    public void setUserLevel(int userLevel) {
+    public void setUserLevel(Integer userLevel) {
         this.userLevel = userLevel;
     }
-
-
-
-
 
     public Users() {
     }

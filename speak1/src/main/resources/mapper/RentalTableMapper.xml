@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="cn.accp.pigcar.dao.RentalTableDao">
+  		<resultMap type="Renttable" id="renttableMap">
+  			<id column="tableid" property="tableid"/>
+  			<result column="shouldpayprice" property="shouldpayprice"/>
+  			<result column="imprest" property="imprest"/>
+  			<result column="rentflag" property="rentflag"/>
+  			<result column="price" property="price"/>
+  			<result column="returndate" property="returndate"/>
+  			<result column="shouldreturndate" property="shouldreturndate"/>
+  			<result column="begindate" property="begindate"/>
+  		</resultMap>
+  		<!-- 多条件查询结果集映射 -->
+  		<resultMap type="Renttable" id="selectRentalTableByIfMap" extends="renttableMap">
+  			<association property="cars" javaType="Cars" 
+  				select="com.bjsxt.car.mapper.CarMapper.getOneCar"
+  				column="carNumber"
+  			></association>
+  			<association property="customers" javaType="Customers"
+  				select="com.bjsxt.car.mapper.CustMapper.selectByPrimaryKey"
+  				column="custid"
+  			></association>
+  			<association property="users" javaType="Users"
+  				select="com.bjsxt.car.mapper.UserMapper.selectOneUserByUname"
+  				column="username"
+  			></association>
+  		</resultMap>
+  		<!-- 四表关联的多条件查询 -->
+  		<select id="selectRentalTableByIf" resultMap="selectRentalTableByIfMap">
+  			select * from renttable rt 
+			join users u
+			on rt.userid=u.username
+			join cars c
+			on rt.carid=c.carnumber
+			join customers ct
+			on ct.identity=rt.custid where rt.rentflag=#{rentflag}
+  			
+  				<if test="tableid != null and tableid != ''">
+  					and rt.tableid=#{tableid}
+  				</if>
+  				<if test="shouldpayprice != null and shouldpayprice != ''">
+  					and rt.shouldpayprice=#{shouldpayprice}
+  				</if>
+  				<if test="imprest != null and imprest != ''">
+  					and rt.imprest=#{imprest}
+  				</if>
+  				
+  				<if test="price != null and price != ''">
+  					and rt.price=#{price}
+  				</if>
+  				<if test="returndate != null and returndate!= ''">
+  					and rt.returndate=#{returndate}
+  				</if>
+  				<if test="shouldreturndate != null and shouldreturndate != ''">
+  					and rt.shouldreturndate=#{shouldreturndate}
+  				</if>
+  				<if test="begindate != null and begindate!= ''">
+  					and rt.begindate=#{begindate}
+  				</if>
+  				<if test="userid != null and userid != ''">
+  					and rt.userid=#{userid}
+  				</if>
+  				<if test="custid != null and custid != ''">
+  					and rt.custid=#{custid}
+  				</if>
+  				<if test="carid != null and carid != ''">
+  					and rt.carid=#{carid}
+  				</if>
+  		</select>
+  		<!-- 因为同为四表查询，所以此处使用一个resultMap -->
+  		<select id="selectRentaalTableByPrimaryKey" resultMap="selectRentalTableByIfMap">
+  			select * from renttable rt 
+			join users u
+			on rt.userid=u.username
+			join cars c
+			on rt.carid=c.carnumber
+			join customers ct
+			on ct.identity=rt.custid
+			where rt.tableid=#{tableid}
+  		</select>
+  		
+  		<update id="updateRenttable">
+  			update renttable
+  			<set>
+  			
+  				<if test="shouldpayprice != null and shouldpayprice != ''">
+  					shouldpayprice=#{shouldpayprice},
+  				</if>
+  				<if test="imprest != null and imprest != ''">
+  					imprest=#{imprest},
+  				</if>
+  				<if test="rentflag != null and rentflag !=''">
+  					rentflag=#{rentflag},
+  				</if>
+  				<if test="price != null and price != ''">
+  					price=#{price},
+  				</if>
+  				<if test="returndate != null and returndate!= ''">
+  					returndate=#{returndate},
+  				</if>
+  				<if test="shouldreturndate != null and shouldreturndate != ''">
+  					shouldreturndate=#{shouldreturndate},
+  				</if>
+  				<if test="begindate != null and begindate!= ''">
+  					begindate=#{begindate},
+  				</if>
+  				<if test="userid != null and userid != ''">
+  					userid=#{userid},
+  				</if>
+  				<if test="custid != null and custid != ''">
+  					custid=#{custid},
+  				</if>
+  				<if test="carid != null and carid != ''">
+  					carid=#{carid}
+  				</if>
+  				</set>	
+  			<where>
+  				tableid=#{tableid}
+  			</where>
+  		</update>
+  		
+  		<insert id="insertRenttable">
+  			insert into renttable 
+  			(tableid,imprest,shouldpayprice,price,begindate,shouldreturndate,rentflag,custid,carid,userid)
+  			values
+  			(#{tableid},#{imprest},#{shouldpayprice},
+  			#{price},#{begindate},#{shouldreturndate},
+  			#{rentflag},#{custid},#{carid},#{userid}
+  			)
+  		</insert>
+  		
+  </mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.accp.pigcar.dao.CarDao">
+	<!-- 数据库字段映射对象属性 -->
+	<resultMap type="cn.accp.pigcar.pojo.Cars" id="getCars">
+		<id column="carnumber" property="carNumber" />
+		<result column="cartype" property="carType" />
+		<result column="color" property="color" />
+		<result column="price" property="price" />
+		<result column="rentprice" property="rentPrice" />
+		<result column="deposit" property="deposit" />
+		<result column="isrenting" property="isRenting" />
+		<result column="cardesc" property="carDesc" />
+		<result column="carimg" property="carImg" />
+	</resultMap>
+	<!-- -->
+	<resultMap type="cn.accp.pigcar.pojo.Cars" id="getCar" extends="getCars">
+		
+	</resultMap>
+	<!-- 添加车辆 -->
+	<insert id="addCar">
+		insert into cars
+		values(#{carNumber},#{carType},#{color},#{price},#{rentPrice},#{deposit},#{isRenting},#{carDesc},#{carImg})
+	</insert>
+
+	<!-- 查找全部 -->
+	<select id="getAllCars" resultMap="getCar">
+		select * from cars
+		<where>
+			<if test="cars.carNumber !=null and cars.carNumber != ''">
+				and carnumber like '%'||#{cars.carNumber}||'%'
+			</if>
+			<if test="cars.carType !=null and cars.carType!= '' ">
+				and cartype like '%'||#{cars.carType}||'%'
+			</if>
+			<if test="cars.color !=null and cars.color != '' ">
+				and color like '%'||#{cars.color}||'%'
+			</if>
+			<if test="cars.price !=null and cars.price!= '' ">
+				and price = #{cars.price}
+			</if>
+			<if test="cars.rentPrice !=null and cars.rentPrice!= '' ">
+				and rentprice = #{cars.rentPrice}
+			</if>
+			<if test="cars.deposit !=null and cars.deposit!= '' ">
+				and deposit = #{cars.deposit}
+			</if>
+			<if test="cars.isRenting !=null and cars.isRenting!= '' ">
+				and isrenting like '%'||#{cars.isRenting}||'%'
+			</if>
+		</where>
+	</select>
+
+	<!-- 模糊，分页 -->
+	<select id="getPageLikeCars" resultMap="getCar">
+		select * from (select t.*,rownum r from (
+		select * from cars
+		<where>
+			<if test="cars.carNumber !=null and cars.carNumber != ''">
+				and carnumber like '%'||#{cars.carNumber}||'%'
+			</if>
+			<if test="cars.carType !=null and cars.carType!= '' ">
+				and cartype like '%'||#{cars.carType}||'%'
+			</if>
+			<if test="cars.color !=null and cars.color != '' ">
+				and color like '%'||#{cars.color}||'%'
+			</if>
+			<if test="cars.price !=null and cars.price!= '' ">
+				and price = #{cars.price}
+			</if>
+			<if test="cars.rentPrice !=null and cars.rentPrice!= '' ">
+				and rentprice = #{cars.rentPrice}
+			</if>
+			<if test="cars.deposit !=null and cars.deposit!= '' ">
+				and deposit = #{cars.deposit}
+			</if>
+			<if test="cars.isRenting !=null and cars.isRenting!= '' ">
+				and isrenting like '%'||#{cars.isRenting}||'%'
+			</if>
+		</where>
+		)t where rownum &lt;= #{end}) where r &gt; #{start}
+	</select>
+	
+	<!-- 更改单个 -->
+	<update id="updateCar">
+		update cars set cartype = #{carType} , color = #{color} , price = #{price} , rentprice = #{rentPrice} , deposit = #{deposit} , isrenting = #{isRenting} , cardesc = #{carDesc} , carimg = #{carImg} where carnumber = #{carNumber}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteOne">
+		delete from cars where carnumber = #{carNumber}
+	</delete>
+	
+	<!-- 查找单个 -->
+	<select id="getOneCar" resultMap="getCar">
+		select * from cars where carnumber = #{carNumber}
+	</select>
+	
+	<!-- 查询所有汽车信息 -->
+	<select id="selectAllCars" resultMap="getCars">
+		select * from cars
+	</select>
+</mapper>

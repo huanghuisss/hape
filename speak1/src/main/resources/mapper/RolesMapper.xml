@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.accp.pigcar.dao.RolesDao">
+	<resultMap type="Roles" id="rolesMap">
+		<id column="roleid" property="roleid" />
+		<result column="rolename" property="rolename" />
+	</resultMap>
+	<!-- 插入后需要的到得到主键 -->
+	<insert id="insertOneRole">
+		<selectKey keyColumn="roleid" keyProperty="roleid"
+			resultType="java.lang.Long" order="AFTER">
+			select role_seq.currval from dual
+		</selectKey>
+		insert into roles(roleid,rolename) values
+		(role_seq.nextval,#{rolename})
+	</insert>
+
+	<!-- 根据角色名称查询角色id -->
+	<select id="selectIdByRoleName" resultMap="rolesMap">
+		select roleid from
+		roles where rolename=#{rolename}
+	</select>
+
+	<!-- 关联角色的信息 -->
+	<insert id="insertMenusForRole">
+		insert into roles_menus(roleid,menuid) values
+		(#{roleid},#{menuid})
+	</insert>
+
+	<!-- 查询全部角色的信息 -->
+	<select id="selectAllRoles" resultMap="rolesMap">
+		select roleid,rolename
+		from roles where 1=1 
+		<if test="rolename != null and rolename != ''">
+			and rolename=#{rolename}
+		</if>
+	</select>
+
+	<!-- 根据角色名称的分页查询
+		此处的大于小于符号需要转义
+	 -->
+	<select id="selectRolesByNameByPage" resultMap="rolesMap">
+		select *
+		from (select rownum rn,r.* from roles r where rownum&lt;#{end}+1) ua
+		where ua.rn&gt;=#{start}+1
+		<if test="rolename != null and rolename !=''">
+				 and rolename=#{rolename}
+			</if>
+	</select>
+	
+	<!-- 通过角色id查询 -->
+	<select id="selectByPrimaryKey" resultMap="rolesMap">
+		select * from roles where roleid=#{_parameter}
+	</select>
+	
+	<!-- 解除角色和模块的关联关系 -->
+	<delete id="deleteMenusForRole">
+		delete from roles_menus where roleid=#{roleid}
+	</delete>
+	
+	<!-- 通过角色id删除角色 -->
+	<delete id="deleteRolesById">
+		delete from roles where roleid=#{roleid}
+	</delete>
+	
+	<!-- 查询所有的角色信息 -->
+	<select id="selectAllRole" resultMap="rolesMap">
+		select * from roles
+	</select>
+	
+		<!-- 通过角色id查询 -->
+	<select id="selectById" resultMap="rolesMap">
+		select * from roles where roleid=#{roleid}
+	</select>
+
+</mapper>

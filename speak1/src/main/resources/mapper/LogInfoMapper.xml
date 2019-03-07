@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.accp.pigcar.dao.LogInfoDao">
+	
+	<!-- 多条件查询 -->
+	<select id="selectLogInfoByIf" resultType="cn.accp.pigcar.pojo.Logs">
+		select * from logs
+		<where>
+			<if test="action != null and action != ''">
+				action like #{action}
+			</if>
+			
+			<if test="username != null and username != ''">
+				and username like #{username}
+			</if>
+			<if test="actiontime != null and action != ''">
+				and actiontime = #{actiotime}
+			</if>
+		</where>
+	</select>
+	<!-- 多条件的分页查询 -->
+	<select id="selectLogInfoByPage" resultType="cn.accp.pigcar.pojo.Logs">
+		select *
+		from (select rownum rn,r.* from logs r where rownum&lt;#{end}+1) ua
+		<where>
+			ua.rn&gt;=#{start}+1
+			<if test="action != null and action != ''">
+				and action like #{action}
+			</if>
+			<if test="username != null and username != ''">
+				and username like #{username}
+			</if>
+			<if test="actiontime != null and action != ''">
+				and actiontime = #{actiotime}
+			</if>
+		</where>
+	</select>
+
+</mapper>

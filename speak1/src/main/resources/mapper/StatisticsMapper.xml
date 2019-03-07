@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.accp.pigcar.dao.StatisticsDao">
+	<!-- 租单 -->
+	<resultMap type="renttable" id="getRenttables">
+		<id column="tableid" property="tableid"/>
+		<result column="userid" property="userid"/>
+		<result column="carid" property="carid"/>
+		<result column="custid" property="custid"/>
+		<result column="imprest" property="imprest"/>
+		<result column="shouldpayprice" property="shouldpayprice"/>
+		<result column="price" property="price"/>
+		<result column="begindate" property="begindate"/>
+		<result column="shouldreturndate" property="shouldreturndate"/>
+		<result column="returndate" property="returndate"/>
+		<result column="rentflag" property="rentflag"/>
+	</resultMap>
+	
+	<!-- 继承租单 -->
+	<resultMap type="renttable" id="getRenttable" extends="getRenttables">
+		<!-- 嵌套 -->
+		<!-- 用户 -->
+		<association property="users" javaType="users">
+			<id column="username" property="username"/>
+			<result column="identity"  property="identity"/>
+			<result column="fullname"  property="fullname"/>
+			<result column="sex"  property="sex"/>
+			<result column="address"  property="address"/>
+			<result column="phone"  property="phone"/>
+			<result column="position"  property="position"/>
+			<result column="userLevel"  property="userLevel"/>
+			<result column="userpwd"  property="userpwd"/>
+		</association>
+		<!-- 车辆 -->
+		<association property="cars" javaType="cars">
+			<id column="carnumber" property="carNumber"/>
+			<result column="cartype" property="carType"/>
+			<result column="color" property="color"/>
+			<result column="price" property="price"/>
+			<result column="rentprice" property="rentPrice"/>
+			<result column="deposit" property="deposit"/>
+			<result column="isrenting" property="isRenting"/>
+			<result column="cardesc" property="carDesc"/>
+			<result column="carimg" property="carImg"/>
+		</association>
+		<!-- 客户 -->
+		<association property="customers" javaType="customers">
+			<id column="identity" property="identity"/>
+			<result column="custname" property="custname"/>
+			<result column="sex" property="sex"/>
+			<result column="address" property="address"/>
+			<result column="phone" property="phone"/>
+			<result column="career" property="career"/>
+			<result column="custpwd" property="custpwd"/>
+		</association>
+	</resultMap>
+	<!-- 多表查询，查询所有业务信息 -->
+	<select id="getAllStati" resultMap="getRenttable">
+		select * from renttable rent 
+		join cars car 
+		on rent.carid=car.carnumber 
+		join users u 
+		on rent.userid=u.username 
+		join customers cus 
+		on rent.custid=cus.identity
+		where 
+		rent.shouldreturndate &lt; to_date(#{lastday},'yyyy-mm-dd')
+	</select>
+	
+	<!-- 多表查询，查询单个业务信息 -->
+	<select id="getOneStati" resultMap="getRenttable">
+		select * from renttable rent 
+		join cars car 
+		on rent.carid=car.carnumber 
+		join users u 
+		on rent.userid=u.username 
+		join customers cus 
+		on rent.custid=cus.identity
+		where rent.tableid = #{_parameter}
+	</select>
+	
+	<!-- 通过汽车id查找 -->
+	<select id="getAmountByCarIdMonth" resultMap="getRenttables">
+		select * from renttable 
+		where carid = #{carid} 
+		and 
+		begindate  between to_date(#{start},'yyyy-mm-dd') 
+		and 
+		to_date(#{end},'yyyy-mm-dd')
+	</select>
+</mapper>

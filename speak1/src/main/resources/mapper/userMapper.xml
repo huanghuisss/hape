@@ -2,55 +2,210 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="cn.accp.pigcar.dao.UserDao">
-    <select id="select" resultType="cn.accp.pigcar.pojo.Users">
-       select * from Users as a
-        <where>
-            <if test="users.username!=null and users.username!=''">AND a.username =#{users.username} </if>
-            <if test="users.identity!=null and users.identity!=''">AND a.identity = #{users.identity}</if>
-            <if test="users.fullname!=null and users.fullname!=''">AND a.fullname LIKE CONCAT('%',#{users.fullname},'%')</if>
-            <if test="users.sex!=null and users.sex!=''">AND a.sex = #{users.sex}</if>
-            <if test="users.address!=null and users.address!=''">AND a.address LIKE
-                CONCAT('%',#{users.address},'%')</if>
-            <if test="users.phone!=null and users.phone!=''">AND a.phone=#{users.phone}</if>
-            <if test="users.position!=null and users.position!=''">AND a.position=#{users.position}</if>
-            <if test="users.userLevel!=null">AND a.userLevel=#{users.userLevel}</if>
-            <if test="users.userpwd!=null and users.userpwd!=''">AND a.userpwd=#{users.userpwd}</if>
-           </where>
+    <resultMap type="Users" id="userMap">
+        <id column="username" property="username" />
+        <result column="identity" property="identity" />
+        <result column="fullname" property="fullname" />
+        <result column="sex" property="sex" />
+        <result column="address" property="address" />
+        <result column="phone" property="phone" />
+        <result column="position" property="position" />
+        <result column="position" property="position" />
+        <result column="userpwd" property="userpwd" />
+    </resultMap>
 
-           <if test="sta!=-1">limit #{sta},#{end}</if>
+    <resultMap type="Users" id="selectUserMap" extends="userMap">
+        <!-- 根据提供的数据库，此处用户对应角色是一对一关系 而角色对应用户是一对多关系，因而此处使用association 而property指的是roles在user类里面的属性名称
+            javaType是它的类型，resultMap 引用roles的映射信息 -->
+        <association property="roles" javaType="roles"
+                     resultMap="com.bjsxt.car.mapper.RolesMapper.rolesMap">
+        </association>
+    </resultMap>
 
-    </select>
+    <!-- 通过主键查询角色名称 -->
+    <resultMap type="users" id="selectOneMap" extends="userMap">
+        <association property="roles" javaType="roles"
+                     select="com.bjsxt.car.mapper.RolesMapper.selectById" column="roleid">
+        </association>
+    </resultMap>
+    <!--
+        分页查询结果检索
+     -->
+    <resultMap type="Users" id="pageMap" extends="userMap">
+        <!--
+            需要查询一次角色表
+         -->
+        <association property="roles" javaType="roles"
+                     select="com.bjsxt.car.mapper.RolesMapper.selectById"
+                     column="userlevel">
+        </association>
+    </resultMap>
 
-    <insert id="insert" parameterType="cn.accp.pigcar.pojo.Users">
+    <!-- 根据用户名和密码查询用户名和角色名称 -->
+    <select id="selectUserByNameAndPwd" resultMap="selectUserMap">
+		select *
+		from users
+		u join roles r
+		on u.userlevel=r.roleid
+		where u.username=#{username} and
+		u.userpwd=#{userpwd}
+	</select>
+    <!-- 查询菜单信息的结果映射 -->
+    <resultMap type="Users" id="allMenusMap" extends="userMap">
 
-      insert into users values (#{username},#{identity},#{fullName},#{sex},#{address},#{position},#{userlevel},#{userpwd})
+        <association property="roles" javaType="roles"
+                     select="com.bjsxt.car.mapper.MenusMapper.selectMenusByRoleId" column="userLevel">
+        </association>
+
+    </resultMap>
+
+    <resultMap type="Users" id="selectUserByIfMap" extends="userMap">
+        <association property="roles" javaType="roles"
+                     select="com.bjsxt.car.mapper.MenusMapper.selectMenusByRoleId" column="roleid">
+        </association>
+    </resultMap>
+    <!-- 根据用户的主键查询他的整个菜单信息 -->
+    <!-- 第一步先查询出用户的角色roleid -->
+    <!-- 第二步根据用户的roleid查出 menus表中的的信息 -->
+
+    <select id="selectRoleIdByUsername" resultMap="allMenusMap">
+		select r.roleid
+		from users u join roles r
+		on u.userlevel=r.roleid
+		where
+		username=#{username}
+	</select>
+    <!-- 查询所有用户 -->
+    <select id="selectAllUsers" resultMap="userMap">
+		select * from users
+	</select>
+
+    <!-- 添加用户 -->
+    <insert id="insertUsers">
+		insert into
+		users(username,identity,fullname,sex,address,phone,position,userlevel,userpwd)
+		values(#{username},#{identity},#{fullname},#{sex},#{address},#{phone},#{position},#{userLevel},#{userpwd})
 	</insert>
 
-    <update id="update" parameterType="cn.accp.pigcar.pojo.Users" >
-        update app_info
+    <!-- 分页查询 -->
+    <select id="selectUserByPage" resultMap="pageMap">
+		select *
+		from (select rownum rn,r.* from users r where rownum&lt;#{end}+1) ua
+		where ua.rn&gt;=#{start}+1
+	</select>
 
+    <!-- 多条件查询 分页-->
+    <select id="selectUserByIfForPage" resultMap="selectUserByIfMap">
+        select *
+        from (select rownum rn,r.* from users r where rownum&lt;#{end}+1) ua
+        <where>
+            ua.rn&gt;=#{start}+1
+            <if test="username != null and username != ''">
+                and username=#{username}
+            </if>
+            <if test="identity != null and identity != ''">
+                and identity=#{identity}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                and fullname=#{fullname}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex=#{sex}
+            </if>
+            <if test="address != null and address!= ''">
+                and address=#{address}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone=#{phone}
+            </if>
+            <if test="position != null and position != ''">
+                and position=#{position}
+            </if>
+            <if test="userLevel != null and userLevel != ''">
+                and userLevel=#{userLevel}
+            </if>
+            <if test="userpwd != null and userpwd != ''">
+                and userpwd=#{userpwd}
+            </if>
+        </where>
+    </select>
+
+    <!-- 多条件查询 -->
+    <select id="selectUserByIf" resultMap="selectUserByIfMap">
+        select *
+        from users
+        <where>
+            <if test="username != null and username != ''">
+                and username=#{username}
+            </if>
+            <if test="identity != null and identity != ''">
+                and identity=#{identity}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                and fullname=#{fullname}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex=#{sex}
+            </if>
+            <if test="address != null and address!= ''">
+                and address=#{address}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone=#{phone}
+            </if>
+            <if test="position != null and position != ''">
+                and position=#{position}
+            </if>
+            <if test="userLevel != null and userLevel != ''">
+                and userLevel=#{userLevel}
+            </if>
+            <if test="userpwd != null and userpwd != ''">
+                and userpwd=#{userpwd}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOneUserByUname" resultMap="selectOneMap">
+		select * from users where username=#{username}
+
+	</select>
+    <!-- 修改用户 -->
+    <update id="updateUsers">
+        update users
         <set>
-            <if test="username!=null and username!=''"> username = #{username} </if>
-            <if test="identity!=null and identity!=''"> identity = #{identity}</if>
-            <if test="fullname!=null and fullname!=''"> fullname=#{fullname}</if>
-            <if test="sex!=null and sex!=''"> sex = #{sex}</if>
-            <if test="address!=null and address!=''"> address =#{address}</if>
-            <if test="phone!=null and phone!=''"> phone=#{phone}</if>
-            <if test="position!=null and position!=''"> position=#{position}</if>
-            <if test="userLevel!=null"> userLevel=#{userLevel}</if>
-            <if test="userpwd!=null and userpwd!=''"> userpwd=#{userpwd}</if>
+            <if test="identity != null and identity != ''">
+                identity=#{identity},
+            </if>
+            <if test="fullname != null and fullname != ''">
+                fullname=#{fullname},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex=#{sex},
+            </if>
+            <if test="address != null and address!= ''">
+                address=#{address},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone},
+            </if>
+            <if test="position != null and position != ''">
+                position=#{position},
+            </if>
+            <if test="userLevel != null and userLevel != ''">
+                userLevel=#{userLevel},
+            </if>
+            <if test="userpwd != null and userpwd != ''">
+                userpwd=#{userpwd}
+            </if>
         </set>
-        where  identity = #{identity}
+        <where>
+            username=#{username}
+        </where>
     </update>
 
-    <delete id="delete" parameterType="cn.accp.pigcar.pojo.Users">
-		delete from users where identity =#{identity }
+    <delete id="deleteUserByUsername">
+		delete from users where username=#{username}
 	</delete>
 
-    <select id="selectCount" resultType="int">
-        select count(*) from users
-    </select>
 </mapper>
-

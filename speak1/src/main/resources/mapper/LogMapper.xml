@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.accp.pigcar.dao.LogDao">
+	<!-- 添加普通日志 -->
+	<insert id="saveInter">
+		insert into logs
+		values(seq_log.nextval,#{username},#{action},#{actiontime},#{flag})
+	</insert>
+	<!-- 添加登陆日志 -->
+	<insert id="saveLoginInter">
+		insert into loginlogs values(seq_loginlog.nextval,#{loginname},#{loginip},#{logintime})
+	</insert>
+</mapper>
