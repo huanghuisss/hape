@@ -4,8 +4,10 @@ import cn.accp.pigcar.dao.CarDao;
 import cn.accp.pigcar.pojo.Cars;
 import cn.accp.pigcar.service.CarService;
 import cn.accp.pigcar.util.PageBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -18,8 +20,17 @@ import java.util.UUID;
 @Service
 public class CarServiceImpl implements CarService {
 	// 自动装箱
-	@Resource
+	@Autowired
 	private CarDao carDao;
+
+
+	public CarDao getCarDao() {
+		return carDao;
+	}
+
+	public void setCarDao(CarDao carDao) {
+		this.carDao = carDao;
+	}
 
 	/*
 	 * 添加车辆

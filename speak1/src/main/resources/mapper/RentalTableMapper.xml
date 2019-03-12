@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="cn.accp.pigcar.dao.RentalTableDao">
-  		<resultMap type="Renttable" id="renttableMap">
+  		<resultMap type="cn.accp.pigcar.pojo.Renttable" id="renttableMap">
   			<id column="tableid" property="tableid"/>
   			<result column="shouldpayprice" property="shouldpayprice"/>
   			<result column="imprest" property="imprest"/>
@@ -14,17 +14,17 @@
   			<result column="begindate" property="begindate"/>
   		</resultMap>
   		<!-- 多条件查询结果集映射 -->
-  		<resultMap type="Renttable" id="selectRentalTableByIfMap" extends="renttableMap">
-  			<association property="cars" javaType="Cars" 
-  				select="com.bjsxt.car.mapper.CarMapper.getOneCar"
+  		<resultMap type="cn.accp.pigcar.pojo.Renttable" id="selectRentalTableByIfMap" extends="renttableMap">
+  			<association property="cars" javaType="cn.accp.pigcar.pojo.Cars"
+  				select="cn.accp.pigcar.dao.CarDao.getOneCar"
   				column="carNumber"
   			></association>
-  			<association property="customers" javaType="Customers"
-  				select="com.bjsxt.car.mapper.CustMapper.selectByPrimaryKey"
+  			<association property="customers" javaType="cn.accp.pigcar.pojo.Customers"
+  				select="cn.accp.pigcar.dao.CustDao.selectByPrimaryKey"
   				column="custid"
   			></association>
-  			<association property="users" javaType="Users"
-  				select="com.bjsxt.car.mapper.UserMapper.selectOneUserByUname"
+  			<association property="users" javaType="cn.accp.pigcar.pojo.Users"
+  				select="cn.accp.pigcar.dao.UserDao.selectOneUserByUname"
   				column="username"
   			></association>
   		</resultMap>

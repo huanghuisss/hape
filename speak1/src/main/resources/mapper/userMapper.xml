@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.accp.pigcar.dao.UserDao">
-    <resultMap type="Users" id="userMap">
+    <resultMap type="cn.accp.pigcar.pojo.Users" id="userMap">
         <id column="username" property="username" />
         <result column="identity" property="identity" />
         <result column="fullname" property="fullname" />
@@ -15,29 +15,29 @@
         <result column="userpwd" property="userpwd" />
     </resultMap>
 
-    <resultMap type="Users" id="selectUserMap" extends="userMap">
+    <resultMap type="cn.accp.pigcar.pojo.Users" id="selectUserMap" extends="userMap">
         <!-- 根据提供的数据库，此处用户对应角色是一对一关系 而角色对应用户是一对多关系，因而此处使用association 而property指的是roles在user类里面的属性名称
             javaType是它的类型，resultMap 引用roles的映射信息 -->
-        <association property="roles" javaType="roles"
-                     resultMap="com.bjsxt.car.mapper.RolesMapper.rolesMap">
+        <association property="roles" javaType="cn.accp.pigcar.pojo.Roles"
+                     resultMap="cn.accp.pigcar.dao.RolesDao.rolesMap">
         </association>
     </resultMap>
 
     <!-- 通过主键查询角色名称 -->
-    <resultMap type="users" id="selectOneMap" extends="userMap">
+    <resultMap type="cn.accp.pigcar.pojo.Users" id="selectOneMap" extends="userMap">
         <association property="roles" javaType="roles"
-                     select="com.bjsxt.car.mapper.RolesMapper.selectById" column="roleid">
+                     select="cn.accp.pigcar.dao.RolesDao.selectById" column="roleid">
         </association>
     </resultMap>
     <!--
         分页查询结果检索
      -->
-    <resultMap type="Users" id="pageMap" extends="userMap">
+    <resultMap type="cn.accp.pigcar.pojo.Users" id="pageMap" extends="userMap">
         <!--
             需要查询一次角色表
          -->
-        <association property="roles" javaType="roles"
-                     select="com.bjsxt.car.mapper.RolesMapper.selectById"
+        <association property="roles" javaType="cn.accp.pigcar.pojo.Roles"
+                     select="cn.accp.pigcar.dao.RolesDao.selectById"
                      column="userlevel">
         </association>
     </resultMap>
@@ -52,17 +52,17 @@
 		u.userpwd=#{userpwd}
 	</select>
     <!-- 查询菜单信息的结果映射 -->
-    <resultMap type="Users" id="allMenusMap" extends="userMap">
+    <resultMap type="cn.accp.pigcar.pojo.Users" id="allMenusMap" extends="userMap">
 
-        <association property="roles" javaType="roles"
-                     select="com.bjsxt.car.mapper.MenusMapper.selectMenusByRoleId" column="userLevel">
+        <association property="roles" javaType="cn.accp.pigcar.pojo.Roles"
+                     select="cn.accp.pigcar.dao.MenusDao.selectMenusByRoleId" column="userLevel">
         </association>
 
     </resultMap>
 
-    <resultMap type="Users" id="selectUserByIfMap" extends="userMap">
+    <resultMap type="cn.accp.pigcar.pojo.Users" id="selectUserByIfMap" extends="userMap">
         <association property="roles" javaType="roles"
-                     select="com.bjsxt.car.mapper.MenusMapper.selectMenusByRoleId" column="roleid">
+                     select="cn.accp.pigcar.dao.MenusDao.selectMenusByRoleId" column="roleid">
         </association>
     </resultMap>
     <!-- 根据用户的主键查询他的整个菜单信息 -->

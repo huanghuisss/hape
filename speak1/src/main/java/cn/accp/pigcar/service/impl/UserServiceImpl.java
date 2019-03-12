@@ -8,7 +8,6 @@ import cn.accp.pigcar.pojo.Roles;
 import cn.accp.pigcar.pojo.Users;
 import cn.accp.pigcar.service.UserService;
 import cn.accp.pigcar.util.PageBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

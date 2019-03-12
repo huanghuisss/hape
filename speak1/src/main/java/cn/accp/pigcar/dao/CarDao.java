@@ -7,6 +7,8 @@ import cn.accp.pigcar.pojo.Cars;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
+
 @Mapper
 public interface CarDao {
     // 添加车辆

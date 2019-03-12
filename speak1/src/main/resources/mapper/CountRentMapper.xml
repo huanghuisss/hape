@@ -3,11 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="cn.accp.pigcar.dao.CountRentDao">
-  	<resultMap type="cn.accp.pigcar.pojo.Renttable" id="countBeanMap" extends="com.bjsxt.car.mapper.RentalTableMapper.renttableMap">
+  	<resultMap type="cn.accp.pigcar.pojo.Renttable" id="countBeanMap" extends="cn.accp.pigcar.dao.RentalTableDao.renttableMap">
   		<result column="carrentcount" property="carrentcount"/>
   		<result column="countprice" property="countPrice"/>
   		<association property="cars" javaType="cn.accp.pigcar.pojo.Cars"
-  			select="com.bjsxt.car.mapper.CarMapper.getOneCar"
+  			select="cn.accp.pigcar.dao.CarDao.getOneCar"
   			column="carid"
   		></association>
   	</resultMap>
@@ -16,6 +16,7 @@
   		select sum(t.shouldpayprice) as countprice,t.carid from renttable t
 		group by t.carid
   	</select>
+
   	<!-- 统计每辆车被租的次数 -->
   	<select id="countRentCarCount" resultMap="countBeanMap">
   		select count(t.carid) as carrentcount,t.carid from renttable t
