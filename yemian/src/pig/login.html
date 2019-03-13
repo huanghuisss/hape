@@ -25,8 +25,15 @@
     }
     -->
   </style>
+  <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="js/vue.min.js"></script>
   <script type="text/javascript">
-    if (window.parent.length > 0) {
+    function showConfirmMsg1 () {
+         vm3.username='';
+         vm3.userpwd='';
+  }
+
+  if (window.parent.length > 0) {
       window.parent.location = "login.jsp";
     }
   </script>
@@ -117,46 +124,16 @@
         document.getElementById('userloginpassword').innerHTML = "系统检测到你未有任何输入，此项为必填内容，请重新填写！";
       } else if (!re.test(login)) {
         document.getElementById('userloginpassword').className = "s2";
-        document.getElementById('userloginpassword').innerHTML = "你输入的内容不符合规范，请重新填写！";
+        document.getElementById('userloginpassword').innerHTML = "10-20位包含数字、字母、特殊字符的密码";
       } else {
         document.getElementById('userloginpassword').className = 's3';
         document.getElementById('userloginpassword').innerHTML = 'ok';
       }
     }
-    //验证码提示
-    function click_validate_input() {
-      document.getElementById('uservalidate').className = "s1";
-      document.getElementById('uservalidate').innerHTML = "验证码不能为空";
-    }
-    //验证码为空提示
-    function check_validate_input() {
-      var login = document.getElementById('code').value;
-      if (login == '' || login == null) {
-        document.getElementById('uservalidate').className = "s2";
-        document.getElementById('uservalidate').innerHTML = "系统检测到你未有任何输入，此项为必填内容，请重新填写！";
-      } else {
-        document.getElementById('uservalidate').className = 's3';
-        document.getElementById('uservalidate').innerHTML = 'ok';
-      }
-    }
+
+
     function subForm() {
-      var userNameRegex = /^[a-zA-Z][a-zA-Z0-9_]{4,12}$/;
-      var userPwdRegex = /^\d{4}$/;
-      var userName = document.getElementById('username');
-      var userPwd = document.getElementById('password');
-      var code = document.getElementById('code');
-      if (userName.value == '' || !userNameRegex.test(userName.value)) {
-        userName.onfocus();
-        return false;
-      }
-      if (userPwd.value == '' || !userPwdRegex.test(userPwd.value)) {
-        userPwd.onfocus();
-        return false;
-      }
-      if (code.value == '' || code.value == null) {
-        code.onfocus();
-        return false;
-      }
+
     }
   </script>
   <style type="text/css">
@@ -261,7 +238,7 @@
                                                cellspacing="0">
           <tr>
             <td width="4%">&nbsp;</td>
-              <td width="96%" height="38"><span class="login_txt_bt">${requestScope.msg}</span></td>
+              <td width="96%" height="38"><span class="login_txt_bt"></span></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
@@ -269,8 +246,8 @@
                                    width="100%" border="0" id="table211" height="328">
               <tr>
                 <td height="164" colspan="2" align="middle">
-                  <form name="myform" action="http://localhost:8080/user/login" method="post"
-                        onsubmit="subForm()">
+                  <form name="myform" id="form1"  action="" method="post"
+                        >
                     <table cellSpacing="0" cellPadding="0" width="100%"
                            border="0" height="143" id="table212">
                       <span id="errors"></span>
@@ -278,41 +255,33 @@
 
                         <td width="13%" height="38" class="top_hui_text"><span
                           class="login_txt">用户名：&nbsp;&nbsp;</span></td>
-                        <td height="38" colspan="2" class="top_hui_text"><input
-                          name="username" id="username" class="editbox4"
-                          value="${requestScope.userName }" size="20"
+                        <td height="38" colspan="2" id="vueusername" class="top_hui_text">
+
+                          <input
+                          name="username" id="username"  v-model = "username" class="editbox4"
+                          value=" " size="20"
                           onfocus="click_loginusername_input()"
-                          onblur="check_loginusername_input()"><span
+                          onblur="check_loginusername_input()">
+
+
+                          <span
                           id="reglogininfo"></span></td>
                       </tr>
                       <tr>
                         <td width="13%" height="35" class="top_hui_text"><span
                           class="login_txt"> 密 码： &nbsp;&nbsp; </span></td>
-                        <td height="35" colspan="2" class="top_hui_text"><input
-                          class="editbox4" type="password" size="20"
-                          name="userpwd" value="${requestScope.userPwd }"
+                        <td height="35" colspan="2" class="top_hui_text" id="vueuserpwd"><input
+                          class="editbox4"   v-model = "userpwd" type="password" size="20"
+                          name="userpwd" value=""
                           id="password" onfocus="click_loginuserpwd_input()"
                           onblur="check_loginuserpwd_input()"> <img
                           src="images/luck.gif" width="19" height="18"><span
                           id="userloginpassword"></span></td>
                       </tr>
-             <!--         <tr>
-                        <td width="13%" height="35"><span class="login_txt">验证码：</span></td>
-                        <td height="35" colspan="2" class="top_hui_text"><input
-                          class=wenbenkuang name="code" id="code" type=text
-                          value="" maxLength=4 size=10
-                          onfocus="click_validate_input()"
-                          onblur="check_validate_input()" /> <img id="img1"
-                                                                  src="ValidateCodeServlet.do" width="80" height="24" /><a
-                          onclick="reloadImg()"
-                          style="color: blue;text-decoration: underline;cursor: hand;"
-                          class="left_txt">换一张</a> <span id="uservalidate"></span>
-                        </td>
-                      </tr>-->
                       <tr>
                         <td height="35">&nbsp;</td>
                         <td width="20%" height="35"><input name="Submit"
-                                                           type="submit" class="button" id="Submit" value="登 陆" />
+                                                           type="button"  v-on:click="loginclike" class="button" id="Submit" value="登 陆" />
                         </td>
                         <td width="67%" class="top_hui_text"><input
                           name="cs" type="button" class="button" id="cs"
@@ -345,4 +314,59 @@
   </tr>
 </table>
 </body>
+<script type="text/javascript">
+
+  var vm3=new Vue({
+    el: '#form1',
+    data: {
+      username :null,
+      userpwd:null
+    },
+    methods: {
+      loginclike: function () {
+        var userNameRegex = /^[a-zA-Z][a-zA-Z0-9_]{4,12}$/;
+        //密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
+        var userPwdRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[\W_]).{10,20}$/;
+
+        if (this.username== '' || !userNameRegex.test(this.username)) {
+
+          return false;
+        }
+        if (this.userpwd == '') {
+          return false;
+        }
+/*
+        this.$http.post('http://localhost:8080/user/login',{username:this.username,userpwd:this.userpwd},{params : jsonData}).
+        then(function(res){
+
+        },function(){
+
+        });*/
+
+        $.ajax({
+          type:"get",
+          url:"http://localhost:8080/user/login",
+          data:{"username":this.username,"userpwd":this.userpwd},
+          dataType:"json",
+          crossDomain:true,
+          xhrFields:{withCredentials:true},
+          success:function (result) {
+            if(result){
+              location.href="index.html"
+            }else{
+              document.getElementById('errors').className = "s2";
+              document.getElementById('errors').innerHTML = "用户名或密码错误";
+            }
+          }
+
+
+
+        })
+      }
+    }
+
+
+  })
+
+  </script>
 </html>

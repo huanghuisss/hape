@@ -6,26 +6,28 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import cn.accp.pigcar.pojo.Menus;
 import cn.accp.pigcar.pojo.Roles;
 import cn.accp.pigcar.pojo.Users;
 import cn.accp.pigcar.service.UserService;
 import cn.accp.pigcar.util.PageBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("user")
+@CrossOrigin(allowCredentials = "true")
 public class UserController{
     @Resource
     UserService userService;
+
     @RequestMapping(value="login")
     @ResponseBody
-    public Object login( String userpwd, String username,HttpServletRequest request ){
+    public Object login(String userpwd, String username, HttpSession session){
         try {
             Users user = new Users();
             user.setUsername(username);
@@ -34,35 +36,42 @@ public class UserController{
             //System.out.println("角色的id"+user1.getRoles().getRoleid());
             if (null == user1) {
                 //表示登录失败,返回到登录界面
-                request.setAttribute("errors", "账号或密码不正确");
-                return "login";
+                return false;
             }
 
             List<Menus> menu = userService.findAllMenus(user1);
             System.out.println(menu);
-            request.getSession().setAttribute("menus", menu);
+            session.setAttribute("menus", menu);
             //登录成功,将user1对象信息设置到session
-            request.getSession().setAttribute("user", user1);
-            Map<String,Object> ld=new HashMap<>();
-            ld.put("menu",menu);
-            ld.put("user",user1);
-            return  ld;
+            session.setAttribute("user", user1);
+            return  true;
         } catch (Exception e) {
 
             e.printStackTrace();
         }
         //如果发生异常，跳转到错误页面
-        return "error";
+        return  false;
+    }
+
+    @RequestMapping("getUserlogin")
+    @ResponseBody
+    public Object getLoginUser(HttpSession session){
+
+        Map<String,Object> ld=new HashMap<>();
+        ld.put("menu",session.getAttribute("menus"));
+        ld.put("user",session.getAttribute("user"));
+        return ld;
     }
     /**
      * 用户退出系统，注销session，返回登录界面
      *
      * */
     @RequestMapping("logout")
-    public String logout(HttpServletRequest req){
+    @ResponseBody
+    public Object logout(HttpServletRequest req){
         //注销session
         req.getSession().invalidate();
-        return "login";
+        return true;
     }
     /**
      * 查询所有角色信息，为查询用户信息做准备
