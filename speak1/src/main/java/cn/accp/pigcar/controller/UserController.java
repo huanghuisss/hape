@@ -75,8 +75,6 @@ public class UserController{
     }
     /**
      * 查询所有角色信息，为查询用户信息做准备
-     * @param req
-     * @return
      */
     @RequestMapping("findAllUsers")
     public String findAllRoles(HttpServletRequest req){

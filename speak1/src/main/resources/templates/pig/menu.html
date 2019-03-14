@@ -181,10 +181,10 @@
       crossDomain:true,
       xhrFields:{withCredentials:true},
       success:function (result) {
-          console.log(result.menu)
+
         var str='';
         $.each(result.menu, function(i, obj) {
-          console.log(obj.menuname)
+
           str += ' <ul>  ' +
                   '<h3 class="type">'+ obj.menuname  +'</h3>';  //Ñ­»·±éÀú£¬Æ´½Ó
 
@@ -204,7 +204,7 @@
         });
           $('#container').html(' ');
         $('#container').html(str);
-        console.log(str)
+
       }
     })
 

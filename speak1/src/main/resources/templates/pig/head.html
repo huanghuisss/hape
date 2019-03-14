@@ -5,15 +5,9 @@
   <meta charset="UTF-8">
   <title>My JSP 'head.jsp' starting page</title>
 
-  <script language=JavaScript>
-    function logout() {
-      if (confirm("您确定要退出系统吗？")) {
-        document.location = "car/user/logout";
-      } else {
-        return false;
-      }
-    }
-  </script>
+
+  <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+
   <script language=JavaScript1.2>
 
     function showsubmenu(sid) {
@@ -54,7 +48,7 @@
     <td width="39%" valign="top"><table width="100%" border="0"
                                         cellspacing="0" cellpadding="0">
       <tr>
-        <td width="74%" height="38" class="admin_txt">${sessionScope.user.roles.rolename}：<b>${sessionScope.user.username }</b>
+        <td width="74%" height="38" class="admin_txt"><span id="loginUserRole"></span> <b id="loginUserName"></b>
           您好,感谢登陆使用！
         </td>
         <td width="22%"><a href="#" target="_self"
@@ -69,4 +63,40 @@
   </tr>
 </table>
 </body>
+<script type="text/javascript">
+
+  $.ajax({
+    type:"get",
+    url:"http://localhost:8080/user/getUserlogin",
+    dataType:"json",
+    crossDomain:true,
+    xhrFields:{withCredentials:true},
+    success:function (result) {
+      console.log(result.user)
+        $("#loginUserName").html(result.user.username)
+         $("#loginUserRole").html(result.user.roles.rolename+':')
+
+
+    }
+  })
+  function logout() {
+    if (confirm("您确定要退出系统吗？")) {
+
+      $.ajax({
+        type:"get",
+        url:"http://localhost:8080/user/logout",
+        dataType:"json",
+        crossDomain:true,
+        xhrFields:{withCredentials:true},
+        success:function (result) {
+            window.location.href="login.html"
+        }
+      })
+    } else {
+      return false;
+    }
+  }
+
+</script>
+
 </html>
