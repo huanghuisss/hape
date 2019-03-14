@@ -55,7 +55,7 @@ public class UserController{
 
     @RequestMapping("getUserlogin")
     @ResponseBody
-    public Object getLoginUser(HttpSession session){
+    public Map<String, Object> getLoginUser(HttpSession session){
 
         Map<String,Object> ld=new HashMap<>();
         ld.put("menu",session.getAttribute("menus"));

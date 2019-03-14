@@ -102,10 +102,7 @@
       if (login == '' || login == null) {
         document.getElementById('reglogininfo').className = "s2";
         document.getElementById('reglogininfo').innerHTML = "系统检测到你未有任何输入，此项为必填内容，请重新填写！";
-      } else if (!re.test(login)) {
-        document.getElementById('reglogininfo').className = "s2";
-        document.getElementById('reglogininfo').innerHTML = "你输入的内容不符合规范，请重新填写！";
-      } else {
+      }  else {
         document.getElementById('reglogininfo').className = 's3';
         document.getElementById('reglogininfo').innerHTML = 'ok';
       }
@@ -122,19 +119,14 @@
       if (login == '' || login == null) {
         document.getElementById('userloginpassword').className = "s2";
         document.getElementById('userloginpassword').innerHTML = "系统检测到你未有任何输入，此项为必填内容，请重新填写！";
-      } else if (!re.test(login)) {
-        document.getElementById('userloginpassword').className = "s2";
-        document.getElementById('userloginpassword').innerHTML = "10-20位包含数字、字母、特殊字符的密码";
-      } else {
+      }else {
         document.getElementById('userloginpassword').className = 's3';
         document.getElementById('userloginpassword').innerHTML = 'ok';
       }
     }
 
 
-    function subForm() {
 
-    }
   </script>
   <style type="text/css">
     .s1 {
