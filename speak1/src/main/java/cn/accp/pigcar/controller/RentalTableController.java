@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -21,9 +20,10 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("rentTable")
+@CrossOrigin(allowCredentials = "true")
 public class RentalTableController {
 	@Autowired
-	private RentalTableService rtServcie;
+	private RentalTableService rentalTableService;
 	/**
 	 * 绑定时间转换器，否则，提交日期参数将会产生400错误
 	 */
@@ -36,11 +36,12 @@ public class RentalTableController {
 	 * 多条件查询
 	 */
 	@RequestMapping("findRentalTableByIf")
-	public String findRentalTableByIf(@RequestParam("rentflag")Long rentflag , Renttable renttable, HttpServletRequest req){
-		List<Renttable> rentList = rtServcie.findRentalTableByIf(renttable);
-		req.setAttribute("rentList", rentList);
+	@ResponseBody
+	public Object findRentalTableByIf(Renttable renttable, HttpSession session){
+		List<Renttable> rentList = rentalTableService.findRentalTableByIf(renttable);
+		session.setAttribute("rentList", rentList);
 		System.out.println(renttable);
-		return "operatorManager/viewRenttables";
+		return rentList;
 	}
 	/**
 	 * 预更新，跟新之前执行查询操作，将结果显示到更新界面
@@ -48,7 +49,7 @@ public class RentalTableController {
 	@RequestMapping("preUpdate")
 	public String preUpdate(@RequestParam("tableid")String tableid, HttpServletRequest req){
 		//查询
-		Renttable renttable = rtServcie.findRentalByRenTableId(tableid);
+		Renttable renttable = rentalTableService.findRentalByRenTableId(tableid);
 
 		req.setAttribute("rent", renttable);
 
@@ -59,7 +60,7 @@ public class RentalTableController {
 	 */
 	@RequestMapping("updateRentTable")
 	public String updateRentTable(@RequestParam("rentflag")Long rentflag ,Renttable renttable,HttpServletRequest req){
-		boolean flag = rtServcie.updateRentable(renttable);
+		boolean flag = rentalTableService.updateRentable(renttable);
 		if (flag) {
 			return "ok";
 		}

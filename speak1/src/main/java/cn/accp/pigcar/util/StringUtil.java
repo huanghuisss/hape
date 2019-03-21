@@ -7,9 +7,9 @@ import java.util.List;
 public class StringUtil {
 	public static String formatString(List<CarsRentMonth> monthAmount){
 		StringBuilder sb = new StringBuilder();
-		//��ӿ�ͷ
+
 		sb.append("[ ");
-		//������������
+
 		for(int i= 0 ; i< monthAmount.size() ;i++){
 			CarsRentMonth carsRentMonth = monthAmount.get(i);
 			System.out.println("车的名字==="+carsRentMonth.getCarName());
@@ -31,7 +31,7 @@ public class StringUtil {
 				sb.append(" ] },");
 			}
 		}
-		//��ӽ�β
+
 		sb.append(" ]");
 		return sb.toString();
 	}

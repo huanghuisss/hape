@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+ <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
+
 
   <title>My JSP 'welcome.jsp' starting page</title>
 
@@ -29,6 +29,8 @@
       background-color: #EEF2FB;
     }
   </style>
+  <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+
 <body>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
@@ -67,30 +69,12 @@
             <td height="102" valign="top">&nbsp;</td>
             <td height="102" valign="top" class="left_bt2">
               今日应还汽车信息：
-              <c:if test="">
+
                 <img src="images/warning.gif">
-              </c:if>
-              <table width="100%" border="1" cellspacing="0" cellpadding="0">
-                <c:choose>
-                  <c:when test="">
-                  </c:when>
-                  <c:otherwise>
-                    <tr>
-                      <td class="left_bt2">出单编号</td>
-                      <td class="left_bt2">租车日期</td>
-                      <td class="left_bt2">应归还日期</td>
-                      <td class="left_bt2">业务员</td>
-                    </tr>
-                    <c:forEach var="rent" items="">
-                      <tr>
-                        <td class="left_bt2">${rent.tableid }</td>
-                        <td class="left_bt2"><fmt:formatDate value="${rent.begindate }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="left_bt2"><fmt:formatDate value="${rent.shouldreturndate }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="left_bt2">${rent.users.username }</td>
-                      </tr>
-                    </c:forEach>
-                  </c:otherwise>
-                </c:choose>
+
+              <table width="100%" border="1" cellspacing="0" cellpadding="0" id="hc">
+
+
               </table>
             </td>
           </tr>
@@ -109,12 +93,24 @@
           <SCRIPT language=javascript>
             function secBoard(n)
             {
-              for(i=0;i<secTable.cells.length;i++)
-                secTable.cells[i].className="sec1";
-              secTable.cells[n].className="sec2";
-              for(i=0;i<mainTable.tBodies.length;i++)
-                mainTable.tBodies[i].style.display="none";
-              mainTable.tBodies[n].style.display="block";
+              if(n==1){
+                $('#se1').removeClass();
+                $('#se1').addClass('sec1');
+
+                $('#se2').removeClass();
+                $('#se2').addClass('sec2');
+                $('#t1').css('display','block')
+                $('#t2').css('display','none')
+              }else{
+                $('#se1').removeClass();
+                $('#se1').addClass('sec2');
+
+                $('#se2').removeClass();
+                $('#se2').addClass('sec1');
+                $('#t2').css('display','block')
+                $('#t1').css('display','none')
+              }
+
             }
           </SCRIPT>
           <!--HTML部分-->
@@ -122,10 +118,10 @@
             <TBODY>
             <TR align=middle height=20>
 
-              <TD align="center" class=sec2 onclick="secBoard(0)">验证信息</TD>
-              <TD align="center" class=sec1 onclick="secBoard(1)">统计信息</TD>
-              <TD align="center" class=sec1 onclick="secBoard(2)">系统参数</TD>
-              <TD align="center" class=sec1 onclick="secBoard(3)">版权说明</TD>
+
+
+              <TD align="center" id="se2" class=sec2 onclick="secBoard(1)">系统参数</TD>
+              <TD align="center" id="se1" class=sec1 onclick="secBoard(2)">版权说明</TD>
               <!--
                    <td align="center" class=sec2 onclick="secBoard(0)">验证信息</td>
                    <td align="center" class=sec1 onclick="secBoard(1)">统计信息</td>
@@ -138,101 +134,14 @@
           <TABLE class=main_tab id=mainTable cellSpacing=0
                  cellPadding=0 width=100% border=0>
             <!--关于TBODY标记-->
-            <TBODY style="DISPLAY: block">
-            <TR>
-              <TD vAlign=top align=middle><TABLE width=98% height="133" border=0 align="center" cellPadding=0 cellSpacing=0>
-                <TBODY>
-                <TR>
-                  <TD height="5" colspan="3"></TD>
-                </TR>
-                <TR>
-                  <TD width="4%" height="28" background="images/news-title-bg.gif"></TD>
-                  <TD height="25" colspan="2" background="images/news-title-bg.gif" class="left_txt">当前登录角色：${sessionScope.user.roles.rolename}&nbsp;&nbsp;&nbsp;用户名：<b>${sessionScope.user.username }</b> <font color="#FFFFFF" class="left_ts"><b></b></TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD width="42%" height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证分类信息： </span>
 
-                    <span class="left_ts"> </span></TD>
-                  <TD width="54%" height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证广告张贴： </span>
 
-                    <span class="left_ts"> </span></TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证商家展示： </span>
-
-                    <span class="left_ts"> </span></TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证网上商城： </span>
-
-                    <span class="left_ts"> </span></TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证网上名片： </span>
-                    <span class="left_ts"> </span></TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证市场联盟： </span>
-
-                    <span class="left_ts"> </span></TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证市场资讯： </span>
-
-                    <span class="left_ts"> </span></TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">您有未验证商家商品： </span>
-                    <span class="left_ts"> </span></TD>
-                </TR>
-                <TR>
-                  <TD height="5" colspan="3"></TD>
-                </TR>
-                </TBODY>
-              </TABLE></TD>
-            </TR>
-            </TBODY>
-            <!--关于cells集合-->
-            <TBODY style="DISPLAY: none">
-            <TR>
-              <TD vAlign=top align=middle><TABLE width=100% height="133" border=0 align="center" cellPadding=0 cellSpacing=0>
-                <TBODY>
-                <TR>
-                  <TD height="5" colspan="3"></TD>
-                </TR>
-                <TR>
-                  <TD width="4%" height="28" background="images/news-title-bg.gif"></TD>
-                  <TD colspan="2" background="images/news-title-bg.gif" class="left_txt">现有会员：名&nbsp;&nbsp; 其中：                                名&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;&nbsp;&nbsp;名</TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD width="42%" height="25" bgcolor="#FAFBFC"><span class="left_txt">本站现有分类信息： </span><span class="left_txt">条</span></TD>
-                  <TD width="54%" bgcolor="#FAFBFC"><span class="left_txt">本站现有广告张贴： </span><span class="left_txt">条</span></TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">本站现有商家展示： </span><span class="left_txt">个</span></TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">本站现有网上商城： </span><span class="left_txt">个</span></TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">本站现有网上名片： </span><span class="left_txt">个</span></TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">本站现有市场联盟： </span><span class="left_txt">个</span></TD>
-                </TR>
-                <TR>
-                  <TD bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">本站现有市场资讯： </span><span class="left_txt">条</span></TD>
-                  <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">本站现有商家商品： </span><span class="left_txt">个</span></TD>
-                </TR>
-                <TR>
-                  <TD height="5" colspan="3"></TD>
-                </TR>
-                </TBODY>
-              </TABLE></TD>
-            </TR>
-            </TBODY>
             <!--关于tBodies集合-->
-            <TBODY style="DISPLAY: none">
+            <TBODY id="t1" style="DISPLAY: block ; ">
             <TR>
-              <TD vAlign=top align=middle><TABLE width=100% border=0 align="center" cellPadding=0 cellSpacing=0>
+              <TD vAlign=top align=middle width=1000em>
+
+                <TABLE width=100% border=0 align="center" cellPadding=0 cellSpacing=0 >
                 <TBODY>
                 <TR>
                   <TD colspan="3"></TD>
@@ -246,20 +155,21 @@
                   <TD width="54%" height="25" bgcolor="#FAFBFC"><span class="left_txt">系统版本：V3.0</span></TD>
                 </TR>
                 <TR>
+
                   <TD height="25" bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD width="42%" height="25" bgcolor="#FAFBFC"><span class="left_txt">服务器类型：<%=application.getServerInfo() %></span></TD>
+                  <TD width="42%" height="25" bgcolor="#FAFBFC"><span class="left_txt">服务器类型：****</span></TD>
                   <TD width="54%" height="25" bgcolor="#FAFBFC"><span class="left_txt">脚本解释引擎：JavaScript</span></TD>
                 </TR>
                 <TR>
                   <TD height="25" bgcolor="#FAFBFC">&nbsp;</TD>
-                  <TD width="42%" height="25" bgcolor="#FAFBFC"><span class="left_txt">站点物理路径：<%=path %></span></TD>
+                  <TD width="42%" height="25" bgcolor="#FAFBFC"><span class="left_txt">站点物理路径：******</span></TD>
                   <TD width="54%" height="25" bgcolor="#FAFBFC"><span class="left_txt">文件上传路径：WebRoot/upload</span></TD>
                 </TR>
                 <TR>
                   <TD height="25" bgcolor="#FAFBFC">&nbsp;</TD>
                   <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">FSO文本读写：</span><span class="TableRow2"><font color="#FF0066"><b><img src="images/X.gif" width="12" height="13"></b></font><img src="images/g.gif" width="12" height="12"></span></TD>
                   <TD height="25" bgcolor="#FAFBFC"><span class="left_txt">数据库使用：</span><span class="left_ts"><img src="images/X.gif" width="12" height="13"><b style="color:blue">
-                          	Oracle10g
+                          	MySql
                             </b></span></TD>
                 </TR>
 
@@ -271,9 +181,9 @@
             </TR>
             </TBODY>
             <!--关于display属性-->
-            <TBODY style="DISPLAY: none">
+            <TBODY id="t2" style="DISPLAY: none">
             <TR>
-              <TD vAlign=top align=middle><TABLE width=100% border=0 align="center" cellPadding=0 cellSpacing=0>
+              <TD vAlign=top align=middle style="width: 1000em"><TABLE width=100% border=0 align="center" cellPadding=0 cellSpacing=0>
                 <TBODY>
                 <TR>
                   <TD colspan="3"></TD>
@@ -324,7 +234,7 @@
             <td height="102" valign="top">&nbsp;</td>
             <td height="102" valign="top"><label></label>
               <label>
-              <textarea name="textarea" cols="85" rows="8" class="left_txt">一、专业的地区级商家门户建站首选方案！
+              <textarea style="resize:none"  readonly="readonly"   name="textarea" cols="85" rows="8" class="left_txt">一、专业的地区级商家门户建站首选方案！
 		二、全站一号通，一次注册，终身使用，一个帐号，全站通用！
 		三、分类信息、商家展示（百业联盟）、网上商城、网上名片（网上黄页）、广告张贴、市场联盟、市场资讯七大栏目完美整合。
 		四、界面设计精美，后台功能强大。傻瓜式后台操作，无需专业的网站制作知识，只要会打字，就会管理维护网站。</textarea>
@@ -351,5 +261,49 @@
     <td valign="bottom" background="images/mail_rightbg.gif"><img src="images/buttom_right2.gif" width="16" height="17" /></td>
   </tr>
 </table>
+</body>
+<script type="text/javascript">
+  $.ajax({
+    type:"get",
+    url:"http://localhost:8080/user/getUserlogin",
+    dataType:"json",
+    async: false,
+    crossDomain:true,
+    xhrFields:{withCredentials:true},
+    success:function (result) {
+      $.ajax({
+        type:"get",
+        url:"http://localhost:8080/rentTable/findRentalTableByIf",
+        data:{"rentflag":0,"userid":result.user.username},
+        dataType:"json",
+        crossDomain:true,
+        async: false,
+        xhrFields:{withCredentials:true},
+        success:function (result2) {
+
+                  var ht='   <tr>\n' +
+                          '          <td class="left_bt2">出单编号</td>\n' +
+                          '                  <td class="left_bt2">租车日期</td>\n' +
+                          '                  <td class="left_bt2">应归还日期</td>\n' +
+                          '                  <td class="left_bt2">业务员</td>\n' +
+                          '                  </tr>'
+
+          $.each(result2, function(q, rent) {
+                  ht+='<tr>' +
+                          '  <td class="left_bt2">'+rent.tableid +'</td> ' +
+                          '<td class="left_bt2" >'+rent.begindate+'</td>' +
+                          ' <td class="left_bt2">'+rent.shouldreturndate +'</td>' +
+                          ' <td class="left_bt2">'+rent.users.username+'</td>' +
+                          ' </tr>'
+                  })
+
+          $('#hc').html(ht);
+        }
+      })
+    }
+  })
+
+
+</script>
 </html>
 

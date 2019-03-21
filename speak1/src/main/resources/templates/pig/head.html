@@ -72,7 +72,6 @@
     crossDomain:true,
     xhrFields:{withCredentials:true},
     success:function (result) {
-      console.log(result.user)
         $("#loginUserName").html(result.user.username)
          $("#loginUserRole").html(result.user.roles.rolename+':')
 

@@ -1,5 +1,8 @@
 package cn.accp.pigcar.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,8 +44,14 @@ public class Renttable implements java.io.Serializable {
 	private Double imprest;
 	private Double shouldpayprice;
 	private Double price;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date begindate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date shouldreturndate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date returndate;
 	private Long rentflag;
 	private Set checktables = new HashSet(0);

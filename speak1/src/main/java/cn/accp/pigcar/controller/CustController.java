@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -102,7 +103,8 @@ public class CustController {
 	 * 查询所有的客户---应该使用分页
 	 */
 	@RequestMapping("/allCustByPage")
-	public String allCustByPage(HttpSession session, Model model, String size, String page, Customers cust){
+	@ResponseBody
+	public Object allCustByPage(HttpSession session, Model model, String size, String page, Customers cust){
 
 		//System.out.println(cust);
 
@@ -149,13 +151,18 @@ public class CustController {
 			System.out.println(customers);
 		}
 
+
 		model.addAttribute("allCustByPage", allCustByPage);
 		model.addAttribute("pb", pb);
-
 		//model.addAttribute("cust", cust);
 		session.setAttribute("cust", cust);
 
-		return "custManager/viewCustomers";
+		Map<String,Object>aa=new HashMap<>();
+		aa.put("allCustByPage", allCustByPage);
+		aa.put("pb", pb);
+		aa.put("cust", cust);
+
+		return aa;
 	}
 	/**
 	 * 查询所有的客户---应该使用分页 22222222

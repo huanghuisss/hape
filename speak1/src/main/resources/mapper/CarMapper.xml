@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bjsxt.car.mapper.CarMapper">
+<mapper namespace="cn.accp.pigcar.dao.CarDao">
 	<!-- 数据库字段映射对象属性 -->
-	<resultMap type="Cars" id="getCars">
+	<resultMap type="cn.accp.pigcar.pojo.Cars" id="getCars">
 		<id column="carnumber" property="carNumber" />
 		<result column="cartype" property="carType" />
 		<result column="color" property="color" />
@@ -16,7 +16,7 @@
 		<result column="carimg" property="carImg" />
 	</resultMap>
 	<!-- -->
-	<resultMap type="Cars" id="getCar" extends="getCars">
+	<resultMap type="cn.accp.pigcar.pojo.Cars" id="getCar" extends="getCars">
 
 	</resultMap>
 	<!-- 添加车辆 -->

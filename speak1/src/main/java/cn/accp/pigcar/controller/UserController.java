@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import cn.accp.pigcar.pojo.Menus;
+import cn.accp.pigcar.pojo.Renttable;
 import cn.accp.pigcar.pojo.Roles;
 import cn.accp.pigcar.pojo.Users;
+import cn.accp.pigcar.service.RentalTableService;
 import cn.accp.pigcar.service.UserService;
 import cn.accp.pigcar.util.PageBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,18 +24,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("user")
 @CrossOrigin(allowCredentials = "true")
+@ResponseBody()
 public class UserController{
     @Resource
     UserService userService;
-
     @RequestMapping(value="login")
-    @ResponseBody
     public Object login(String userpwd, String username, HttpSession session){
         try {
             Users user = new Users();
             user.setUsername(username);
             user.setUserpwd(userpwd);
             Users user1 = userService.findUserByUNameAndPwd(user);
+
+
+
             //System.out.println("角色的id"+user1.getRoles().getRoleid());
             if (null == user1) {
                 //表示登录失败,返回到登录界面
@@ -44,6 +49,7 @@ public class UserController{
             session.setAttribute("menus", menu);
             //登录成功,将user1对象信息设置到session
             session.setAttribute("user", user1);
+
             return  true;
         } catch (Exception e) {
 
@@ -67,7 +73,6 @@ public class UserController{
      *
      * */
     @RequestMapping("logout")
-    @ResponseBody
     public Object logout(HttpServletRequest req){
         //注销session
         req.getSession().invalidate();
@@ -77,27 +82,33 @@ public class UserController{
      * 查询所有角色信息，为查询用户信息做准备
      */
     @RequestMapping("findAllUsers")
-    public String findAllRoles(HttpServletRequest req){
+    public Object findAllRoles(HttpSession session){
         List<Roles> roles = userService.findAllRoles();
-        req.setAttribute("roles", roles);
-        return "userManager/addUser";
+        session.setAttribute("roles", roles);
+        return roles;
     }
 
     @RequestMapping("addUsers")
-    public String addUsers(Users user,HttpServletRequest req){
+    public Boolean addUsers(Users user,HttpServletRequest req){
         boolean flag = userService.addUsers(user);
-        if (flag) {
-            return "forward:/car/user/findUserByPage";
-        }
+
+         //"forward:/car/user/findUserByPage";     "exception";
+
         //之后我们需要查询所有用户信息
         //List<Users> userList = userService.finAllUser();
         //req.setAttribute("userList", userList);
         //跳转到分页查询
-        return "exception";
+        return flag;
+    }
+
+
+    @RequestMapping("nameExist")
+    public Boolean nameExist(String name){
+        Users user1 = userService.findUserInfoByUName(name);
+        return user1!=null;
     }
     /**
      * 分页查询
-     * @return
      */
     @RequestMapping("findUserByPage")
     public String findUserByPage(HttpServletRequest req){
@@ -124,8 +135,6 @@ public class UserController{
 
     /**
      * 查询所有角色信息，为条件查询用户信息做准备
-     * @param req
-     * @return
      */
     @RequestMapping("findAllRoles")
     public String findAllRoles1(HttpServletRequest req){
@@ -135,9 +144,6 @@ public class UserController{
     }
     /**
      * 多条件分页查询用户信息
-     * @param user
-     * @param req
-     * @return
      */
     @RequestMapping("findUserByIf")
     public String findUserByIf(Users user,HttpServletRequest req){
@@ -166,9 +172,6 @@ public class UserController{
     }
     /**
      * 跟新用户信息之前先要通过用户主键查询信息，将信息显示在更新界面
-     * @param username
-     * @param req
-     * @return
      */
     @RequestMapping("preUpdate")
     public String preUpdate(String username,HttpServletRequest req){
@@ -182,8 +185,6 @@ public class UserController{
     }
     /**
      * 更新用户信息
-     * @param user
-     * @return
      */
     @RequestMapping("updateUser")
     public String updateUser(Users user){
@@ -196,8 +197,6 @@ public class UserController{
     }
     /**
      * 删除用户信息
-     * @param username
-     * @return
      */
     @RequestMapping("deleteUser")
     public String deleteMapper(String username){
@@ -210,9 +209,6 @@ public class UserController{
     }
     /**
      * 更新密码之前先查询数据
-     * @param username
-     * @param req
-     * @return
      */
     @RequestMapping("preUpdatePwd")
     public String preUpdatePwd(String username,HttpServletRequest req){
@@ -223,9 +219,6 @@ public class UserController{
     }
     /**
      * 更新密码
-     * @param okNewPwd
-     * @param userName
-     * @return
      */
     @RequestMapping("updatePwd")
     public String updatePwd(String okNewPwd,String userName){

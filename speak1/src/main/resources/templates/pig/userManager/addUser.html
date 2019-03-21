@@ -24,15 +24,59 @@
       background-color: #EEF2FB;
     }
   </style>
-  <script type="text/javascript">
+    <script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
+
+  <script type = "text/javascript" src="../js/vue.min.js"></script>
+    <script type="text/javascript">
+
     function subForm(){
-      document.forms[0].submit();
+
+      if($('#userName').val().length==0||$('#identity').val().length==0||$('#userPwd').val().length==0||$('#phone').val().length==0||$('#address').val().length==0
+              ||$('#position').val().length==0||$('#fullName').val().length==0){
+
+      }
+
+      $.ajax({
+        type:"get",
+        dataType:"json",
+        async: false,
+        url:"http://localhost:8080/user/nameExist",
+        data:{"name":$('#userName').val()},
+        success:function (result) {
+              if(result){
+                $('#error').html('用户名已存在！');
+              }else{
+                $.ajax({
+                  //几个参数需要注意一下
+                  type: "get",//方法类型
+                  dataType: "json",//预期服务器返回的数据类型
+                  async: false,
+                  url: " http://localhost:8080/user/addUsers" ,//url
+                  data: $('#form1').serialize(),
+                  success: function (result1) {
+                    console.log(result1);//打印服务端返回的数据(调试用)
+                    if (result1) {
+                      window.location="viewUser.html";
+                    }else{
+                      window.location="../exception.html";
+                    };
+                  }
+                });
+
+              }
+        }
+      })
+
     }
+
+
   </script>
+
+
 </head>
 
 <body>
-<form action="car/user/addUsers" method="post">
+<form action="car/user/addUsers" id="form1" method="post">
   <input type="hidden" name="method" value="addUser"/>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
@@ -56,8 +100,8 @@
           <td colspan="2" valign="top"><span class="left_bt">
      	<table width="100%" border="0" cellpadding="0" cellspacing="0">
      		 <tr>
-      <td width="14%"><div align="center" class="left_txt">登录名</div></td>
-      <td width="23%"><input type="text" name="username" id="userName" >*</td>
+      <td width="14%"><div align="center" class="left_txt">登录名</div> </td>
+      <td width="23%"><input type="text" name="username" id="userName" >*<span id="error" style="font-size: 10px;color: red "></span></td>
       <td width="15%"><div align="center" class="left_txt">身份证</div></td>
       <td width="48%"><input type="text" name="identity" id="identity">*</td>
     </tr>
@@ -86,12 +130,8 @@
       <td><input type="text" name="position" id="position">*</td>
       <td><div align="center" class="left_txt">用户类型</div></td>
       <td><label>
-        <select name="userLevel">
-        <c:if test="${requestScope.roles != null}">
-        	<c:forEach var="role" items="${requestScope.roles}">
-        	<option  value="${role.roleid }">${role.rolename }</option>
-        	</c:forEach>
-        </c:if>
+        <select id="userLevel" name="userLevel">
+
         </select>
       </label></td>
     </tr>
@@ -135,4 +175,24 @@
   </table>
 </form>
 </body>
+<script type="text/javascript" >
+    $.ajax({
+        type:'get',
+        url:'http://localhost:8080/user/findAllUsers',
+        dataType:'json',
+        crossOrigin:true,
+        xhrFields:{withCredentials:true},
+        success:function (data) {
+            console.log(data)
+                    var str='';
+            $.each(data, function(q, roles) {
+                str+='<option  value="'+roles.roleid +'">'+roles.rolename +'</option>';
+            })
+            $('#userLevel').html(str)
+        }
+    })
+
+
+</script>
+
 </html>
