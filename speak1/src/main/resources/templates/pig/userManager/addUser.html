@@ -48,7 +48,8 @@
 
       if($('#userName').val().length==0||$('#identity').val().length==0||$('#userPwd').val().length==0||$('#phone').val().length==0||$('#address').val().length==0
               ||$('#position').val().length==0||$('#fullName').val().length==0){
-
+                  alert('请把信息填写完整！')
+              return
       }
 
       $.ajax({
@@ -62,14 +63,12 @@
                 $('#error').html('用户名已存在！');
               }else{
                 $.ajax({
-                  //几个参数需要注意一下
-                  type: "get",//方法类型
-                  dataType: "json",//预期服务器返回的数据类型
+                  type: "get",
+                  dataType: "json",
                   async: false,
-                  url: " http://localhost:8080/user/addUsers" ,//url
+                  url: " http://localhost:8080/user/addUsers" ,
                   data: $('#form1').serialize(),
                   success: function (result1) {
-                    console.log(result1);//打印服务端返回的数据(调试用)
                     if (result1) {
                       window.location="viewUser.html";
                     }else{
@@ -77,14 +76,10 @@
                     };
                   }
                 });
-
               }
         }
       })
-
     }
-
-
   </script>
 
 

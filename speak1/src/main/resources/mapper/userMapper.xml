@@ -90,17 +90,19 @@
 
     <!-- 分页查询 -->
     <select id="selectUserByPage" resultMap="pageMap">
-		select *
-		from (select rownum rn,r.* from users r where rownum&lt;#{end}+1) ua
-		where ua.rn&gt;=#{start}+1
+        SELECT * FROM
+        (SELECT s rn,r.* FROM  (SELECT @rownum:=@rownum+1 s,c.* FROM (SELECT @rownum:=0,ss.* FROM users ss ) c )
+        r  WHERE s&lt;#{end}+1) t
+        WHERE t.rn&gt;=#{start}+1;
 	</select>
 
     <!-- 多条件查询 分页-->
     <select id="selectUserByIfForPage" resultMap="selectUserByIfMap">
-        select *
-        from (select rownum rn,r.* from users r where rownum&lt;#{end}+1) ua
+        SELECT * FROM
+        (SELECT s rn,r.* FROM  (SELECT @rownum:=@rownum+1 s,c.* FROM (SELECT @rownum:=0,ss.* FROM users ss ) c )
+        r  WHERE s&lt;#{end}+1) t
         <where>
-            ua.rn&gt;=#{start}+1
+            t.rn&gt;=#{start}+1
             <if test="username != null and username != ''">
                 and username=#{username}
             </if>

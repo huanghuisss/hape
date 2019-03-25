@@ -35,10 +35,6 @@ public class UserController{
             user.setUsername(username);
             user.setUserpwd(userpwd);
             Users user1 = userService.findUserByUNameAndPwd(user);
-
-
-
-            //System.out.println("角色的id"+user1.getRoles().getRoleid());
             if (null == user1) {
                 //表示登录失败,返回到登录界面
                 return false;
@@ -91,9 +87,7 @@ public class UserController{
     @RequestMapping("addUsers")
     public Boolean addUsers(Users user,HttpServletRequest req){
         boolean flag = userService.addUsers(user);
-
          //"forward:/car/user/findUserByPage";     "exception";
-
         //之后我们需要查询所有用户信息
         //List<Users> userList = userService.finAllUser();
         //req.setAttribute("userList", userList);
@@ -111,9 +105,9 @@ public class UserController{
      * 分页查询
      */
     @RequestMapping("findUserByPage")
-    public String findUserByPage(HttpServletRequest req){
+    public Object findUserByPage(HttpSession session ,String currentPage){
         //获得当前页号
-        String index = req.getParameter("currentPage");
+        String index =currentPage;
 
         PageBean<Users> page = new PageBean<Users>();
         //查询所有用户，获得总记录数量
@@ -123,14 +117,16 @@ public class UserController{
         if (null != index && !"".equals(index) ) {
             currentIndex = Integer.parseInt(index);
         }
+
         //设置当前页
         System.out.println("当前页："+currentIndex);
         page.setIndex(currentIndex);
         List<Users> userList = userService.findUserByPage(page);
-        req.setAttribute("pageIndex", currentIndex);
-        req.setAttribute("page", page);
-        req.setAttribute("userList", userList);
-        return "userManager/viewUser";
+        Map<String,Object> h=new HashMap<>();
+        h.put("pageIndex", currentIndex);
+        h.put("page", page);
+        h.put("userList", userList);
+        return h;
     }
 
     /**
