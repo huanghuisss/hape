@@ -3,7 +3,7 @@ package cn.accp.pigcar.util;
 import java.util.List;
 
 public class PageBean<T> {
-	private int size = 5;//每页显示记录     //ok
+	private int size = 10;//每页显示记录     //ok
 	private int index = 1;// 当前页号       ok       
 	private int totalPageCount = 1;// 总页数     ok
 	private int totalCount = 0;// 记录总数    //ok             2

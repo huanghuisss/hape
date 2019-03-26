@@ -2,7 +2,6 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
   <title>My JSP 'viewUser.jsp' starting page</title>
 
@@ -119,34 +118,9 @@
     }
   </script>
   <script type="text/javascript">
-    function subForm(pageIndex){
-      document.getElementById('pageIndex').value = pageIndex;
-      document.forms[0].submit();
-    }
-    function subGo(index){
-      //
-      alert("1");
-      var obj = document.getElementById('goPage').value;
-      if(obj > index){
-        alert("超出页数，请重新填写");
-        return ;
-      }else if(obj <= 0){
-        alert("输入页数有误请重新输入");
-        return ;
-      }else{
-        //document.getElementById('pageIndex').value = obj;
-        window.location.href="car/user/findUserByPage?currentPage="+obj;
-      }
-    }
-    function checkAll(){
-      var obj = document.getElementById("all");
-      var arr = document.getElementsByName("dels");
-      for(var i = 0; i < arr.length; i++)
-      {
-        arr[i].checked = obj.checked;
 
-      }
-    }
+
+
 
     function preUpdateUser(userName){
       alert("1");
@@ -164,15 +138,7 @@
         return ;
       }
     }
-    function checkAll(){
-      var obj = document.getElementById("all");
-      var arr = document.getElementsByName("dels");
-      for(var i = 0; i < arr.length; i++)
-      {
-        arr[i].checked = obj.checked;
 
-      }
-    }
   </script>
 </head>
 
@@ -259,25 +225,11 @@
         <td width="15" height="29"><img src="../images/tab_20.gif" width="15" height="29" /></td>
         <td background="../images/tab_21.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="25%" height="29" nowrap="nowrap"><span class="STYLE1">共${totalCount }条纪录，当前第${index }/${totalPageCount }页，每页${requestScope.page.size }条纪录</span></td>
+            <td width="25%" height="29" nowrap="nowrap" id="ty"></td>
             <td width="75%" valign="top" class="STYLE1"><div align="right">
               <table width="352" height="20" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <!--<c:if test="${requestScope.pageIndex > 1}">
-                  <td width="62" height="22" valign="middle"><div align="right"><a href="car/user/findUserByPage?currentPage=1" onclick="subForm('${1}')" style="cursor: hand;"><img src="../images/first.gif" width="37" height="15"/></a></div></td>
-                  <td width="50" height="22" valign="middle"><div align="right"><a href="car/user/findUserByPage?currentPage=${requestScope.pageIndex -1 }" onclick="subForm('${requestScope.pageIndex -1 }')" style="cursor: hand;"><img src="../images/back2.gif" width="43" height="15" /></a></div></td>
-                  </c:if>
-                  <c:if test="${requestScope.pageIndex < requestScope.page.totalPageCount}">
-                  <td width="54" height="22" valign="middle"><div align="right"><a href="car/user/findUserByPage?currentPage=${requestScope.pageIndex +1 }" onclick="subForm('${requestScope.pageIndex +1 }')" style="cursor: hand;"><img src="../images/next.gif" width="43" height="15" /></a></div></td>
-                  <td width="49" height="22" valign="middle"><div align="right"><a href="car/user/findUserByPage?currentPage=${requestScope.page.totalPageCount}" onclick="subForm('${requestScope.page.totalPageCount}')" style="cursor: hand;"><img src="../images/last.gif" width="37" height="15" /></a></div></td>
-                 	</c:if>-->
-                  <td width="59" height="22" valign="middle"><div align="right" class="STYLE2 STYLE1">转到第</div></td>
-                  <td width="25" height="22" valign="middle"><span class="STYLE7">
-                    <input name="textfield" type="text" class="STYLE1" style="height:20px; width:25px;" size="5" value="" id="goPage"/>
-                  </span></td>
-                  <td width="23" height="22" valign="middle" class="STYLE2 STYLE1">页</td>
-                  <!--   <td width="30" height="22" valign="middle"><a   onclick="subGo('${requestScope.page.totalPageCount}')" style="cursor: hand;"><img src="images/go.gif" width="37" height="15" /></a></td>-->
-                  <td width="30" height="22" valign="middle"><button onclick="goPage()">GO</button></td>
+                <tr id="pagep">
+
                 </tr>
               </table>
             </div></td>
@@ -311,15 +263,32 @@
 </table>
 </body>
 <script type="text/javascript">
+  function subGo(index){
+
+    var obj = document.getElementById('goPage').value;
+    if(obj > index){
+      alert("超出页数，请重新填写");
+      return ;
+    }else if(obj <= 0){
+      alert("输入页数有误请重新输入");
+      return ;
+    }else{
+      load(obj)
+    }
+  }
+  $(function () {
+    load(1);
+  })
+  function load (currentPage){
     $.ajax({
-        type: "get",
-        dataType: "json",
-        async: false,
-        url: "http://localhost:8080/user/findUserByPage" ,
-        success: function (result1) {
-            console.log(result1);
-            $('#goPage').val(result1.pageIndex)
-            var str='  <tr>\n' +
+      type: "get",
+      dataType: "json",
+      data:{"currentPage":currentPage},
+      async: false,
+      url: "http://localhost:8080/user/findUserByPage",
+      success: function (result1) {
+        console.log(result1);
+        var str='  <tr>\n' +
                 '                <td width="4%" height="26" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>\n' +
                 '                <td width="8%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">序号</div></td>\n' +
                 '                <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">登录名</div></td>\n' +
@@ -331,25 +300,62 @@
                 '                <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">编辑</div></td>\n' +
                 '                <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">删除</div></td>\n' +
                 '                </tr>'
-            $.each(result1.userList, function(i, user) {
-                str+='<tr>\n' +
-                    '                    <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">\n' +
-                    '                    <input name="dels" type="checkbox" class="STYLE2" value="checkbox" />\n' +
-                    '                    </div></td>\n' +
-                    '\n' +
-                    '                <td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">'+(i+1)+'</div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.username +'</div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.identity+'</div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.fullname+'</div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.sex +'</div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.position+'</div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.roles.rolename+'</div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="car/user/preUpdate?username='+user.username+'" style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1"></span></div></td>\n' +
-                    '                <td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="../images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a href="car/user/deleteUser?username='+user.username+'" style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>\n' +
-                    '                </tr>'
-            })
-            $('#userlist').html(str);
+        $.each(result1.userList, function(i, user) {
+          str+='<tr>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">\n' +
+                  '<input name="dels" type="checkbox" class="STYLE2" value="checkbox" />\n' +
+                  '</div></td>\n' +
+                  '\n' +
+                  '<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">'+(i+1)+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.username +'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.identity+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.fullname+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.sex +'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.position+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.roles.rolename+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="car/user/preUpdate?username='+user.username+'" style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1"></span></div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="../images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a href="car/user/deleteUser?username='+user.username+'" style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>\n' +
+                  '</tr>'
+        })
+        var pl='<span class="STYLE1">共 '+result1.page.totalCount+'条纪录，当前第'+result1.page.index+'/'+result1.page.totalPageCount+'页，每页'+result1.page.size +'条纪录</span>'
+
+
+        var p='';
+
+        if(result1.pageIndex>1){
+          p+='<td width="62" height="22"><div align="right"><a href="#" onclick="load ('+ (1)+')" style="cursor: hand;"><img src="../images/first.gif" width="37" height="15"/></a></div></td>\n' +
+                  '<td width="50" height="22" ><div align="right"><a href="#" onclick="load('+(result1.pageIndex -1)+')" style="cursor: hand;"><img src="../images/back2.gif" width="43" height="15" /></a></div></td>'
         }
+
+        if(result1.pageIndex<result1.page.totalPageCount){
+          p+='<td width="54" height="22" ><div align="right"><a href="#" onclick="load ('+ (result1.pageIndex +1)+')" style="cursor: hand;"><img src="../images/next.gif" width="43" height="15" /></a></div></td>\n' +
+                  '<td width="49" height="22" ><div align="right"><a href="#" onclick="load ('+ (result1.page.totalPageCount)+')" style="cursor: hand;"><img src="../images/last.gif" width="37" height="15" /></a></div></td>'
+        }
+
+        p+='<td width="59" height="22" ><div align="right" class="STYLE2 STYLE1">转到第</div></td>\n' +
+                '            <td width="25" height="22" ><span class="STYLE7">\n' +
+                '                    <input name="textfield" oninput="value=value.replace(/[^\\d]/g,\'\')" type="text" class="STYLE1" style="height:20px; width:25px;" size="5" value="" id="goPage"/>\n' +
+                '                    </span></td>\n' +
+                '            <td width="23" height="22" class="STYLE2 STYLE1">页</td>\n' +
+                '                    <td width="30" height="22" >' +
+                '<a   onclick="subGo('+result1.page.totalPageCount+')" style="cursor: hand;">' +
+                '<img src="../images/go.gif" width="37" height="15" /></a></td>\n'
+
+        $('#pagep').html(p);
+        $('#userlist').html(str);
+        $('#ty').html(pl);
+      }
     });
+  }
+
+    function checkAll(){
+      var obj = document.getElementById("all");
+      var arr = document.getElementsByName("dels");
+      for(var i = 0; i < arr.length; i++)
+      {
+        arr[i].checked = obj.checked;
+
+      }
+    }
 </script>
 </html>
