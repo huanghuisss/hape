@@ -29,8 +29,9 @@ public class UserController{
     @Resource
     UserService userService;
     @RequestMapping(value="login")
-    public Object login(String userpwd, String username, HttpSession session){
+    public Object login(String userpwd, String username,HttpServletRequest request,  HttpSession session){
         try {
+
             Users user = new Users();
             user.setUsername(username);
             user.setUserpwd(userpwd);
@@ -42,6 +43,7 @@ public class UserController{
 
             List<Menus> menu = userService.findAllMenus(user1);
             System.out.println(menu);
+
             session.setAttribute("menus", menu);
             //登录成功,将user1对象信息设置到session
             session.setAttribute("user", user1);

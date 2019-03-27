@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/car")
@@ -27,7 +29,16 @@ public class CarController {
 	@RequestMapping("/addCar")
 	public String addCar(Cars car, MultipartFile file, HttpSession session) {
 		// 调用图片上传业务逻辑，获得全路径
-		String uploadImg = service.uploadImg(file, session);
+
+		File files = new File(" ");
+		String path="";
+		try{
+			path=files.getCanonicalPath();
+		}catch (IOException e){
+
+		}
+
+		String uploadImg = service.uploadImg(file, path);
 		// 将路径设置到car对象中，存到数据库
 		car.setCarImg(uploadImg);
 		// 存储
@@ -74,7 +85,16 @@ public class CarController {
 		String uploadImg = null;
 		if (file.getOriginalFilename() != null
 				&& !"".equals(file.getOriginalFilename())) {
-			uploadImg = service.uploadImg(file, session);
+
+			File files = new File(" ");
+			String path="";
+			try{
+				path=files.getCanonicalPath();
+			}catch (IOException e){
+
+			}
+
+			uploadImg = service.uploadImg(file, path);
 		}else{
 			// 图片不变
 			Cars oneCar = service.getOneCar(car.getCarNumber());

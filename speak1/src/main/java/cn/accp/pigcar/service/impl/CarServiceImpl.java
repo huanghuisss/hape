@@ -83,11 +83,10 @@ public class CarServiceImpl implements CarService {
 	/**
 	 * 图片上传逻辑处理
 	 */
-	public String uploadImg(MultipartFile file, HttpSession session) {
+	public String uploadImg(MultipartFile file,String path) {
 		// 检查服务器下是否有上传文件夹
-		String path = session.getServletContext().getRealPath("/upload");
 		// 判断
-		File fi = new File(path);
+		File fi = new File(path+"\\src\\main\\resources\\templates\\pig\\images");
 		if (!fi.exists()) {
 			// 创建新文件夹
 			fi.mkdirs();
@@ -99,6 +98,8 @@ public class CarServiceImpl implements CarService {
 		uuid = uuid.replace("-", "");
 		String newName = uuid + type;
 		// 指定文件上传目录，文件名
+
+		System.out.println(newName);
 		try {
 			file.transferTo(new File(fi, newName));
 		} catch (IllegalStateException e) {

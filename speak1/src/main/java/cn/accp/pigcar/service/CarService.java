@@ -28,7 +28,7 @@ public interface CarService {
 	int deleteOne(Cars car);
 	
 
-	String uploadImg(MultipartFile file, HttpSession session);
+	String uploadImg(MultipartFile file,String path);
 	
 
 	PageBean getPageCar(String sindex, String sSize, Cars car);
