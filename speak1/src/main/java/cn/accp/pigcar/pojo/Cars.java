@@ -12,9 +12,19 @@ public class Cars implements java.io.Serializable {
 	private String carType;
 	private String color;
 	private Double price;
+	private int rownum;
 	private Double rentPrice;
 	private Double deposit;
 	private String isRenting;
+
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+
 	private String carDesc;
 
 	private String carImg;

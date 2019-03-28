@@ -22,7 +22,7 @@
 	<!-- 添加车辆 -->
 	<insert id="addCar">
 		insert into cars
-		values(#{carNumber},#{carType},#{color},#{price},#{rentPrice},#{deposit},#{isRenting},#{carDesc},#{carImg})
+		values(default,#{carNumber},#{carType},#{color},#{price},#{rentPrice},#{deposit},#{isRenting},#{carDesc},#{carImg})
 	</insert>
 
 	<!-- 查找全部 -->
@@ -79,7 +79,7 @@
 				and isrenting like '%'||#{cars.isRenting}||'%'
 			</if>
 		</where>
-		 limit #{end}),#{start}
+		 limit #{start},#{end}
 	</select>
 
 	<!-- 更改单个 -->
