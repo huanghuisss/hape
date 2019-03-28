@@ -6,7 +6,10 @@ import cn.accp.pigcar.service.CarService;
 import cn.accp.pigcar.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +20,8 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/car")
+@ResponseBody
+@CrossOrigin(allowCredentials = "true")
 public class CarController {
 
 	// serrvice实现层类
@@ -27,7 +32,7 @@ public class CarController {
 	 * 添加车辆
 	 */
 	@RequestMapping("/addCar")
-	public String addCar(Cars car, MultipartFile file, HttpSession session) {
+	public Boolean addCar(Cars car, @RequestParam("file") MultipartFile file, HttpSession session) {
 		// 调用图片上传业务逻辑，获得全路径
 
 		File files = new File(" ");
@@ -42,8 +47,8 @@ public class CarController {
 		// 将路径设置到car对象中，存到数据库
 		car.setCarImg(uploadImg);
 		// 存储
-		service.addCar(car);
-		return "redirect:getPageCars";
+		int s= service.addCar(car);
+		return s!=0;
 	}
 
 	/**
