@@ -55,7 +55,6 @@
 
 	<!-- 模糊，分页 -->
 	<select id="getPageLikeCars" resultMap="getCar">
-		select * from (select t.*,rownum r from (
 		select * from cars
 		<where>
 			<if test="cars.carNumber !=null and cars.carNumber != ''">
@@ -80,7 +79,7 @@
 				and isrenting like '%'||#{cars.isRenting}||'%'
 			</if>
 		</where>
-		)t where rownum &lt;= #{end}) where r &gt; #{start}
+		 limit #{end}),#{start}
 	</select>
 
 	<!-- 更改单个 -->
