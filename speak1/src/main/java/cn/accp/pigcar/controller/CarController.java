@@ -55,8 +55,7 @@ public class CarController {
 	 * 分页，模糊
 	 */
 	@RequestMapping("/getPageCars")
-	public String getPageCars(Cars car, HttpServletRequest request,
-							  HttpServletResponse response) {
+	public Boolean getPageCars(Cars car, HttpServletRequest request,HttpServletResponse response) {
 		// 接受当前页，和一页数目
 		String sindex = request.getParameter("page");
 		String sSize = request.getParameter("size");
@@ -65,7 +64,7 @@ public class CarController {
 		request.setAttribute("pageBean", pageBean);
 		// 记住模糊查询的值
 		request.setAttribute("oldCar", car);
-		return "carManager/viewCars";
+		return true;
 	}
 
 	/**
@@ -73,11 +72,10 @@ public class CarController {
 	 *
 	 */
 	@RequestMapping("/getOneCar")
-	public String getOneCar(Cars car, HttpServletRequest req,
-							HttpServletResponse resp) {
+	public Boolean getOneCar(Cars car, HttpServletRequest req, HttpServletResponse resp) {
 		Cars oneCar = service.getOneCar(car.getCarNumber());
 		req.setAttribute("oneCar", oneCar);
-		return "carManager/updateCar";
+		return oneCar!=null;
 	}
 
 	/**
