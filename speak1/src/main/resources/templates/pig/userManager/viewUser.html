@@ -112,39 +112,14 @@
         }
     }
 
-    function goPage(){
-      var obj = document.getElementById('goPage').value;
-      window.location.href="car/user/findUserByPage?currentPage="+obj;
-    }
-  </script>
-  <script type="text/javascript">
-
-
-
-
-    function preUpdateUser(userName){
-      alert("1");
-      //document.getElementById('method').value='preUpdateUser';
-      //document.getElementById('userName').value = userName;
-      window.location.href="car/user/preUpdate?username="userName;
-      //document.forms[0].submit();
-    }
-    function deleteUser(userName){
-      if(window.confirm("您确定要这么做吗？")){
-        document.getElementById('method').value='deleteUser';
-        document.getElementById('userName').value = userName;
-        document.forms[0].submit();
-      }else{
-        return ;
-      }
-    }
 
   </script>
+
 </head>
 
 <body>
-<form action="FindUserAction.do" method="post">
-  <h5><font color="red">${requestScope.msg }</font></h5>
+<form action="#" method="post">
+  <h5><font color="red"></font></h5>
 
 </form>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -187,19 +162,13 @@
               <td width="60"><table width="90%" border="0" cellpadding="0" cellspacing="0">
                   <tr>
                     <td class="STYLE1"><div align="center"><img src="../images/001.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">新增</div></td>
-                  </tr>
-              </table></td>
-              <td width="60"><table width="90%" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td class="STYLE1"><div align="center"><img src="../images/114.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">修改</div></td>
+                    <td class="STYLE1"><div align="center"><a href="addUser.html">新增</a></div></td>
                   </tr>
               </table></td>
               <td width="52"><table width="88%" border="0" cellpadding="0" cellspacing="0">
                   <tr>
                     <td class="STYLE1"><div align="center"><img src="../images/083.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">删除</div></td>
+                    <td class="STYLE1"><div align="center"><a href="#" onclick="pldelete()">删除</a></div></td>
                   </tr>
               </table></td>
             </tr>
@@ -263,6 +232,18 @@
 </table>
 </body>
 <script type="text/javascript">
+  function preUpdate(username) {
+    $.ajax({
+      url: "http://localhost:8080/user/preUpdate",
+      data: {username: username},
+      type: "POST",
+      crossDomain:true,
+      xhrFields:{withCredentials:true},
+      success: function (data) {
+          location.href="updateUser.html"
+      }
+    });
+  }
   function subGo(index){
 
     var obj = document.getElementById('goPage').value;
@@ -276,10 +257,70 @@
       load(obj)
     }
   }
+  function pldelete(){
+    if(confirm("确定要进行此操作吗？")) {
+      var arr = document.getElementsByName("dels");
+      var ar = new Array();
+      var o = 0;
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].checked == true) {
+
+          ar[o] = $(arr[i]).attr("value");
+          o = o + 1;
+        }
+      }
+      if(ar.length==0){
+        alert('请选择要删除的用户！')
+        return;
+      }
+      $.ajax({
+        url: "http://localhost:8080/user/deleteUsers",
+        data: {name: ar},
+        type: "POST",
+        async: false,
+        traditional: true, //默认false
+        success: function () {
+          load(1);
+        }
+      });
+    }
+  }
+  function deleteUser(userName){
+    if(window.confirm("您确定要这么做吗？")){
+      $.ajax({
+        url: "http://localhost:8080/user/deleteUser",
+        data: {username: userName},
+        type: "POST",
+        async: false,
+        success: function (data) {
+          console.log(data)
+          if(data)
+          load(1);
+          else
+            alert('删除失败！')
+        }
+      });
+    }else{
+      return ;
+    }
+  }
   $(function () {
     load(1);
   })
   function load (currentPage){
+    var loginUser=''
+    $.ajax({
+      type:"get",
+      url:"http://localhost:8080/user/getUserlogin",
+      dataType:"json",
+      crossDomain:true,
+      async: false,
+      xhrFields:{withCredentials:true},
+      success:function (result) {
+        loginUser= result.user.username
+      }
+    })
+
     $.ajax({
       type: "get",
       dataType: "json",
@@ -301,9 +342,26 @@
                 '                <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">删除</div></td>\n' +
                 '                </tr>'
         $.each(result1.userList, function(i, user) {
+          if(user.username==loginUser){
+            str+='<tr>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">\n' +
+                    '\n' +
+                    '</div></td>\n' +
+                    '\n' +
+                    '<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">'+(i+1)+'</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.username +'</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.identity+'</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ user.fullname+'</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.sex +'</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.position+'</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.roles.rolename+'</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="#" onclick=preUpdate("'+user.username+'") style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1"></span></div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"></td>\n' +
+                    '</tr>'
+          }else{
           str+='<tr>\n' +
                   '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">\n' +
-                  '<input name="dels" type="checkbox" class="STYLE2" value="checkbox" />\n' +
+                  '<input name="dels" type="checkbox" class="STYLE2" value="'+user.username+'" />\n' +
                   '</div></td>\n' +
                   '\n' +
                   '<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">'+(i+1)+'</div></td>\n' +
@@ -313,9 +371,10 @@
                   '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.sex +'</div></td>\n' +
                   '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.position+'</div></td>\n' +
                   '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+user.roles.rolename+'</div></td>\n' +
-                  '<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="car/user/preUpdate?username='+user.username+'" style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1"></span></div></td>\n' +
-                  '<td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="../images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a href="car/user/deleteUser?username='+user.username+'" style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="#" onclick=preUpdate("'+user.username+'") style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1"></span></div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="../images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a href="#" onclick=deleteUser("'+user.username+'") style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>\n' +
                   '</tr>'
+          }
         })
         var pl='<span class="STYLE1">共 '+result1.page.totalCount+'条纪录，当前第'+result1.page.index+'/'+result1.page.totalPageCount+'页，每页'+result1.page.size +'条纪录</span>'
 

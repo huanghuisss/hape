@@ -24,15 +24,11 @@
       background-color: #EEF2FB;
     }
   </style>
-  <script type="text/javascript">
-    function subForm(){
-      document.forms[0].submit();
-    }
-  </script>
+
 </head>
 
 <body>
-<form action="car/user/findUserByIf" method="post">
+<form action="#" id="form1" method="post">
   <input type="hidden" name="method" value="findUser"/>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
@@ -62,8 +58,7 @@
       <td width="48%"><input type="text" name="identity" id="identity">*</td>
     </tr>
     <tr>
-      <td><div align="center" class="left_txt">用户密码</div></td>
-      <td><input type="password" name="userpwd" id="userPwd" size="21" >*</td>
+
        <td><div align="center" class="left_txt">联系电话</div></td>
       <td><input type="text" name="phone" id="phone">*</td>
 
@@ -86,12 +81,8 @@
       <td><input type="text" name="position" id="position">*</td>
       <td><div align="center" class="left_txt">用户类型</div></td>
       <td><label>
-        <select name="userLevel">
-        <c:if test="${requestScope.roles != null}">
-        	<c:forEach var="role" items="${requestScope.roles}">
-        	<option  value="${role.roleid }">${role.rolename }</option>
-        	</c:forEach>
-        </c:if>
+        <select name="userLevel" id="userLevel">
+
         </select>
       </label></td>
     </tr>
@@ -135,4 +126,35 @@
   </table>
 </form>
 </body>
+<script src="../js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+    $.ajax({
+        url: "http://localhost:8080/user/findAllRoles",
+        type: "POST",
+        crossDomain:true,
+        xhrFields:{withCredentials:true},
+        success: function (data) {
+            console.log(data)
+            var str2=''
+            $.each(data, function(i, r) {
+
+                    str2+='<option  value="'+r.roleid+'">'+r.rolename+'</option>'
+
+            })
+            $('#userLevel').html(str2)
+        }
+    });
+    function subForm(){
+        $.ajax({
+            url:"http://localhost:8080/user/saveUser",
+            type:"post",
+            crossDomain: true,
+            data:$('#form1').serializeArray(),
+            xhrFields: {withCredentials: true},
+            success:function (data) {
+                location.href="viewUserByPage.html";
+            }
+        })
+    }
+</script>
 </html>

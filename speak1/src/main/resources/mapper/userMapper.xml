@@ -23,12 +23,6 @@
         </association>
     </resultMap>
 
-    <!-- 通过主键查询角色名称 -->
-    <resultMap type="cn.accp.pigcar.pojo.Users" id="selectOneMap" extends="userMap">
-        <association property="roles" javaType="roles"
-                     select="cn.accp.pigcar.dao.RolesDao.selectById" column="roleid">
-        </association>
-    </resultMap>
     <!--
         分页查询结果检索
      -->
@@ -60,11 +54,6 @@
 
     </resultMap>
 
-    <resultMap type="cn.accp.pigcar.pojo.Users" id="selectUserByIfMap" extends="userMap">
-        <association property="roles" javaType="roles"
-                     select="cn.accp.pigcar.dao.MenusDao.selectMenusByRoleId" column="roleid">
-        </association>
-    </resultMap>
     <!-- 根据用户的主键查询他的整个菜单信息 -->
     <!-- 第一步先查询出用户的角色roleid -->
     <!-- 第二步根据用户的roleid查出 menus表中的的信息 -->
@@ -97,32 +86,32 @@
 	</select>
 
     <!-- 多条件查询 分页-->
-    <select id="selectUserByIfForPage" resultMap="selectUserByIfMap">
+    <select id="selectUserByIfForPage" resultMap="pageMap">
         SELECT * FROM
         (SELECT s rn,r.* FROM  (SELECT @rownum:=@rownum+1 s,c.* FROM (SELECT @rownum:=0,ss.* FROM users ss ) c )
         r  WHERE s&lt;#{end}+1) t
         <where>
             t.rn&gt;=#{start}+1
             <if test="username != null and username != ''">
-                and username=#{username}
+                and username like concat('%',#{username},'%')
             </if>
             <if test="identity != null and identity != ''">
-                and identity=#{identity}
+                and identity like identity('%',#{identity},'%')
             </if>
             <if test="fullname != null and fullname != ''">
-                and fullname=#{fullname}
+                and fullname like concat('%',#{fullname},'%')
             </if>
             <if test="sex != null and sex != ''">
                 and sex=#{sex}
             </if>
             <if test="address != null and address!= ''">
-                and address=#{address}
+                and address like concat('%',#{address},'%')
             </if>
             <if test="phone != null and phone != ''">
-                and phone=#{phone}
+                and phone like concat(#{phone},'%')
             </if>
             <if test="position != null and position != ''">
-                and position=#{position}
+                and position like concat('%',#{position},'%')
             </if>
             <if test="userLevel != null and userLevel != ''">
                 and userLevel=#{userLevel}
@@ -134,7 +123,7 @@
     </select>
 
     <!-- 多条件查询 -->
-    <select id="selectUserByIf" resultMap="selectUserByIfMap">
+    <select id="selectUserByIf" resultMap="pageMap">
         select *
         from users
         <where>
@@ -168,8 +157,11 @@
         </where>
     </select>
 
-    <select id="selectOneUserByUname" resultMap="selectOneMap">
-		select * from users where username=#{username}
+    <select id="selectOneUserByUname" resultMap="selectUserMap">
+		select * from users u
+		join roles r
+		on u.userlevel=r.roleid
+		 where username=#{username}
 
 	</select>
     <!-- 修改用户 -->

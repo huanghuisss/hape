@@ -15,6 +15,7 @@ import cn.accp.pigcar.pojo.Users;
 import cn.accp.pigcar.service.RentalTableService;
 import cn.accp.pigcar.service.UserService;
 import cn.accp.pigcar.util.PageBean;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -135,22 +136,32 @@ public class UserController{
      * 查询所有角色信息，为条件查询用户信息做准备
      */
     @RequestMapping("findAllRoles")
-    public String findAllRoles1(HttpServletRequest req){
+    public Object findAllRoles1(HttpSession session){
         List<Roles> roles = userService.findAllRoles();
-        req.setAttribute("roles", roles);
-        return "userManager/findUser";
+        session.setAttribute("roles", roles);
+        return  roles;
+    }
+
+
+    @RequestMapping("saveUser")
+    public void saveUser(Users user , HttpSession session){
+        session.setAttribute("findUser",user);
+    }
+    @RequestMapping("getsaveUser")
+    public Users getsaveUser( HttpSession session){
+        return (Users)session.getAttribute("findUser");
     }
     /**
      * 多条件分页查询用户信息
      */
     @RequestMapping("findUserByIf")
-    public String findUserByIf(Users user,HttpServletRequest req){
+    public Map<String,Object> findUserByIf(HttpSession session,String currentPage,Users user){
         //获得当前页号
-        String index = req.getParameter("currentPage");
+        String index = currentPage;
         PageBean<Users> page = new PageBean<Users>();
         //多条件查询的所有结果
         List<Users> byIfList = userService.findUserByIf(user);
-        page.setSize(byIfList.size());
+        page.setTotalCount(byIfList.size());
         int currentIndex = 1;
 
         if (null != index && !"".equals(index) ) {
@@ -162,73 +173,103 @@ public class UserController{
         //多条件的分页查询
         List<Users> list = userService.findUserByIf(user, page);
         //System.out.println(list.get(1).getRoles().getRolename());
-        req.setAttribute("pageIndex", currentIndex);
-        req.setAttribute("page", page);
+        session.setAttribute("pageIndex", currentIndex);
+        session.setAttribute("page", page);
         //req.setAttribute("userList", list);
-        req.setAttribute("userList", list);
-        return "userManager/viewUserByPage";
+        session.setAttribute("userList", list);
+        Map<String,Object> h=new HashMap<>();
+        h.put("pageIndex", currentIndex);
+        h.put("page", page);
+        h.put("userList", list);
+        return h;
     }
     /**
      * 跟新用户信息之前先要通过用户主键查询信息，将信息显示在更新界面
      */
     @RequestMapping("preUpdate")
-    public String preUpdate(String username,HttpServletRequest req){
+    public Boolean preUpdate(String username,HttpSession session){
         //跟新之前也得做几件事，得先查询role表和用户表
         //需要查出角色的集合
         List<Roles> roles = userService.findAllRoles();
         Users user = userService.findUserInfoByUName(username);
-        req.setAttribute("roles", roles);
-        req.setAttribute("obj", user);
-        return "userManager/updateUser";
+        session.setAttribute("roles", roles);
+        session.setAttribute("obj", user);
+        return true;
+    }
+
+    @RequestMapping("updateget")
+    public Object updateget(HttpSession session){
+        Map<String,Object> h=new HashMap<>();
+       h.put("roles",session.getAttribute("roles"));
+        h.put("obj",session.getAttribute("obj"));
+        return h;
     }
     /**
      * 更新用户信息
      */
     @RequestMapping("updateUser")
-    public String updateUser(Users user){
+    public Boolean updateUser(Users user){
         boolean flag = userService.updateUsers(user);
         if (flag) {
             //修改成功
-            return "forward:/car/user/findUserByPage";
+            return true;
         }
-        return "exception";
+        return false;
     }
     /**
      * 删除用户信息
      */
     @RequestMapping("deleteUser")
-    public String deleteMapper(String username){
+    public boolean deleteMapper(String username){
         boolean flag = userService.deleteUserByUsername(username);
         if (flag) {
             //删除成功
-            return "forward:/car/user/findUserByPage";
+           return true;
         }
-        return "exception";
+        return false;
     }
+
+    /**
+     * 批量删除
+     */
+    @RequestMapping("deleteUsers")
+    public boolean deleteUsers(String name[]){
+
+        for(String x:name) {
+            userService.deleteUserByUsername(x);
+        }
+        return true;
+    }
+
     /**
      * 更新密码之前先查询数据
      */
     @RequestMapping("preUpdatePwd")
-    public String preUpdatePwd(String username,HttpServletRequest req){
+    public Boolean preUpdatePwd(String username,HttpSession session){
         //更新之前先查询数据，然后，将数据显示到界面
         Users user = userService.findUserInfoByUName(username);
-        req.setAttribute("user", user);
-        return "userManager/changeUserPwd";
+        session.setAttribute("user1", user);
+        return true;
+    }
+    @RequestMapping("preUpdatePwdget")
+    public Object preUpdatePwdget(HttpSession session){
+
+        return session.getAttribute("user1");
     }
     /**
      * 更新密码
      */
     @RequestMapping("updatePwd")
-    public String updatePwd(String okNewPwd,String userName){
+    public Boolean updatePwd(String okNewPwd,String userName){
         Users user = new Users();
         user.setUsername(userName);
         user.setUserpwd(okNewPwd);
         boolean flag = userService.updateUsers(user);
         if (flag) {
             //修改成功
-            return "forward:/car/user/findUserByPage";
+            return true;
         }
-        return "exception";
+        return false;
     }
 
 }

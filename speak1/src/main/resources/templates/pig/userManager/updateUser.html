@@ -2,7 +2,6 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
   <title>My JSP 'updateUser.jsp' starting page</title>
 
@@ -11,10 +10,8 @@
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
+
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -24,36 +21,25 @@
       background-color: #EEF2FB;
     }
   </style>
-  <script type="text/javascript">
-    function subForm(){
-      document.forms[0].submit();
-    }
-    function changeUserPwd(){
-      //document.getElementById('method').value="preChangePwd";
-      //document.forms[0].submit();
-      var username = document.getElementById("userName").value;
 
-      window.location.href="car/user/preUpdatePwd?username="+username;
-    }
-  </script>
 </head>
 
 <body>
-<form action="car/user/updateUser" method="post">
+<form action="" id="form1" method="post">
   <input type="hidden" name="method" value="updateUser" id="method"/>
   <input type="hidden" name="userPwd" value="${requestScope.obj.userpwd }"/>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td width="17" valign="top" background="images/mail_leftbg.gif"><img src="images/left-top-right.gif" width="17" height="29" /></td>
-      <td valign="top" background="images/content-bg.gif"><table width="100%" height="31" border="0" cellpadding="0" cellspacing="0" class="left_topbg" id="table2">
+      <td width="17" valign="top" background="../images/mail_leftbg.gif"><img src="../images/left-top-right.gif" width="17" height="29" /></td>
+      <td valign="top" background="../images/content-bg.gif"><table width="100%" height="31" border="0" cellpadding="0" cellspacing="0" class="left_topbg" id="table2">
         <tr>
           <td height="31"><div class="titlebt">更新用户</div></td>
         </tr>
       </table></td>
-      <td width="16" valign="top" background="images/mail_rightbg.gif"><img src="images/nav-right-bg.gif" width="16" height="29" /></td>
+      <td width="16" valign="top" background="../images/mail_rightbg.gif"><img src="../images/nav-right-bg.gif" width="16" height="29" /></td>
     </tr>
     <tr>
-      <td valign="middle" background="images/mail_leftbg.gif">&nbsp;</td>
+      <td valign="middle" background="../images/mail_leftbg.gif">&nbsp;</td>
       <td valign="top" bgcolor="#F7F8F9"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr>
           <td colspan="2" valign="top">&nbsp;</td>
@@ -65,32 +51,23 @@
      	<table width="100%" border="0" cellpadding="0" cellspacing="0">
      		 <tr>
       <td width="14%"><div align="center" class="left_txt">登录名</div></td>
-      <td width="23%"><input type="text" name="username" id="userName" value="${requestScope.obj.username }" readonly="readonly"></td>
-      <td width="15%"><div align="center" class="left_txt">身份证</div></td>
-      <td width="48%"><input type="text" name="identity" id="identity"  value="${requestScope.obj.identity }">*</td>
+      <td width="23%"><input type="text" readonly name="username" id="userName" value="" readonly="readonly"></td>
+      <td width="15%"><div align="center"  class="left_txt">身份证</div></td>
+      <td width="48%"><input type="text" readonly name="identity" id="identity"  value="">*</td>
     </tr>
     <tr>
        <td><div align="center" class="left_txt">联系电话</div></td>
-      <td><input type="text" name="phone" id="phone" value="${requestScope.obj.phone }">*</td>
+      <td><input type="text" name="phone" id="phone" value="">*</td>
          <td><div align="center" class="left_txt">姓名</div></td>
-      <td><input type="text" id="fullName" name="fullname" value="${requestScope.obj.fullname }">*</td>
+      <td><input type="text" id="fullName" name="fullname" value="">*</td>
     </tr>
     <tr>
       <td><div align="center" class="left_txt">地址</div></td>
-      <td><input type="text" name="address" id="address" value="${requestScope.obj.address }">*</td>
+      <td><input type="text" name="address" id="address" value="">*</td>
      <td><div align="center" class="left_txt">性别</div></td>
       <td>
      <select NAME="sex" id="sex" style="width: 105px;">
-			<c:choose>
-				<c:when test="${requestScope.obj.sex eq '男'}">
-					<option value="男" selected="selected">男</option>
-			        <option value="女">女</option>
-				</c:when>
-				<c:otherwise>
-				    <option value="男" >男</option>
-			        <option value="女" selected="selected">女</option>
-				</c:otherwise>
-			</c:choose>
+
 		</select>
 
       </td>
@@ -98,20 +75,11 @@
     </tr>
     <tr>
       <td><div align="center" class="left_txt">职位 </div></td>
-      <td><input type="text" name="position" id="position" value="${requestScope.obj.position }">*</td>
+      <td><input type="text" name="position" id="position" value="">*</td>
       <td><div align="center" class="left_txt">用户类型</div></td>
       <td><label>
-         <select name="userLevel">
-        <c:forEach items="${requestScope.roles}" var="r">
-        	<c:choose>
-        		<c:when test="${requestScope.obj.roles.roleid == r.roleid}">
-        		<option  value="${r.roleid }" selected>${r.rolename }</option>
-        		</c:when>
-        		<c:otherwise>
-        		<option  value="${r.roleid }">${r.rolename }</option>
-        		</c:otherwise>
-        	</c:choose>
-        </c:forEach>
+         <select name="userLevel" id="userLevel">
+
         </select>
       </label></td>
     </tr>
@@ -124,16 +92,15 @@
 	<tr>
 		<td height="107">
 		<div align="center">
-		<img  src="<%=basePath%>images/carimg/ok.gif" onclick="subForm()" style="cursor: hand;">
+		<img  src="../images/carimg/ok.gif" onclick="subForm()" style="cursor: hand;">
 		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		 <img  src="<%=basePath%>images/carimg/reset.gif" onclick="reset()" style="cursor: hand;">
 		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  <img  src="<%=basePath%>images/carimg/changepw.gif" onclick="changeUserPwd()" style="cursor: hand;">
+		  <img  src="../images/carimg/changepw.gif" onclick="changeUserPwd()" style="cursor: hand;">
 		</div>
 	  </td>
 	</tr>
 	<tr>
-		<td height="30" background="<%=basePath%>images/tab/bg.gif"></td>
+		<td height="30" background="../images/tab/bg.gif"></td>
 	</tr>
 </table>
 </span>
@@ -146,14 +113,108 @@
           </table></td>
         </tr>
       </table></td>
-      <td background="images/mail_rightbg.gif">&nbsp;</td>
+      <td background="../images/mail_rightbg.gif">&nbsp;</td>
     </tr>
     <tr>
-      <td valign="bottom" background="images/mail_leftbg.gif"><img src="images/buttom_left2.gif" width="17" height="17" /></td>
-      <td background="images/buttom_bgs.gif"><img src="images/buttom_bgs.gif" width="17" height="17"></td>
-      <td valign="bottom" background="images/mail_rightbg.gif"><img src="images/buttom_right2.gif" width="16" height="17" /></td>
+      <td valign="bottom" background="../images/mail_leftbg.gif"><img src="../images/buttom_left2.gif" width="17" height="17" /></td>
+      <td background="../images/buttom_bgs.gif"><img src="../images/buttom_bgs.gif" width="17" height="17"></td>
+      <td valign="bottom" background="../images/mail_rightbg.gif"><img src="../images/buttom_right2.gif" width="16" height="17" /></td>
     </tr>
   </table>
 </form>
 </body>
+<script src="../js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+    var loginUser=''
+    $.ajax({
+        type:"get",
+        url:"http://localhost:8080/user/getUserlogin",
+        dataType:"json",
+        crossDomain:true,
+        async: false,
+        xhrFields:{withCredentials:true},
+        success:function (result) {
+            loginUser= result.user.username
+        }
+    })
+    $.ajax({
+        url:"http://localhost:8080/user/updateget",
+        dataType:"json",
+        type:"post",
+        crossDomain:true,
+        xhrFields:{withCredentials:true},
+        success:function (data) {
+            console.log(data)
+
+            if(loginUser==data.obj.username){
+                $('#userLevel').attr("disabled","disabled")
+            }
+            $('#userName').val(data.obj.username)
+
+            $('#identity').val(data.obj.identity)
+            $('#phone').val(data.obj.phone)
+
+            $('#fullName').val(data.obj.fullname)
+            $('#address').val(data.obj.address)
+            $('#position').val(data.obj.position)
+            var str=''
+            if(data.obj.sex=='男'){
+                str+='<option value="男" selected="selected">男</option>\n' +
+                    '                <option value="女">女</option>'
+            }else{
+                str+=' <option value="男" >男</option>\n' +
+                    ' <option value="女" selected="selected">女</option>'
+            }
+            $("#sex").html(str)
+
+            var str2=''
+            $.each(data.roles, function(i, r) {
+
+                if(data.obj.roles.roleid==r.roleid){
+                    str2+='<option  value="'+r.roleid+'" selected>'+r.rolename+'</option>'
+                }else{
+                    str2+='<option  value="'+r.roleid+'">'+r.rolename+'</option>'
+                }
+            })
+            $('#userLevel').html(str2)
+        }
+    })
+    function subForm(){
+        if(confirm('确定要修改信息吗？')) {
+
+
+            if ($('#phone').val().length == 0 || $('#fullName').val().length == 0 || $('#address').val().length == 0
+                || $('#position').val().length == 0) {
+                alert('请把信息填写完整！')
+                return
+            }
+
+            $.ajax({
+                url: "http://localhost:8080/user/updateUser",
+                data: $('#form1').serializeArray(),
+                type: "POST",
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                success: function (data) {
+                    location.href = "viewUser.html"
+                }
+            });
+        }
+    }
+    function changeUserPwd(){
+        //document.getElementById('method').value="preChangePwd";
+        //document.forms[0].submit();
+        var username =$("#userName").val();
+        $.ajax({
+            url: "http://localhost:8080/user/preUpdatePwd",
+            data:{username:username},
+            type: "POST",
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            success: function (data) {
+                location.href = "changeUserPwd.html"
+            }
+        });
+    }
+</script>
 </html>
