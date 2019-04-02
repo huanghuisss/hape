@@ -9,14 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import cn.accp.pigcar.pojo.Menus;
-import cn.accp.pigcar.pojo.Renttable;
 import cn.accp.pigcar.pojo.Roles;
 import cn.accp.pigcar.pojo.Users;
-import cn.accp.pigcar.service.RentalTableService;
 import cn.accp.pigcar.service.UserService;
 import cn.accp.pigcar.util.PageBean;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +55,6 @@ public class UserController{
     }
 
     @RequestMapping("getUserlogin")
-    @ResponseBody
     public Map<String, Object> getLoginUser(HttpSession session){
 
         Map<String,Object> ld=new HashMap<>();
@@ -90,11 +85,6 @@ public class UserController{
     @RequestMapping("addUsers")
     public Boolean addUsers(Users user,HttpServletRequest req){
         boolean flag = userService.addUsers(user);
-         //"forward:/car/user/findUserByPage";     "exception";
-        //之后我们需要查询所有用户信息
-        //List<Users> userList = userService.finAllUser();
-        //req.setAttribute("userList", userList);
-        //跳转到分页查询
         return flag;
     }
 
@@ -111,7 +101,6 @@ public class UserController{
     public Object findUserByPage(HttpSession session ,String currentPage){
         //获得当前页号
         String index =currentPage;
-
         PageBean<Users> page = new PageBean<Users>();
         //查询所有用户，获得总记录数量
         List<Users> list = userService.finAllUser();
@@ -120,7 +109,6 @@ public class UserController{
         if (null != index && !"".equals(index) ) {
             currentIndex = Integer.parseInt(index);
         }
-
         //设置当前页
         System.out.println("当前页："+currentIndex);
         page.setIndex(currentIndex);

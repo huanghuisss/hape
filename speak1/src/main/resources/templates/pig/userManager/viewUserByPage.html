@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>My JSP 'viewUser.jsp' starting page</title>
+    <title></title>
 
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -11,9 +11,6 @@
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
     <meta http-equiv="description" content="This is my page">
     <link href="../images/skin.css" rel="stylesheet" type="text/css" />
-    <!--
-      <link rel="stylesheet" type="text/css" href="styles.css">
-      -->
     <style type="text/css">
         body {
             margin-left: 0px;
@@ -343,7 +340,10 @@
             traditional: true,
             url: "http://localhost:8080/user/findUserByIf",
             success: function (result1) {
-                console.log(result1);
+
+                console.log(result1.userList.length);
+
+
                 var str='  <tr>\n' +
                     '                <td width="4%" height="26" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>\n' +
                     '                <td width="8%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">序号</div></td>\n' +
@@ -356,6 +356,10 @@
                     '                <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">编辑</div></td>\n' +
                     '                <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">删除</div></td>\n' +
                     '                </tr>'
+
+                if(result1.userList.length==0){
+                    str+='<tr><td colspan="10" width="8%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2"><p style="font-size: 18px;color: #009900">没找到用户</p></div></td></tr>'
+                }
                 $.each(result1.userList, function(i, user) {
                     if(user.username==loginUser){
                         str+='<tr>\n' +
@@ -428,7 +432,6 @@
         for(var i = 0; i < arr.length; i++)
         {
             arr[i].checked = obj.checked;
-
         }
     }
 </script>

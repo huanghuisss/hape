@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 
-  <title>My JSP 'updateUser.jsp' starting page</title>
+  <title></title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
@@ -202,8 +202,6 @@
         }
     }
     function changeUserPwd(){
-        //document.getElementById('method').value="preChangePwd";
-        //document.forms[0].submit();
         var username =$("#userName").val();
         $.ajax({
             url: "http://localhost:8080/user/preUpdatePwd",
