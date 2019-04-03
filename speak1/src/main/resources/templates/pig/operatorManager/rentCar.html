@@ -2,9 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'rentCar.jsp' starting page</title>
+  <title></title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
@@ -12,10 +11,8 @@
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
   <link href="../images/skin.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="../js/jquery.js"></script>
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
+
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -28,36 +25,50 @@
   <script type="text/javascript">
     function subForm(){
       var identity = $("#identity").val();
-      window.location.href="car/main/goForShowCar?identity="+identity;
+        $.ajax({
+            type:"get",
+            url:"http://localhost:8080/main/goForShowCar",
+            data:{identity:identity},
+            dataType:"json",
+            crossDomain:true,
+            xhrFields:{withCredentials:true},
+            success:function (data) {
+                if(data){
+                    location.href='showCar.html'
+                }
+
+            }
+        })
     }
   </script>
   <script type="text/javascript">
     function fun(){
       var identity = $("#identity").val();
-      $.get("car/main/findIdentity",{identity:identity},function(data){
-        var butHtml = '<div align="right" class="left_txt"><font color="red">客户不存在</font></div>';
-        var flag =eval(data);
-        if(flag){
-          butHtml ='<img  src="../images/carimg/continue.gif" onclick="subForm()" style="cursor: hand;" >';
-        }
-        $('#but').html(butHtml);
-      });
+      $.ajax({
+          type:"get",
+          url:"http://localhost:8080/main/findIdentity",
+          data:{identity:identity},
+          dataType:"json",
+          crossDomain:true,
+          xhrFields:{withCredentials:true},
+          success:function (data) {
+              var butHtml = '<div align="right" class="left_txt"><font color="red">客户不存在</font></div>';
+              var flag =eval(data);
+              if(flag){
+                  butHtml ='<img  src="../images/carimg/continue.gif" onclick="subForm()" style="cursor: hand;" >';
+              }
+              $('#but').html(butHtml);
+          }
+      })
     }
 
-
-    function gofor(){
-      var identity = $("#identity").val();
-      window.location.href="car/main/goForShowCar1?identity="+identity;
-
-    }
   </script>
 </head>
 
 <body>
 <form action="car/main/findCars" method="post">
-  <h5><font color="red">${requestScope.msg }</font></h5>
-  <!-- <input type="hidden" name="method" value="preCreateRentCarTable"/> -->
-  <input type="hidden" name="identity" value="${identity }"/>
+  <h5><font color="red"></font></h5>
+  <input type="hidden" name="identity" value=""/>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td  width="17" valign="top" background="../images/mail_leftbg.gif"><img src="../images/left-top-right.gif" width="17" height="29" /></td>
@@ -87,7 +98,6 @@
 			  <input type="text" name="identity" id="identity" onblur="fun(this)"/></div></td>
 			<td width="13%">
 				<span id = "idspan">
-					<!-- <input type="hidden" name="inp1" id="inp1" value="继续" onclick="gofor()" /> -->
 				</span><div align="center" id="but"></div></td>
 			<td width="46%"></td>
 		</tr>

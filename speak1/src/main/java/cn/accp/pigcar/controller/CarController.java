@@ -40,7 +40,6 @@ public class CarController {
 		try{
 			path=files.getCanonicalPath();
 		}catch (IOException e){
-
 		}
 
 		String uploadImg = service.uploadImg(file, path);

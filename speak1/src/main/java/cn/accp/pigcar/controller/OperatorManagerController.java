@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统核心业务模块控制层
@@ -55,27 +58,28 @@ public class OperatorManagerController {
 	 * 查询数据库是否有这个身份证
 	 */
 	@RequestMapping("findIdentity")
-	public void findIdentity(String identity, HttpServletResponse resp, HttpServletRequest req) throws IOException {
+	public boolean findIdentity(String identity) throws IOException {
 		Customers customers = custService.findOne(identity);
-		//req.setAttribute("identity", identity);
-		PrintWriter out = resp.getWriter();
 		if (null != customers && !"".equals(identity)) {
-			out.print("true");
+			return true;
 		}else{
-			out.print("false");
+			return false;
 		}
 	}
 	/**
 	 * 查询汽车的信息
 	 */
 	@RequestMapping("findCars")
-	public String findCars(HttpServletRequest req){
+	public Object findCars(HttpSession session){
 		//查询全部汽车
+		String indetity=(String)session.getAttribute("indetity");
 		List<Cars> cars = carService.findAllCars();
-		req.setAttribute("list", cars);
-		String indetity = (String) req.getAttribute("indetity");
-		req.setAttribute("indetity", indetity);
-		return "operatorManager/showCar";
+		session.setAttribute("list", cars);
+		session.setAttribute("indetity", indetity);
+		Map<String,Object> h=new HashMap<>();
+		h.put("list",cars);
+		h.put("indetity",indetity);
+		return h;
 	}
 	/**
 	 * 预租车，生成租车单
@@ -109,9 +113,9 @@ public class OperatorManagerController {
 	 * @return
 	 */
 	@RequestMapping("goForShowCar")
-	public String goForShowCar(String identity,HttpServletRequest req){
-		req.setAttribute("indetity", identity);
-		return "forward:/car/main/findCars";
+	public boolean goForShowCar(String identity,HttpSession session){
+		session.setAttribute("indetity", identity);
+		return  true;
 	}
 	/**
 	 * 添加出租单
