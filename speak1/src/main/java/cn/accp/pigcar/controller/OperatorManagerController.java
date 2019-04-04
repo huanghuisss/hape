@@ -108,6 +108,12 @@ public class OperatorManagerController {
 		//之后到达出租单创建页面
 		return "operatorManager/preCreateRenting";
 	}
+
+	@RequestMapping("sevaCarNumber")
+	public boolean sevaCarNumber(HttpSession session,String carNumber){
+		session.setAttribute("ccarNumber",carNumber);
+		return  true;
+	}
 	/**
 	 * 将客户身份证携带的数据跳转到showcar界面
 	 * @return
