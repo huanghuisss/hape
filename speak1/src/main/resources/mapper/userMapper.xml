@@ -96,7 +96,7 @@
                 and username like concat('%',#{username},'%')
             </if>
             <if test="identity != null and identity != ''">
-                and identity like identity('%',#{identity},'%')
+                and identity like concat('%',#{identity},'%')
             </if>
             <if test="fullname != null and fullname != ''">
                 and fullname like concat('%',#{fullname},'%')

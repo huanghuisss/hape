@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface StatisticsDao {
     //获取所有，租车信息
-    List<Renttable> getAllStati(String date);
+    List<Renttable> getAllStati(Map<String, Object> map);
     //查询单个
     //Renttable getOneStati(int tableid);
     /**
@@ -25,4 +25,6 @@ public interface StatisticsDao {
 
     //通过汽车id查找
     List<Renttable> getAmountByCarIdMonth(Map<String,String> map);
+
+    int getAllStaticount(String date);
 }

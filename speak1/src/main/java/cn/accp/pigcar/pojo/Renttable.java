@@ -36,7 +36,25 @@ public class Renttable implements java.io.Serializable {
 	private String carid;
 	private String userid;
 	private Long tableid;
-	
+
+	public Integer getStrat() {
+		return strat;
+	}
+
+	public void setStrat(Integer strat) {
+		this.strat = strat;
+	}
+
+	public Integer getEnd() {
+		return end;
+	}
+
+	public void setEnd(Integer end) {
+		this.end = end;
+	}
+
+	private Integer strat;
+	private Integer end;
 	private Users users;
 	private Cars cars;
 	private Customers customers;
@@ -45,13 +63,13 @@ public class Renttable implements java.io.Serializable {
 	private Double shouldpayprice;
 	private Double price;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date begindate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date shouldreturndate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date returndate;
 	private Long rentflag;
 	private Set checktables = new HashSet(0);

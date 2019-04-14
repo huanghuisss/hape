@@ -2,10 +2,13 @@ package cn.accp.pigcar.service;
 
 
 import cn.accp.pigcar.pojo.Checktable;
+import cn.accp.pigcar.util.PageBean;
 
 import java.util.List;
 
 public interface CheckTableService {
+
+	List<Checktable> findCheckByIf(Checktable checktable, PageBean<Checktable> page);
 	/**
 	 * 检查单表多条件查询
 	 */

@@ -55,10 +55,7 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public List<Roles> findAllRoles(PageBean<Roles> page, String rolename) {
 		// 分页查询之前，得先查询全部，获得总条目数量
-		// List<Roles> roleAllList = rolesDao.selectAllRoles();
 		// 获得数据的总条数
-		// int totalCount = roleAllList.size();
-		// page.setTotalCount(totalCount);
 		// 此处采用map给mybatis传递参数
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rolename", rolename);

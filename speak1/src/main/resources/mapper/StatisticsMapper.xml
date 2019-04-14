@@ -34,7 +34,7 @@
 			<result column="userpwd"  property="userpwd"/>
 		</association>
 		<!-- 车辆 -->
-		<association property="cars" javaType="cars">
+		<association property="cars" javaType="cn.accp.pigcar.pojo.Cars">
 			<id column="carnumber" property="carNumber"/>
 			<result column="cartype" property="carType"/>
 			<result column="color" property="color"/>
@@ -46,7 +46,7 @@
 			<result column="carimg" property="carImg"/>
 		</association>
 		<!-- 客户 -->
-		<association property="customers" javaType="customers">
+		<association property="customers" javaType="cn.accp.pigcar.pojo.Customers">
 			<id column="identity" property="identity"/>
 			<result column="custname" property="custname"/>
 			<result column="sex" property="sex"/>
@@ -57,6 +57,18 @@
 		</association>
 	</resultMap>
 	<!-- 多表查询，查询所有业务信息 -->
+	<select id="getAllStaticount" resultType="int">
+		select count(*)from renttable rent
+		join cars car
+		on rent.carid=car.carnumber
+		join users u
+		on rent.userid=u.username
+		join customers cus
+		on rent.custid=cus.identity
+		where
+		rent.shouldreturndate &lt; #{lastday}
+	</select>
+
 	<select id="getAllStati" resultMap="getRenttable">
 		select * from renttable rent 
 		join cars car 
@@ -66,7 +78,8 @@
 		join customers cus 
 		on rent.custid=cus.identity
 		where 
-		rent.shouldreturndate &lt; to_date(#{lastday},'yyyy-mm-dd')
+		rent.shouldreturndate &lt; #{lastday}
+		limit #{start},#{end}
 	</select>
 	
 	<!-- 多表查询，查询单个业务信息 -->
@@ -86,8 +99,8 @@
 		select * from renttable 
 		where carid = #{carid} 
 		and 
-		begindate  between to_date(#{start},'yyyy-mm-dd') 
+		begindate  between #{start}
 		and 
-		to_date(#{end},'yyyy-mm-dd')
+		#{end}
 	</select>
 </mapper>

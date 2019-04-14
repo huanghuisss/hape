@@ -150,6 +150,12 @@ public class CarServiceImpl implements CarService {
 		pageBean.setList(carList);
 		return pageBean;
 	}
+
+	@Override
+	public List<Cars> findCarBytype(Cars cars) {
+		return carDao.findCarBytype(cars);
+	}
+
 	/**
 	 * 新添加的方法--->不通过条件查询全部汽车
 	 */

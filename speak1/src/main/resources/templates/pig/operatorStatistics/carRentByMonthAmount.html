@@ -2,37 +2,56 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>租车统计</title>
 
   <style type="text/css">
     #container {
-      min-width: 310px;
-      max-width: 800px;
-      height: 400px;
-      margin: 0 auto
+      min-width: 300px;
+      max-width: 100%;
+      height: 95%;
+      margin: 1em auto;
     }
   </style>
 </head>
 <body>
-<script src="js/highcharts.js"></script>
-<script src="js/module/exporting.js"></script>
-<script src="js/module/series-label.js"></script>
-<script src="js/themes/gray.js"></script>
+<script src="../js/highcharts.js"></script>
+<script src="../js/variable-pie.js"></script>
+<script src="../js/jquery-1.9.1.js"></script>
+<script src="../js/themes/gray.js"></script>
+<script src="http://echarts.baidu.com/build/dist/echarts.js" type="text/javascript" ></script>
+<SCRIPT type="text/javascript" src="https://img.highcharts.com.cn/highcharts/modules/data.js"></SCRIPT>
+<script src="../js/module/exporting.js"></script>
+<script src="../js/module/series-label.js"></script>
+
 <div id="container"></div>
 
 
 
 <script type="text/javascript">
-  Highcharts.chart('container', {
+  var d=new Array()
+  jQuery.ajax({
+    url: "http://localhost:8080/statistics/getMonthAmount",
+    type: "get",
+    async:false,
+    dataType:'json',
+    crossDomain:true,
+    xhrFields:{withCredentials:true},
+    success: function (data) {
+      console.log(data)
+      d=data
+    }
+  });
+
+
+ var hig= Highcharts.chart('container', {
 
     title : {
-      text : '2017 年 各 月 份 汽 车 租 赁 情 况'
+      text : '2019 年 各 月 份 汽 车 租 赁 情 况'
     },
 
     subtitle : {
-      text : '资源: 五组.com'
+      text : '欧里给'
     },
 
     yAxis : {
@@ -55,7 +74,7 @@
       }
     },
 
-    series : ${strformat},
+    series : d,
 
     responsive : {
       rules : [ {
@@ -73,6 +92,10 @@
     }
 
   });
+
+  hig.series[0].update({
+
+  })
 </script>
 </body>
 </html>

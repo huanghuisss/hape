@@ -24,19 +24,37 @@
 		insert into cars
 		values(default,#{carNumber},#{carType},#{color},#{price},#{rentPrice},#{deposit},#{isRenting},#{carDesc},#{carImg})
 	</insert>
+	<!-- 查找sss -->
+	<select id="findCarBytype" resultMap="getCar">
+		select * from cars
+		<where>
+			<if test="carType !=null and carType!= '' ">
+				or cartype like CONCAT('%',#{carType},'%')
+			</if>
+			<if test="color !=null and color != '' ">
+				or color like CONCAT('%',#{color},'%')
+			</if>
+			<if test="carDesc !=null and carDesc!= '' ">
+				or cardesc like CONCAT('%',#{carDesc},'%')
+			</if>
+			and  isrenting=0
+		</where>
+	</select>
+
+
 
 	<!-- 查找全部 -->
 	<select id="getAllCars" resultMap="getCar">
 		select * from cars
 		<where>
 			<if test="cars.carNumber !=null and cars.carNumber != ''">
-				and carnumber like '%'||#{cars.carNumber}||'%'
+				and carnumber like CONCAT('%',#{cars.carNumber},'%')
 			</if>
 			<if test="cars.carType !=null and cars.carType!= '' ">
-				and cartype like '%'||#{cars.carType}||'%'
+				and cartype like CONCAT('%',#{cars.carType},'%')
 			</if>
 			<if test="cars.color !=null and cars.color != '' ">
-				and color like '%'||#{cars.color}||'%'
+				and color like CONCAT('%',#{cars.color},'%')
 			</if>
 			<if test="cars.price !=null and cars.price!= '' ">
 				and price = #{cars.price}
@@ -48,23 +66,27 @@
 				and deposit = #{cars.deposit}
 			</if>
 			<if test="cars.isRenting !=null and cars.isRenting!= '' ">
-				and isrenting like '%'||#{cars.isRenting}||'%'
+				and isrenting like CONCAT('%',#{cars.isRenting},'%')
+			</if>
+			<if test="cars.cardesc !=null and cars.cardesc!= '' ">
+				and cardesc like CONCAT('%',#{cars.carDesc},'%')
 			</if>
 		</where>
 	</select>
+
 
 	<!-- 模糊，分页 -->
 	<select id="getPageLikeCars" resultMap="getCar">
 		select * from cars
 		<where>
 			<if test="cars.carNumber !=null and cars.carNumber != ''">
-				and carnumber like '%'||#{cars.carNumber}||'%'
+				and carnumber like CONCAT('%',#{cars.carNumber},'%')
 			</if>
 			<if test="cars.carType !=null and cars.carType!= '' ">
-				and cartype like '%'||#{cars.carType}||'%'
+				and cartype like CONCAT('%',#{cars.carType},'%')
 			</if>
 			<if test="cars.color !=null and cars.color != '' ">
-				and color like '%'||#{cars.color}||'%'
+				and color like CONCAT('%',#{cars.color},'%')
 			</if>
 			<if test="cars.price !=null and cars.price!= '' ">
 				and price = #{cars.price}
@@ -76,10 +98,11 @@
 				and deposit = #{cars.deposit}
 			</if>
 			<if test="cars.isRenting !=null and cars.isRenting!= '' ">
-				and isrenting like '%'||#{cars.isRenting}||'%'
+				and isrenting like CONCAT('%',#{cars.isRenting},'%')
 			</if>
+
 		</where>
-		 limit #{start},#{end}
+		limit #{start},#{end}
 	</select>
 
 	<!-- 更改单个 -->
@@ -99,6 +122,10 @@
 
 	<!-- 查询所有汽车信息 -->
 	<select id="selectAllCars" resultMap="getCars">
+		select * from cars where  isrenting=0
+			</select>
+
+	<select id="selectAllCarss" resultMap="getCars">
 		select * from cars
-	</select>
+			</select>
 </mapper>

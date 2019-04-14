@@ -14,11 +14,11 @@
 	</resultMap>
 	<resultMap type="cn.accp.pigcar.pojo.Checktable" id="selectCheckByIfMap">
 		<association property="users" javaType="Users" 
-			select="com.bjsxt.car.mapper.UserMapper.selectOneUserByUname"
+			select="cn.accp.pigcar.dao.UserDao.selectOneUserByUname"
 			column="checkuserid"
 		></association>
 		<association property="renttable" javaType="Renttable"
-			select="com.bjsxt.car.mapper.RentalTableMapper.selectRentaalTableByPrimaryKey"
+			select="cn.accp.pigcar.dao.RentalTableDao.selectRentaalTableByPrimaryKey"
 			column="tableid"
 		></association>
 	</resultMap>
@@ -42,7 +42,7 @@
 			<if test="checkUserId != null and checkUserId != ''">
 				and ct.checkuserid=#{checkUserId}
 			</if>
-			<if test="checkdate != null and checkdate != ''">
+			<if test="checkdate != null">
 				and ct.checkdate=#{checkdate}
 			</if>
 			<if test="tableid != null and tableid != ''">
@@ -51,6 +51,33 @@
 		</where>
 		
 	</select>
+
+
+	<select id="selectCheckByIfForPage" resultMap="selectCheckByIfMap">
+		select *
+		from
+		checktable ct join renttable r
+		on ct.rentid=r.tableid
+		join users u
+		on u.username=ct.checkuserid
+		<where>
+			<if test="checktable.checkid != null and checktable.checkid != ''">
+				ct.checkid=#{checktable.checkid}
+			</if>
+			<if test="checktable.checkUserId != null and checktable.checkUserId != ''">
+				and ct.checkuserid=#{checktable.checkUserId}
+			</if>
+			<if test="checktable.checkdate != null ">
+				and ct.checkdate=#{checktable.checkdate}
+			</if>
+			<if test="checktable.tableid != null and checktable.tableid != ''">
+				and ct.rentid=#{checktable.tableid}
+			</if>
+		</where>
+			limit #{start},#{end}
+	</select>
+
+
 	<!-- 通过主键查询检查单表的信息  他的查询和多条件查询很类似，所以共用一个resultmap-->
 	<select id="selectCheckByPrimaryKey" resultMap="selectCheckByIfMap">
 		select *

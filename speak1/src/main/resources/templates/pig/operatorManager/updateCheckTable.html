@@ -2,19 +2,15 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'updateCheckTable.jsp' starting page</title>
+  <title></title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -26,13 +22,32 @@
   </style>
   <script type="text/javascript">
     function subForm(){
-      document.forms[0].submit();
-    }
+		var field= $('#field').val()
+		var problem= $('#problem').val()
+		var paying= $('#paying').val()
+		var checkid= $('#checkid').html()
+
+		$.ajax({
+			url: "http://localhost:8080/check/updateCheck",
+			type: "post",
+			dataType:'json',
+			data:{'field':field,'problem':problem,'paying':paying,'checkid':checkid},
+			crossDomain: true,
+			xhrFields: {withCredentials: true},
+			success: function (data) {
+				if(data){
+					alert('修改检查单成功')
+					location.href='checkManager.html'
+				}
+			}
+		})
+
+	}
   </script>
 </head>
 
 <body>
-<form action="car/check/updateCheck" method="post">
+<form action="#" method="post">
   <h5><font color="red">${requestScope.msg }</font></h5>
   <input type="hidden" name="method" value="updateCheckTable"/>
   <input type="hidden" name="checkid" value="${requestScope.check.checkid }"/>
@@ -60,40 +75,37 @@
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">检查单号：</div></td>
-		<td width="13%"> <div class="left_txt">${requestScope.check.checkid}</div></td>
+		<td width="13%"> <div class="left_txt" id="checkid"></div></td>
 		<td width="14%">&nbsp;</td>
 		<td width="14%">&nbsp;</td>
 		<td width="20%">
 		  <div align="center" class="left_txt">检查时间：</div></td>
-		<td width="27%"><div class="left_txt"><fmt:formatDate value="${requestScope.check.checkdate}" pattern="yyyy-MM-dd"/></div></td>
+		<td width="27%"><div class="left_txt" id="checkdate"></div></td>
 	</tr>
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">检查员：</div>		</td>
-		<td width="13%"> <div class="left_txt">${requestScope.check.users.username }</div></td>
+		<td width="13%"> <div class="left_txt" id="checkusername"></div></td>
 		<td width="14%">&nbsp;</td>
 		<td width="14%">&nbsp;</td>
 		<td width="20%">
 		  <div align="center" class="left_txt">属性：</div></td>
-		<td width="27%"><input type="text" name="field" id="field" value="${requestScope.check.field}"></td>
+		<td width="27%"><input type="text" name="field" id="field" value=""></td>
 	</tr>
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">问题：</div>		</td>
-		<td width="13%"><input type="text" name="problem" id="problem" value="${requestScope.check.problem}"></td>
+		<td width="13%"><input type="text" name="problem" id="problem" value=""></td>
 		<td width="14%">&nbsp;</td>
 		<td width="14%">&nbsp;</td>
 		<td width="20%">
 		  <div align="center" class="left_txt">赔费：</div></td>
-		<td width="27%"><input type="text" name="paying" id="paying" value="${requestScope.check.paying}"></td>
+		<td width="27%"><input type="text" oninput="value=value.replace(/[^\d]/g,'')" name="paying" id="paying" value=""></td>
 	</tr>
 	<tr>
 		<td colspan="6" align="center">
-		<c:if test="${requestScope.rent.rentflag != 1}">
-		 <img  src="../images/carimg/ok.gif" onclick="subForm()">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		</c:if>
-			<img  src="../images/carimg/return.gif" onclick="history.back()">
+			<img  src="../images/carimg/ok.gif" onclick="subForm()">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  src="../images/carimg/return.gif" onclick="history.back()">
 		</td>
 	</tr>
 
@@ -118,15 +130,15 @@
 	</tr>
 	<tr>
 		<td colspan="6">
-		<hr color="#99CCFF">		</td>
+		<hr color="#99CCFF"></td>
 	</tr>
 	<tr>
       <td><div align="center" class="left_txt">出租单编号：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.tableid }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="tableid"></font></div></td>
 	  <td><div align="center" class="left_txt">预付金：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red"><fmt:formatNumber type="currency" value="${requestScope.check.renttable.imprest }"/></font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="imprest"></font></div></td>
 	  <td><div align="center" class="left_txt">应付金：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red"><fmt:formatNumber type="currency" value="${requestScope.check.renttable.shouldpayprice }"/></font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="shouldpayprice"></font></div></td>
     </tr>
 	<tr>
 		<td colspan="6">
@@ -134,11 +146,11 @@
 	</tr>
 	<tr>
       <td><div align="center" class="left_txt">实际交付金额：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red"><fmt:formatNumber type="currency" value="${requestScope.check.renttable.price }"/></font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="price"></font></div></td>
 	  <td><div align="center" class="left_txt">起租日期：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red"><fmt:formatDate value="${requestScope.check.renttable.begindate }" pattern="yyyy-MM-dd"/></font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="begindate"> </font></div></td>
 	  <td><div align="center" class="left_txt">应归还日期：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red"><fmt:formatDate value="${requestScope.check.renttable.shouldreturndate }" pattern="yyyy-MM-dd"/></font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="shouldreturndate"> </font></div></td>
     </tr>
 	<tr>
 		<td colspan="6">
@@ -146,23 +158,16 @@
 	</tr>
 	<tr>
       <td><div align="center" class="left_txt">归还日期：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">
-	  	<fmt:formatDate value="${requestScope.check.renttable.returndate }" pattern="yyyy-MM-dd"/>
+	  <td><div align="center" class="left_txt"><font color="red" id="returndate">
+
 	  	</font>
 	  </div></td>
 	  <td><div align="center" class="left_txt">出租单状态：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">
-	   <c:choose>
-	  	<c:when test="${requestScope.check.renttable.rentflag eq 1}">
-	  	已入库/已生成检查单
-	  	</c:when>
-	  	<c:otherwise>
-	  		出租中
-	  	</c:otherwise>
-	  </c:choose>
+	  <td><div align="center" class="left_txt"><font color="red" id="rentflag">
+	  </font>
 	  </div></td>
 	  <td><div align="center" class="left_txt">服务人员编号：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.users.username }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="renttableusername"></font></div></td>
     </tr>
 	<tr>
 		<td colspan="6">
@@ -187,22 +192,22 @@
     </tr>
 	<tr>
       <td><div align="center" class="left_txt">身份证：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.customers.identity }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="customersidentity"> </font></div></td>
 	  <td><div align="center" class="left_txt">姓名：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.customers.custname }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="custname"> </font></div></td>
 	  <td><div align="center" class="left_txt">性别：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.customers.sex }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="customerssex"> </font></div></td>
     </tr>
 	<tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
     </tr>
 	<tr>
       <td><div align="center" class="left_txt">地址：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.customers.address }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="customersaddress"></font></div></td>
 	  <td><div align="center" class="left_txt">电话：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.customers.phone }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="customersphone"></font></div></td>
 	  <td><div align="center" class="left_txt">职业：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.customers.career }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="customerscareer"></font></div></td>
     </tr>
 	<tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
@@ -226,41 +231,34 @@
     </tr>
     <tr>
       <td><div align="center" class="left_txt">车号：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.cars.carNumber }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="carNumber"></font></div></td>
 	  <td><div align="center" class="left_txt">型号：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.cars.carType }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="carType"></font></div></td>
 	  <td><div align="center" class="left_txt">颜色：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.cars.color }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="color"></font></div></td>
     </tr>
     <tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
     </tr>
     <tr>
       <td><div align="center" class="left_txt">价值：</div></td>
-	  <td><div align="center" class="left_txt"> <font color="red"><fmt:formatNumber type="currency" value="${requestScope.check.renttable.cars.price }"/></font></div></td>
+	  <td><div align="center" class="left_txt"> <font color="red" id="carsprice"></font></div></td>
 	  <td><div align="center" class="left_txt">租金：</div></td>
-	  <td><div align="center" class="left_txt"> <font color="red"><fmt:formatNumber type="currency" value="${requestScope.check.renttable.cars.rentPrice }"/></font></div></td>
+	  <td><div align="center" class="left_txt"> <font color="red" id="rentPrice"></font></div></td>
 	  <td><div align="center" class="left_txt">押金：</div></td>
-	  <td><br><div align="center" class="left_txt"><font color="red"><fmt:formatNumber type="currency" value="${requestScope.check.renttable.cars.deposit }"/> </font></div><br></td>
+	  <td><br><div align="center" class="left_txt"><font color="red" id="deposit"> </font></div><br></td>
     </tr>
     <tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
     </tr>
     <tr>
       <td><div align="center" class="left_txt">租用情况：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">
-	   <c:choose>
-	  	<c:when test="${requestScope.check.renttable.cars.isRenting eq 1 }">
-	  		已出租
-	  	</c:when>
-	  	<c:otherwise>
-	  		未出租
-	  	</c:otherwise>
-	  </c:choose>
+	  <td><div align="center" class="left_txt"><font color="red" id="carsisRenting">
+
 	  </font>
 	  </div></td>
 	  <td><div align="center" class="left_txt">简介：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.check.renttable.cars.carDesc }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="carDesc"></font></div></td>
 
     </tr>
     <tr>
@@ -269,4 +267,49 @@
 	</tr>
 </table>
 </body>
+<script src="../js/jquery-1.9.1.js"> </script>
+<script>
+	$.ajax({
+		url: "http://localhost:8080/check/getupdatecheak",
+		type: "get",
+		crossDomain: true,
+		xhrFields: {withCredentials: true},
+		success: function (data) {
+			console.log(data)
+			$('#checkid').html(data.checkid)
+			$('#checkdate').html(data.checkdate)
+			$('#checkusername').html(data.users.username)
+			$('#field').val(data.field)
+			$('#problem').val(data.problem)
+			$('#paying').val(data.paying)
+			$('#tableid').html(data.renttable.tableid)
+			$('#imprest').html(data.renttable.imprest)
+			$('#shouldpayprice').html(data.renttable.shouldpayprice)
+			$('#price').html(data.renttable.price)
+			$('#begindate').html(data.renttable.begindate)
+			$('#shouldreturndate').html(data.renttable.shouldreturndate)
+			$('#returndate').html(data.renttable.returndate)
+			$('#rentflag').html(data.renttable.rentflag==1?'已入库/已生成检查单':'出租中')
+			$('#renttableusername').html(data.renttable.users.username)
+			$('#customersidentity').html(data.renttable.customers.identity)
+			$('#custname').html(data.renttable.customers.custname)
+			$('#customerssex').html(data.renttable.customers.sex)
+			$('#customersaddress').html(data.renttable.customers.address)
+			$('#customersphone').html(data.renttable.customers.phone)
+			$('#customerscareer').html(data.renttable.customers.career)
+			$('#carNumber').html(data.renttable.cars.carNumber)
+			$('#carType').html(data.renttable.cars.carType)
+			$('#color').html(data.renttable.cars.color)
+			$('#carsprice').html(data.renttable.cars.price)
+			$('#rentPrice').html(data.renttable.cars.rentPrice)
+			$('#deposit').html(data.renttable.cars.deposit)
+			$('#carsisRenting').html(data.renttable.cars.isRenting==1?'已出租':'未出租')
+			$('#carDesc').html(data.renttable.cars.carDesc)
+
+
+
+		}
+	})
+
+</script>
 </html>

@@ -32,6 +32,6 @@ public interface CarService {
 	
 
 	PageBean getPageCar(String sindex, String sSize, Cars car);
-
+	List<Cars> findCarBytype(Cars cars);
 	List<Cars> findAllCars();
 }

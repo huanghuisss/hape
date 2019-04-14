@@ -21,21 +21,41 @@
   </style>
   <script type="text/javascript">
     function subForm(){
-      //document.forms[0].submit();
-      //获取到tableid
       var obj = $("#tableId").val();
-      window.location.href="car/main/findCheckTable?tableid="+obj;
+      $.ajax({
+        type:"get",
+        url:"http://localhost:8080/main/findCheckTable",
+        data:{"tableid":obj},
+        dataType:"json",
+        crossDomain:true,
+        xhrFields:{withCredentials:true},
+        success:function (data) {
+            if(data){
+              location.href="createCheckTable.html"
+            }
+        }
+      })
     }
     function findRenttableId(){
+
+
       var obj = $("#tableId").val();
-      $.get("car/main/findRentTableId",{tableid:obj},function(data){
-        var flag = eval(data);
-        var resHtml = '<div align="right" class="left_txt"><font color="red">出租单不存在，请重新输入！</font></div>';
-        if(flag){
-          resHtml = '<img  src="../images/carimg/continue.gif" onclick="subForm()">';
+      $.ajax({
+        type:"get",
+        url:"http://localhost:8080/main/findRentTableId",
+        data:{tableid:obj},
+        dataType:"json",
+        crossDomain:true,
+        xhrFields:{withCredentials:true},
+        success:function (data) {
+          var flag = eval(data);
+          var resHtml = '<div align="right" class="left_txt"><font color="red">出租单不存在，请重新输入！</font></div>';
+          if(flag){
+            resHtml = '<img  src="../images/carimg/continue.gif" onclick="subForm()">';
+          }
+          $("#res").html(resHtml);
         }
-        $("#res").html(resHtml);
-      });
+      })
     }
   </script>
 
@@ -44,7 +64,6 @@
 <body>
 <form action="" method="post">
   <h5><font color="red"></font></h5>
-  <input type="hidden" name="method" value="preReturnCarSearch"/>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="17" valign="top" background="../images/mail_leftbg.gif"><img src="../images/left-top-right.gif" width="17" height="29" /></td>

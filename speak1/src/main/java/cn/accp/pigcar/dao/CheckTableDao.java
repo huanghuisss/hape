@@ -4,6 +4,8 @@ package cn.accp.pigcar.dao;
 import cn.accp.pigcar.pojo.Checktable;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CheckTableDao {
@@ -27,5 +29,7 @@ public interface CheckTableDao {
      * 添加检查单表
      */
     int insertCheckTable(Checktable checktable);
+
+    List<Checktable> selectCheckByIfForPage(Map<String,Object> map);
 
 }

@@ -3,12 +3,13 @@ package cn.accp.pigcar.service;
 
 import cn.accp.pigcar.pojo.CarsRentMonth;
 import cn.accp.pigcar.pojo.Renttable;
+import cn.accp.pigcar.util.PageBean;
 
 import java.util.List;
 
 public interface StatisticsService {
 	//获取所有，租车信息
-	List<Renttable> getAllStati();
+	List<Renttable> getAllStati(PageBean<Renttable> page);
 	//查询单个
 	Renttable getOneStati(int tableid);
 	/**
@@ -18,4 +19,6 @@ public interface StatisticsService {
 
 	//查询按月分布统计车辆租出情况
 	List<CarsRentMonth> getMonthAmount();
+
+	int getAllStaticount();
 }

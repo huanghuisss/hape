@@ -2,19 +2,15 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'updateRole.jsp' starting page</title>
+  <title> e</title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <!--
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  -->
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -25,14 +21,7 @@
     }
   </style>
   <script type="text/javascript">
-    function modifyRoleOK(roleId){
-      var flag = window.confirm("是否真的要修改？")
-      if(flag){
-        document.getElementById('roleId').value = roleId;
-        document.getElementById('method').value='updateRole';
-        document.forms[0].submit();
-      }
-    }
+
 
     function selectSub(fatherId){
       var elms = document.getElementsByName("s"+fatherId.name.substring(1,fatherId.name.length));
@@ -57,9 +46,7 @@
 </head>
 
 <body>
-<form action="car/role/updateRole" method="post">
-  <input type="hidden" name="roleId" id="roleId"/>
-  <input type="hidden" name="method" id="method"/>
+<form action="#" method="post">
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="17" valign="top" background="../images/mail_leftbg.gif"><img src="../images/left-top-right.gif" width="17" height="29" /></td>
@@ -82,35 +69,16 @@
           <td colspan="2" valign="top"><span class="left_bt">
 			<table align="center">
 				<tr>
-					<td align="center" class="left_txt">
-						角色名称：
-						<input type="text" name="roleName" value="${role.rolename }" />
-						<br />
-						<a style="color: blue; text-decoration: underline; cursor: hand" onclick="modifyRoleOK(${role.roleid })">确认</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a style="color: blue; text-decoration: underline; cursor: hand" onclick="history.back()">返回</a>
+					<td align="center" class="left_txt" id="cz">
+
 					</td>
 					<td>
-         		    		<c:forEach items="${menuList}">
 
-         		    		</c:forEach>
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<c:forEach var="menus" items="${requestScope.menus}">
-	         			<c:if test="${menus.fatherid==1}" var="father">
-	         					<li class="left_txt">
-	         						<input type="checkbox" name="f${menus.menuid }" id="f${menus.menuid }" onclick="selectSub(this)" value="${menus.menuid }"  ${menus.isChecked}>${menus.menuname }
-	         					</li>
-	         					<ul class="left_txt">
-	         						<c:forEach var="son" items="${requestScope.menus}">
-	         							<c:if test="${son.fatherid==menus.menuid}">
-	         								<input type="checkbox" name="s${son.fatherid }" id="s${son.fatherid }" onclick="selectFather(this)" value="${son.menuid }" ${menus.isChecked}>${son.menuname }<br/>
-	         							</c:if>
-	         						</c:forEach>
-	         					</ul>
-	         			</c:if>
-         		    </c:forEach>
+					<td id="sr">
+
 				</tr>
 			</table>
 			</span>
@@ -122,4 +90,88 @@
   </table>
 </form>
 </body>
+<script src="../js/jquery-1.9.1.js"></script>
+<script>
+    function modifyRoleOK(roleId){
+        var roleName=$('#roleName')
+        var f = document.getElementsByClassName("f");
+        var s = document.getElementsByClassName("s");
+        var arf = new Array();
+        var ars = new Array();
+        var o = 0;
+        for (var i = 0; i < f.length; i++) {
+            if (f[i].checked == true) {
+
+                arf[o] = $(f[i]).attr("value");
+                o = o + 1;
+            }
+        }
+        var t = 0;
+        for (var i = 0; i < s.length; i++) {
+            if (s[i].checked == true) {
+                ars[t] = $(s[i]).attr("value");
+                t = t + 1;
+            }
+        }
+        var flag = window.confirm("是否真的要修改？")
+        if(flag){
+            $.ajax({
+                url: "http://localhost:8080/role/updateRole",
+                type: "POST",
+                data:{f:arf,s:ars,"roleName":roleName.val()},
+                crossDomain:true,
+                xhrFields:{withCredentials:true},
+                traditional: true, //默认false
+                success: function (data) {
+                    console.log(data)
+                    if(data){
+                        alert('修改成功')
+                        history.back()
+                    }
+
+                }
+            })
+        }
+    }
+    $.ajax({
+        url: "http://localhost:8080/role/getqueryRoleById",
+        type: "POST",
+        crossDomain:true,
+        xhrFields:{withCredentials:true},
+        success: function (data) {
+
+            console.log(data)
+            var str='';
+            $.each(data.menus, function(i, m) {
+                if(m.fatherid==1){
+                    str+='<li class="left_txt">\n' +
+                        '     <input type="checkbox" class="f" name="f'+m.menuid+'" id="f'+m.menuid+'" onclick="selectSub(this)" value="'+m.menuid+'" '+m.isChecked+'>'+m.menuname+'\n' +
+                        '     </li>\n' +
+                        '     <ul class="left_txt">'
+                    $.each(data.menus, function(e, m2) {
+
+                        if(m2.fatherid==m.menuid)(
+                            str+='<input type="checkbox" class="s" name="s'+m2.fatherid +'" id="s'+m2.fatherid+'" onclick="selectFather(this)" value="'+m2.menuid+'" '+m.isChecked+'>'+m2.menuname+'<br/>'
+                        )
+
+                    })
+                    str+='</ul>'
+                }
+            })
+            $('#sr').html(str)
+
+            var cc='角色名称：\n' +
+                '\t\t\t\t\t\t<input type="text" name="roleName" id="roleName" value="'+data.role.rolename+'" />\n' +
+                '\t\t\t\t\t\t<br />\n' +
+                '\t\t\t\t\t\t<a style="color: blue; text-decoration: underline; cursor: hand" onclick="modifyRoleOK('+data.role.roleid+')">确认</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n' +
+                '\t\t\t\t\t\t<a style="color: blue; text-decoration: underline; cursor: hand" onclick="history.back()">返回</a>';
+
+
+
+            $('#cz').html(cc)
+        }
+    });
+
+
+</script>
 </html>

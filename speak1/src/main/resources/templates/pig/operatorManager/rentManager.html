@@ -2,21 +2,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'rentManager.jsp' starting page</title>
+
+  <title> </title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <script type="text/javascript" src="<%=basePath%>My97DatePicker/WdatePicker.js"></script>
-  <link type="text/css" rel="stylesheet" href="<%=basePath%>css/public.css">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <script type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
+  <link type="text/css" rel="stylesheet" href="../css/public.css">
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
+
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -26,17 +24,44 @@
       background-color: #EEF2FB;
     }
   </style>
+    <script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
   <script type="text/javascript">
     function subForm(){
-      document.forms[0].submit();
+        console.log($('#form1').serializeArray())
+
+         var tableId=$('#tableId');
+        var beginDate=$('#beginDate');
+        var shouldReturnDate=$('#shouldReturnDate');
+        var returnDate=$('#returnDate');
+        var identity=$('#identity');
+        var carNumber=$('#carNumber');
+        var rentFlag=$('#rentFlag');
+        var userName=$('#userName');
+
+
+
+        $.ajax({
+            type:"get",
+            url:"http://localhost:8080/rentTable/saveRent",
+            dataType:'json',
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            data:{"tableid":tableId.val(),"begindate":beginDate.val(),"shouldreturndate":shouldReturnDate.val(),"returndate":returnDate.val(),"custid":identity.val(),"carid":carNumber.val(),"rentflag":rentFlag.val(),"userid":userName.val()},
+            success:function (data) {
+                location.href="viewRenttables.html";
+            }
+            ,
+            error:function () {
+                alert('输入错误')
+            }
+        })
     }
   </script>
 </head>
 
 <body>
-<form action="car/rentTable/findRentalTableByIf" method="post">
-  <h5><font color="red">${requestScope.msg }</font></h5>
-  <input type="hidden" name="method" value="findRenttable"/>
+<form action="#" id="form1" method="post">
+  <h5><font color="red"></font></h5>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="17" valign="top" background="../images/mail_leftbg.gif"><img src="../images/left-top-right.gif" width="17" height="29" /></td>
@@ -86,7 +111,7 @@
 	</select>
       </td>
       <td><div align="center" class="left_txt">服务人员编号</div></td>
-      <td><input type="text" name="usersid" id="userName"></td>
+      <td><input type="text" name="userid" id="userName"></td>
     </tr>
   </table>
 <table align="left" width="100%">

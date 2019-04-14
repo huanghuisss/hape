@@ -2,21 +2,16 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
-
-  <title>My JSP 'checkManager.jsp' starting page</title>
+  <title></title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="<%=basePath%>My97DatePicker/WdatePicker.js"></script>
-  <link type="text/css" rel="stylesheet" href="<%=basePath%>css/public.css">
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
+  <link type="text/css" rel="stylesheet" href="../css/public.css">
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -26,16 +21,33 @@
       background-color: #EEF2FB;
     }
   </style>
+  <script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
   <script type="text/javascript">
     function subForm(){
-      document.forms[0].submit();
+
+
+
+       var checkId=$('#checkId').val()
+      var checkDate=$('#checkDate').val()
+      var userName=$('#userName').val()
+      var tableId=$('#tableId').val()
+      $.ajax({
+        url:"http://localhost:8080/check/sevaCheck",
+        type:"post",
+        crossDomain: true,
+        data:{'checkid':checkId,'checkdate':checkDate,'checkUserId':userName,'tableid':tableId},
+        xhrFields: {withCredentials: true},
+        success:function (data) {
+          location.href="viewCheckTables.html";
+        }
+      })
     }
   </script>
 </head>
 
 <body>
-<form action="car/check/findCheckByIf" method="post">
-  <h5><font color="red">${requestScope.msg }</font></h5>
+<form action="#" method="post" id="form1">
+  <h5><font color="red"></font></h5>
   <input type="hidden" name="method" value="findCheckTable"/>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
@@ -66,7 +78,7 @@
     </tr>
     <tr>
       <td><div align="center" class="left_txt">检查员</div></td>
-      <td><input type="text" name="username" id="userName" ></td>
+      <td><input type="text" name="checkUserId" id="userName" ></td>
        <td><div align="center" class="left_txt">出租单号</div></td>
       <td><input type="text" name="tableid" id="tableId"></td>
 

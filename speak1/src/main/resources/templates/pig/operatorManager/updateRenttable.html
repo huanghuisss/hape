@@ -2,20 +2,17 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'updateRenttable.jsp' starting page</title>
+  <title></title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="<%=basePath%>My97DatePicker/WdatePicker.js"></script>
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../My97DatePicker/WdatePicker.js"></script>
+
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -25,16 +22,12 @@
       background-color: #EEF2FB;
     }
   </style>
-  <script type="text/javascript">
-    function subForm(){
-      document.forms[0].submit();
-    }
-  </script>
+
 </head>
 
 <body>
-<form action="car/rentTable/updateRentTable" method="post">
-  <h5><font color="red">${requestScope.msg }</font></h5>
+<form action="#" method="post">
+  <h5><font color="red"> </font></h5>
   <input type="hidden" name="method" value="updateRentTable"/>
   <input type="hidden" name="tableid" value="${requestScope.rent.tableid }"/>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -61,69 +54,56 @@
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">出租单编号：</div></td>
-		<td width="13%" class="left_txt">${requestScope.rent.tableid }</td>
+		<td width="13%" class="left_txt" id="tableid"></td>
 		<td width="14%">&nbsp;</td>
 		<td width="14%">&nbsp;</td>
 		<td width="20%">
 		  <div align="center" class="left_txt">预付金：</div></td>
-		<td width="27%" class="left_txt"><fmt:formatNumber type="currency" value="${requestScope.rent.imprest }"/></td>
+		<td width="27%" class="left_txt" id="imprest"></td>
 	</tr>
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">应付金：</div></td>
-		<td width="13%" class="left_txt"><fmt:formatNumber type="currency" value="${requestScope.rent.shouldpayprice }"/></td>
+		<td width="13%" class="left_txt" id="shouldpayprice"></td>
 		<td width="14%">&nbsp;</td>
 		<td width="14%">&nbsp;</td>
 		<td width="20%">
 		  <div align="center" class="left_txt">实际交付金额：</div></td>
-		<td width="27%" class="left_txt"><input type="text" name="price" id="price" value="${requestScope.rent.price }"></td>
+		<td width="27%" class="left_txt"><input type="text" name="price" id="price" value=""></td>
 	</tr>
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">起租日期：</div>		</td>
-		<td width="13%" class="left_txt"><input class="Wdate" type="text" name="begindate" id="beginDate" onFocus="WdatePicker({isShowClear:false,readOnly:true})" value="<fmt:formatDate value='${requestScope.rent.begindate }' pattern='yyyy-MM-dd'/>"/></td>
+		<td width="13%" class="left_txt"><input class="Wdate" type="text" name="begindate" id="beginDate" onFocus="WdatePicker({isShowClear:false,readOnly:true})" value=""/></td>
 
 		<td width="14%">&nbsp;</td>
 		<td width="14%">&nbsp;</td>
 		<td width="20%">
 		  <div align="center" class="left_txt">应归还日期：</div></td>
-		<td width="27%" class="left_txt"><input class="Wdate" type="text" name="shouldreturndate" id="shouldReturnDate" onFocus="WdatePicker({isShowClear:false,readOnly:true})" value="<fmt:formatDate value='${requestScope.rent.shouldreturndate }' pattern='yyyy-MM-dd'/>"/></td>
+		<td width="27%" class="left_txt"><input class="Wdate" type="text" name="shouldreturndate" id="shouldReturnDate" onFocus="WdatePicker({isShowClear:false,readOnly:true})" value=""/></td>
 	</tr>
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">归还日期：</div>		</td>
-		<td width="13%" class="left_txt"><input class="Wdate" type="text" name="returndate" id="returnDate" onFocus="WdatePicker({isShowClear:false,readOnly:true})" value="<fmt:formatDate value='${requestScope.rent.returndate }' pattern='yyyy-MM-dd'/>"/></td>
+		<td width="13%" class="left_txt"><input class="Wdate" type="text" name="returndate" id="returnDate" onFocus="WdatePicker({isShowClear:false,readOnly:true})" value=""/></td>
 		<td width="14%">&nbsp;</td>
 		<td width="14%">&nbsp;</td>
 		<td width="20%">
 		  <div align="center" class="left_txt">出租单状态：</div></td>
 		<td width="27%">
-		<select name="rentflag">
-		<c:choose>
-	  	<c:when test="${requestScope.rent.rentflag eq 1}">
-	  	<option value="1" selected class="left_txt">已入库/已生成检查单</option>
-	  	<option value="0" class="left_txt">出租中</option>
-	  	</c:when>
-	  	<c:otherwise>
-	  	<option value="1" class="left_txt">已入库/已生成检查单</option>
-	  	<option value="0" selected class="left_txt">出租中</option>
-	  	</c:otherwise>
-	  </c:choose>
+		<select name="rentflag" id="rentflag">
+
 		</select>
 		</td>
 	</tr>
 	<tr>
 		<td width="12%" height="27">
 	    <div align="center" class="left_txt">服务人员编号</div>		</td>
-		<td width="13%" class="left_txt">${requestScope.rent.users.username}</td>
+		<td width="13%" class="left_txt" id="username"></td>
 	</tr>
 	<tr>
-		<td colspan="6" align="center">
-		<c:if test="${requestScope.rent.rentflag != 1}">
-		 <img  src="../images/carimg/ok.gif" onclick="subForm()">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		</c:if>
-			<img  src="../images/carimg/return.gif" onclick="history.back()">
+		<td colspan="6" align="center" id="cz">
+
 		</td>
 	</tr>
 	<tr>
@@ -147,22 +127,22 @@
     </tr>
 	<tr>
       <td><div align="center" class="left_txt">身份证：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.customers.identity }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="custidentity"></font></div></td>
 	  <td><div align="center" class="left_txt">姓名：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.customers.custname }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red"id="custname"></font></div></td>
 	  <td><div align="center" class="left_txt">性别：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.customers.sex }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="custsex"></font></div></td>
     </tr>
 	<tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
     </tr>
 	<tr>
       <td><div align="center" class="left_txt">地址：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.customers.address }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="custaddress"></font></div></td>
 	  <td><div align="center" class="left_txt">电话：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.customers.phone }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="custphone"></font></div></td>
 	  <td><div align="center" class="left_txt">职业：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.customers.career }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="custcareer"></font></div></td>
     </tr>
 	<tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
@@ -186,41 +166,34 @@
     </tr>
     <tr>
       <td><div align="center" class="left_txt">车号：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.cars.carNumber }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="carnumber"></font></div></td>
 	  <td><div align="center" class="left_txt">型号：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.cars.carType }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="cartype"></font></div></td>
 	  <td><div align="center" class="left_txt">颜色：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.cars.color }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="carcolor"></font></div></td>
     </tr>
     <tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
     </tr>
     <tr>
       <td><div align="center" class="left_txt">价值：</div></td>
-	  <td><div align="center" class="left_txt"> <font color="red"><fmt:formatNumber type="currency" value="${requestScope.rent.cars.price }"/></font></div></td>
+	  <td><div align="center" class="left_txt"> <font color="red" id="carprice"></font></div></td>
 	  <td><div align="center" class="left_txt">租金：</div></td>
-	  <td><div align="center" class="left_txt"> <font color="red"><fmt:formatNumber type="currency" value="${requestScope.rent.cars.rentPrice }"/></font></div></td>
+	  <td><div align="center" class="left_txt"> <font color="red"id="carrentprice" ></font></div></td>
 	  <td><div align="center" class="left_txt">押金：</div></td>
-	  <td><br><div align="center" class="left_txt"><font color="red"><fmt:formatNumber type="currency" value="${requestScope.rent.cars.deposit }"/> </font></div><br></td>
+	  <td><br><div align="center" class="left_txt"><font color="red" id="cardeposit"></font></div><br></td>
     </tr>
     <tr>
       <td colspan="6"><hr color="#99CCFF">      </td>
     </tr>
     <tr>
       <td><div align="center" class="left_txt">租用情况：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">
-	   <c:choose>
-	  	<c:when test="${requestScope.rent.cars.isRenting eq 1 }">
-	  		已出租
-	  	</c:when>
-	  	<c:otherwise>
-	  		未出租
-	  	</c:otherwise>
-	  </c:choose>
+	  <td><div align="center" class="left_txt"><font color="red" id="carisRenting">
+
 	  </font>
 	  </div></td>
 	  <td><div align="center" class="left_txt">简介：</div></td>
-	  <td><div align="center" class="left_txt"><font color="red">${requestScope.rent.cars.carDesc }</font></div></td>
+	  <td><div align="center" class="left_txt"><font color="red" id="cardesc"></font></div></td>
 
     </tr>
     <tr>
@@ -229,4 +202,83 @@
 	</tr>
 </table>
 </body>
+<script src="../js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+	$.ajax({
+		url: "http://localhost:8080/rentTable/getpreUpdate",
+		type: "POST",
+		crossDomain:true,
+		xhrFields:{withCredentials:true},
+		success: function (data) {
+			console.log(data)
+			$('#tableid').html(data.tableid)
+			$('#imprest').html(data.imprest)
+			$('#shouldpayprice').html(data.shouldpayprice)
+			$('#price').val(data.price)
+			$('#beginDate').val(data.begindate)
+			$('#shouldReturnDate').val(data.shouldreturndate)
+			$('#returnDate').val(data.returndate)
+
+
+			var option='';
+			if(data.rentflag==0){
+				option+='<option value="1" class="left_txt">已入库/已生成检查单</option>\n' +
+						'<option value="0" selected class="left_txt">出租中</option>'
+			}else{
+				option+='<option value="1" selected class="left_txt">已入库/已生成检查单</option>\n' +
+						'<option value="0" class="left_txt">出租中</option>'
+			}
+			$('#rentflag').html(option)
+			$('#username').html(data.users.identity)
+			$('#custidentity').html(data.customers.identity)
+			$('#custname').html(data.customers.custname)
+			$('#custsex').html(data.customers.sex)
+			$('#custaddress').html(data.customers.address)
+			$('#custphone').html(data.customers.phone)
+			$('#custcareer').html(data.customers.career)
+			$('#carnumber').html(data.cars.carNumber)
+			$('#cartype').html(data.cars.carType)
+			$('#carcolor').html(data.cars.color)
+			$('#carprice').html(data.cars.price)
+			$('#carrentprice').html(data.cars.rentPrice)
+			$('#cardeposit').html(data.cars.deposit)
+			$('#carisRenting').html(data.cars.isRenting==1?'已出租':'未出租')
+			$('#cardesc').html(data.cars.carDesc)
+
+			var cz='';
+			if(data.rentflag!=1){
+				cz+='<img  src="../images/carimg/ok.gif" onclick="subForm()">\n' +
+						'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+
+			}
+			cz+='<img  src="../images/carimg/return.gif" onclick="history.back()">';
+			$('#cz').html(cz)
+
+		}
+	});
+	function subForm(){
+
+		if($('#rentflag').val()==1&&$('#returnDate').val().length==0){
+			alert('请填写归还日期')
+			$('#returnDate').select();
+			return;
+		}
+		$.ajax({
+			url: "http://localhost:8080/rentTable/updateRentTable",
+			type: "POST",
+			data:{'tableid':$('#tableid').html(),'price':$('#price').val(),'carnumber':$('#carnumber').html(),'begindate':$('#beginDate').val(),'shouldreturndate':	$('#shouldReturnDate').val(),'returndate':$('#returnDate').val(),'rentflag':	$('#rentflag').val()},
+			crossDomain:true,
+			xhrFields:{withCredentials:true},
+			success: function (data) {
+				console.log(data)
+				if(data){
+					alert('修改出租单成功')
+					location.href='rentManager.html';
+				}
+			}
+
+
+		})
+	}
+</script>
 </html>

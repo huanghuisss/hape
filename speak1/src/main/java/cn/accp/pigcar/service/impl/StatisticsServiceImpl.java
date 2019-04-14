@@ -8,6 +8,7 @@ import cn.accp.pigcar.pojo.CarsRentMonth;
 import cn.accp.pigcar.pojo.Renttable;
 import cn.accp.pigcar.service.StatisticsService;
 import cn.accp.pigcar.util.DateUtil;
+import cn.accp.pigcar.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +26,20 @@ public class StatisticsServiceImpl implements StatisticsService {
 	 * 获得所有租车信息
 	 */
 	@Override
-	public List<Renttable> getAllStati() {
+	public List<Renttable> getAllStati( PageBean<Renttable> page) {
 		//获得系统当前月份的最后一天
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar ca = Calendar.getInstance();
 		ca.set(Calendar.DAY_OF_MONTH,
 				ca.getActualMaximum(Calendar.DAY_OF_MONTH));
 		String lastday = format.format(ca.getTime());
-		System.out.println("===============last:" + lastday);
-		return statisticsDao.getAllStati(lastday);
+		Map<String, Object> map = new HashMap<String,Object>();
+		int start = page.getStartRow();
+		int end = page.getEndRow();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("lastday",lastday);
+		return statisticsDao.getAllStati(map);
 	}
 	/*
 	 * 查询单个业务信息
@@ -68,7 +74,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		//map,存放月份，出租次数
 		Map<String, String> map2 = null;
 		// 首先获得车的信息List
-		List<Cars> AllCars = carDao.selectAllCars();
+		List<Cars> AllCars = carDao.selectAllCarss();
 		System.out.println("第一步获取的全部车辆==============" + AllCars);
 		// 遍历车辆信息，获取id
 		for (Cars cars : AllCars) {
@@ -97,5 +103,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 		System.out.println("所有车信息==========="+crmList);
 		return crmList;
+	}
+
+	@Override
+	public int getAllStaticount() {
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar ca = Calendar.getInstance();
+		ca.set(Calendar.DAY_OF_MONTH,
+				ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+		String lastday = format.format(ca.getTime());
+		return 	statisticsDao.getAllStaticount(lastday);
 	}
 }

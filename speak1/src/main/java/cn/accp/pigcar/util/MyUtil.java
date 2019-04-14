@@ -5,8 +5,7 @@ import cn.accp.pigcar.pojo.Renttable;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class MyUtil {
 	
@@ -31,35 +30,18 @@ public class MyUtil {
 		return random;
 	}
 
-	public static String getSires(List<Renttable> list){
-		StringBuilder sb = new StringBuilder();
+	public static List<Map<String,Object>> getSires(List<Renttable> list){
 
-		sb.append(" [{");
-		sb.append("minPointSize: 10,"+RF);
-		sb.append("innerSize: '20%',"+RF);
-		sb.append("zMin: 0,"+RF);
-		sb.append("name: 'countries',"+RF);
-		sb.append("data: [");
-		
-		for (Renttable renttable : list) {
-			sb.append("{name: '");
-			String carNum = renttable.getCars().getCarNumber();
-			sb.append(carNum);
-			sb.append("', y: ");
-			sb.append(renttable.getCarrentcount());
-			sb.append(", z: ");
-			sb.append(renttable.getCountPrice());
-			sb.append("},");
-			
+		Sires s=new Sires();
+		List<Map<String,Object>> ss=new ArrayList<>();
+		for(Renttable aa : list){
+			Map<String,Object> mm=new HashMap<>();
+			mm.put("name",aa.getCars().getCarNumber());
+			mm.put("y",aa.getCarrentcount());
+			mm.put("z",aa.getCountPrice());
+			ss.add(mm);
 		}
-		sb.append("]");
-		String sire = sb.toString();
-		String s = sire.substring(0, sire.lastIndexOf(","));
-		StringBuilder sb1 = new StringBuilder();
-		sb1.append(s);
-		sb1.append("]");
-		sb1.append("}]");
-		return sb1.toString();	           
+		return ss;
 	}
 	
 	

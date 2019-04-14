@@ -28,48 +28,136 @@
   				column="username"
   			></association>
   		</resultMap>
+
+
+	<select id="selectRentalTableByIfCount" resultType="int">
+		select count(*) from renttable rt
+		join users u
+		on rt.userid=u.username
+		join cars c
+		on rt.carid=c.carnumber
+		join customers ct
+		on ct.identity=rt.custid where rt.rentflag=#{rentflag}
+
+
+		<if test="tableid != null and tableid != ''">
+			and rt.tableid like concat(#{tableid},'%')
+		</if>
+		<if test="shouldpayprice != null and shouldpayprice != ''">
+			and rt.shouldpayprice=#{shouldpayprice}
+		</if>
+		<if test="imprest != null and imprest != ''">
+			and rt.imprest=#{imprest}
+		</if>
+
+		<if test="price != null and price != ''">
+			and rt.price=#{price}
+		</if>
+		<if test="returndate != null ">
+			 and rt.returndate=#{returndate}
+		</if>
+		<if test="shouldreturndate != null ">
+			and rt.shouldreturndate=#{shouldreturndate}
+		</if>
+		<if test="begindate != null">
+			and rt.begindate=#{begindate}
+		</if>
+		<if test="userid != null and userid != ''">
+			and rt.userid=#{userid}
+		</if>
+		<if test="custid != null and custid != ''">
+			and rt.custid=#{custid}
+		</if>
+		<if test="carid != null and carid != ''">
+			and rt.carid=#{carid}
+		</if>
+	</select>
   		<!-- 四表关联的多条件查询 -->
-  		<select id="selectRentalTableByIf" resultMap="selectRentalTableByIfMap">
+  		<select id="selectRentalTableByIfpage" resultMap="selectRentalTableByIfMap">
   			select * from renttable rt 
 			join users u
 			on rt.userid=u.username
 			join cars c
 			on rt.carid=c.carnumber
 			join customers ct
-			on ct.identity=rt.custid where rt.rentflag=#{rentflag}
-  			
-  				<if test="tableid != null and tableid != ''">
-  					and rt.tableid=#{tableid}
-  				</if>
-  				<if test="shouldpayprice != null and shouldpayprice != ''">
-  					and rt.shouldpayprice=#{shouldpayprice}
-  				</if>
-  				<if test="imprest != null and imprest != ''">
-  					and rt.imprest=#{imprest}
-  				</if>
-  				
-  				<if test="price != null and price != ''">
-  					and rt.price=#{price}
-  				</if>
-  				<if test="returndate != null and returndate!= ''">
-  					and rt.returndate=#{returndate}
-  				</if>
-  				<if test="shouldreturndate != null and shouldreturndate != ''">
-  					and rt.shouldreturndate=#{shouldreturndate}
-  				</if>
-  				<if test="begindate != null and begindate!= ''">
-  					and rt.begindate=#{begindate}
-  				</if>
-  				<if test="userid != null and userid != ''">
-  					and rt.userid=#{userid}
-  				</if>
-  				<if test="custid != null and custid != ''">
-  					and rt.custid=#{custid}
-  				</if>
-  				<if test="carid != null and carid != ''">
-  					and rt.carid=#{carid}
-  				</if>
+			on ct.identity=rt.custid where rt.rentflag=#{rent.rentflag}
+
+
+			<if test="rent.tableid != null and rent.tableid != ''">
+				 and rt.tableid like concat(#{rent.tableid},'%')
+			</if>
+			<if test="rent.shouldpayprice != null and rent.shouldpayprice != ''">
+				and rt.shouldpayprice=#{rent.shouldpayprice}
+			</if>
+			<if test="rent.imprest != null and rent.imprest != ''">
+				and rt.imprest=#{rent.imprest}
+			</if>
+
+			<if test="rent.price != null and rent.price != ''">
+				and rt.price=#{rent.price}
+			</if>
+			<if test="rent.returndate != null">
+				and rt.returndate=#{rent.returndate}
+			</if>
+			<if test="rent.shouldreturndate != null ">
+				and rt.shouldreturndate=#{rent.shouldreturndate}
+			</if>
+			<if test="rent.begindate != null ">
+				and rt.begindate=#{rent.begindate}
+			</if>
+			<if test="rent.userid != null and rent.userid != ''">
+				and rt.userid=#{rent.userid}
+			</if>
+			<if test="rent.custid != null and rent.custid != ''">
+				and rt.custid=#{rent.custid}
+			</if>
+			<if test="rent.carid != null and rent.carid != ''">
+				and rt.carid=#{rent.carid}
+			</if>
+				limit #{start},#{end}
   		</select>
+
+	<select id="selectRentalTableByIf" resultMap="selectRentalTableByIfMap">
+		select * from renttable rt
+		join users u
+		on rt.userid=u.username
+		join cars c
+		on rt.carid=c.carnumber
+		join customers ct
+		on ct.identity=rt.custid where rt.rentflag=#{rentflag}
+
+		<if test="tableid != null and tableid != ''">
+			and rt.tableid=#{tableid}
+		</if>
+		<if test="shouldpayprice != null and shouldpayprice != ''">
+			and rt.shouldpayprice=#{shouldpayprice}
+		</if>
+		<if test="imprest != null and imprest != ''">
+			and rt.imprest=#{imprest}
+		</if>
+
+		<if test="price != null and price != ''">
+			and rt.price=#{price}
+		</if>
+		<if test="returndate != null">
+			and rt.returndate=#{returndate}
+		</if>
+		<if test="shouldreturndate != null ">
+			and rt.shouldreturndate=#{shouldreturndate}
+		</if>
+		<if test="begindate != null ">
+			and rt.begindate=#{begindate}
+		</if>
+		<if test="userid != null and userid != ''">
+			and rt.userid=#{userid}
+		</if>
+		<if test="custid != null and custid != ''">
+			and rt.custid=#{custid}
+		</if>
+		<if test="carid != null and carid != ''">
+			and rt.carid=#{carid}
+		</if>
+	</select>
   		<!-- 因为同为四表查询，所以此处使用一个resultMap -->
   		<select id="selectRentaalTableByPrimaryKey" resultMap="selectRentalTableByIfMap">
   			select * from renttable rt 
@@ -98,13 +186,13 @@
   				<if test="price != null and price != ''">
   					price=#{price},
   				</if>
-  				<if test="returndate != null and returndate!= ''">
-  					returndate=#{returndate},
+  				<if test="returndate != null ">
+					returndate=#{returndate},
   				</if>
-  				<if test="shouldreturndate != null and shouldreturndate != ''">
+  				<if test="shouldreturndate != null ">
   					shouldreturndate=#{shouldreturndate},
   				</if>
-  				<if test="begindate != null and begindate!= ''">
+  				<if test="begindate != null ">
   					begindate=#{begindate},
   				</if>
   				<if test="userid != null and userid != ''">
@@ -114,7 +202,7 @@
   					custid=#{custid},
   				</if>
   				<if test="carid != null and carid != ''">
-  					carid=#{carid}
+  					carid=#{carid},
   				</if>
   				</set>	
   			<where>

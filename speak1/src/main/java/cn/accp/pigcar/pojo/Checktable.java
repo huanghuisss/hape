@@ -1,5 +1,8 @@
 package cn.accp.pigcar.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -15,6 +18,26 @@ public class Checktable implements java.io.Serializable {
 	private Long checkid;
 	private Renttable renttable;
 	private Users users;
+	private Integer start;
+	private Integer end;
+
+	public Integer getStart() {
+		return start;
+	}
+
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+
+	public Integer getEnd() {
+		return end;
+	}
+
+	public void setEnd(Integer end) {
+		this.end = end;
+	}
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date checkdate;
 	private String field;
 	private String problem;

@@ -6,16 +6,21 @@ import cn.accp.pigcar.service.CountRentService;
 import cn.accp.pigcar.util.MyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 统计出租情况
  */
 @Controller
 @RequestMapping("countRent")
+@CrossOrigin(allowCredentials = "true")
 public class CountRentController {
 	@Autowired
 	private CountRentService countService;
@@ -25,7 +30,8 @@ public class CountRentController {
 	 * @return
 	 */
 	@RequestMapping("countPriceAndNum")
-	public String countPriceAndNum(HttpServletRequest req){
+	@ResponseBody
+	public List<Map<String,Object>> countPriceAndNum(HttpSession session){
 		//统计每辆车被租出去的总费用
 		List<Renttable> countAllShouldPayPrice = countService.countAllShouldPayPrice();
 
@@ -40,12 +46,11 @@ public class CountRentController {
 				}
 			}
 		}
-		String sires = MyUtil.getSires(countAllShouldPayPrice);
-		System.out.println(sires);
-		req.setAttribute("sires", sires);
+
 		//req.setAttribute("list", countAllShouldPayPrice);
 		//req.setAttribute("a", "carNumber");
-		return "count/countRent";
+
+		return  MyUtil.getSires(countAllShouldPayPrice);
 	}
 
 }

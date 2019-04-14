@@ -74,8 +74,8 @@
         <table border="0" width="100%" cellspacing="0">
         	<tr>
 
-        		<td style="text-align: center"><input type="text" value="" size="20" style=" width:300px;height:40px;" id="tj" placeholder="品牌/级别/描述">
-                    <span id="login_click"><a type="button"  id="ss">搜索</a></span> </td>
+        		<td style="text-align: center"><input type="text" value="" size="20" style=" width:300px;height:40px;" id="tj" placeholder="品牌/颜色/描述">
+                    <span id="login_click"><a type="button"  id="ss" onclick="cz()">搜索</a></span> </td>
 
         	</tr>
           <tr><td>     <img src="../images/carstyle.png"></td></tr>
@@ -107,6 +107,48 @@
 <script src="../js/jquery-1.9.1.js"></script>
 <script type="text/javascript">
 
+  function cz(){
+    var ss=$('#tj').val()
+    console.log(ss)
+    $.ajax({
+      type:"get",
+      url:"http://localhost:8080/main/findCar",
+      data:{"carType":ss},
+      dataType:"json",
+      crossDomain:true,
+      xhrFields:{withCredentials:true},
+      success:function (data) {
+        var str=''
+        $.each(data,function (i,car) {
+          str+=' <tr>\n' +
+                  '         <td>\n' +
+                  '         <img src="http://localhost:63342/pigcar/templates/pig/images/'+car.carImg+'" width="400px" height="200px"/>\n' +
+                  '         </td>\n' +
+                  '         <td>\n' +
+                  '         汽车类型：'+car.carType+'<br/>\n' +
+                  '     汽车颜色：'+car.color+'\n' +
+                  ' </td>\n' +
+                  '     <td>\n' +
+                  '     租车价格：'+car.rentPrice+'<br/>\n' +
+                  '     押金：'+car.deposit+'\n' +
+                  ' </td>\n' +
+                  '     <td>\n' +
+                  '   <span id="login_click"><a type="button"  id="zc" onclick=rentCar("'+car.carNumber +'")>租车</a></span>\n' +
+                  '         </td>\n' +
+                  '         </tr>\n' +
+                  '         <tr>\n' +
+                  '         <td colspan="4">\n' +
+                  '         <hr/>\n' +
+                  '         </td>\n' +
+                  '         </tr>'
+
+
+        })
+        $('#carshow').html(str)
+      }
+    })
+  }
+
     $.ajax({
         type:"get",
         url:"http://localhost:8080/main/findCars",
@@ -114,7 +156,6 @@
         crossDomain:true,
         xhrFields:{withCredentials:true},
         success:function (data) {
-
             var str=''
             $.each(data.list,function (i,car) {
                     str+=' <tr>\n' +

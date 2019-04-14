@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 
 
-  <title>My JSP 'welcome.jsp' starting page</title>
+  <title></title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
@@ -13,13 +13,7 @@
   <meta http-equiv="description" content="This is my page">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <!--
-  <script type="text/javascript">
-      setInterval(function(){
-          window.location= "welcome.jsp";
-      },3000);
-  </script>
-   -->
+
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -289,12 +283,16 @@
                           '                  </tr>'
 
           $.each(result2, function(q, rent) {
-                  ht+='<tr>' +
-                          '  <td class="left_bt2">'+rent.tableid +'</td> ' +
-                          '<td class="left_bt2" >'+rent.begindate+'</td>' +
-                          ' <td class="left_bt2">'+rent.shouldreturndate +'</td>' +
-                          ' <td class="left_bt2">'+rent.users.username+'</td>' +
-                          ' </tr>'
+
+            if(q<5) {
+              ht += '<tr>' +
+                      '  <td class="left_bt2">' + rent.tableid + '</td> ' +
+                      '<td class="left_bt2" >' + rent.begindate + '</td>' +
+                      ' <td class="left_bt2">' + rent.shouldreturndate + '</td>' +
+                      ' <td class="left_bt2">' + rent.users.username + '</td>' +
+                      ' </tr>'
+            }
+
                   })
 
           $('#hc').html(ht);

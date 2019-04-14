@@ -2,19 +2,16 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'viewMonthReturnCarResult.jsp' starting page</title>
+  <title></title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link type="text/css" rel="stylesheet" href="<%=basePath%>css/public.css">
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <link type="text/css" rel="stylesheet" href="../css/public.css">
+
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -113,11 +110,7 @@
     }
   </script>
   <script type="text/javascript">
-    //实现跳转
-    function preUpdate(tableId){
-      //tableid
-      window.location.href = "car/statistics/getOneStati?tableid="+tableId;
-    }
+
   </script>
 </head>
 
@@ -158,30 +151,7 @@
         <td width="281" background="../images/tab_05.gif"><table border="0" align="right" cellpadding="0" cellspacing="0">
             <tr>
               <td width="60"><table width="87%" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td class="STYLE1"><div align="center">
-                        <input type="checkbox" name="checkbox62" value="checkbox" id="all" onClick="checkAll()"/>
-                    </div></td>
-                    <td class="STYLE1"><div align="center">全选</div></td>
-                  </tr>
-              </table></td>
-              <td width="60"><table width="90%" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td class="STYLE1"><div align="center"><img src="../images/001.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">新增</div></td>
-                  </tr>
-              </table></td>
-              <td width="60"><table width="90%" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td class="STYLE1"><div align="center"><img src="../images/114.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">修改</div></td>
-                  </tr>
-              </table></td>
-              <td width="52"><table width="88%" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td class="STYLE1"><div align="center"><img src="../images/083.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">删除</div></td>
-                  </tr>
+
               </table></td>
             </tr>
         </table></td>
@@ -193,45 +163,8 @@
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="9" background="../images/tab_12.gif">&nbsp;</td>
-        <td bgcolor="#f3ffe3"><table width="99%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#c0de98" onmouseover="changeto()"  onmouseout="changeback()">
-          <tr>
-            <td width="4%" height="26" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>
-            <td width="4%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">序号</div></td>
-            <td width="14%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">出租单编号</div></td>
-            <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">起租日期</div></td>
-            <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">应归还日期</div></td>
-            <td width="6%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">客户号</div></td>
-             <td width="12%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">车号</div></td>
-              <td width="12%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">出租单状态</div></td>
-               <td width="12%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">服务人员编号</div></td>
-            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">操作</div></td>
-          </tr>
-          <c:forEach var="rent" items="${allStati}"  varStatus="s">
-    		<tr class=Off onMouseOut="this.className='Off'" onMouseOver="this.className='Up'">
-    		 <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <input name="dels" type="checkbox" class="STYLE2" value="checkbox" />
-            </div></td>
-               <td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">${s.count }</div></td>
-    			 <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">${rent.tableid }</div></td>
-    			<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1"><fmt:formatDate value="${rent.begindate }" pattern="yyyy-MM-dd"/></div></td>
-    			<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1"><fmt:formatDate value="${rent.shouldreturndate }" pattern="yyyy-MM-dd"/></div></td>
-    			<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">${rent.customers.identity }</div></td>
-    			<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">${rent.cars.carNumber }</div></td>
-    			<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">
-    			<c:choose>
-    				<c:when test="${rent.rentflag eq 0}">
-    				出租中
-    				</c:when>
-    				<c:otherwise>
-    			    已入库/已生成检查单
-    				</c:otherwise>
-    			</c:choose>
-    			</div>
-    			</td>
-    			<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">${rent.users.username }</div></td>
-    			<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="images/037.gif" width="9" height="9" /><span class="STYLE1"> [</span><a onclick="preUpdate('${rent.tableid }')" style="font-size: 10px; cursor: hand; color: blue; ">查看</a><span class="STYLE1">]</span></div></td>
-    		</tr>
-    	</c:forEach>
+        <td bgcolor="#f3ffe3"><table width="99%" border="0" id="rentlist" align="center" cellpadding="0" cellspacing="1" bgcolor="#c0de98" onmouseover="changeto()"  onmouseout="changeback()">
+
         </table></td>
         <td width="9" background="../images/tab_16.gif">&nbsp;</td>
       </tr>
@@ -243,24 +176,11 @@
         <td width="15" height="29"><img src="../images/tab_20.gif" width="15" height="29" /></td>
         <td background="../images/tab_21.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="25%" height="29" nowrap="nowrap"><span class="STYLE1">共${requestScope.page.totalNumber }条纪录，当前第${requestScope.page.currentPage }/${requestScope.page.totalPage }页，每页${requestScope.page.pageNumber }条纪录</span></td>
+            <td width="25%" height="29" nowrap="nowrap"><span class="STYLE1" id="ty"></span></td>
             <td width="75%" valign="top" class="STYLE1"><div align="right">
               <table width="352" height="20" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <c:if test="${requestScope.pageIndex > 1}">
-                  <td width="62" height="22" valign="middle"><div align="right"><a onclick="subForm('${1}')" style="cursor: hand;"><img src="../images/first.gif" width="37" height="15"/></a></div></td>
-                  <td width="50" height="22" valign="middle"><div align="right"><a onclick="subForm('${requestScope.pageIndex -1 }')" style="cursor: hand;"><img src="../images/back2.gif" width="43" height="15" /></a></div></td>
-                  </c:if>
-                  <c:if test="${requestScope.pageIndex < requestScope.page.totalPage}">
-                  <td width="54" height="22" valign="middle"><div align="right"><a onclick="subForm('${requestScope.pageIndex +1 }')" style="cursor: hand;"><img src="../images/next.gif" width="43" height="15" /></a></div></td>
-                  <td width="49" height="22" valign="middle"><div align="right"><a onclick="subForm('${requestScope.page.totalPage}')" style="cursor: hand;"><img src="../images/last.gif" width="37" height="15" /></a></div></td>
-                 	</c:if>
-                  <td width="59" height="22" valign="middle"><div align="right" class="STYLE2 STYLE1">转到第</div></td>
-                  <td width="25" height="22" valign="middle"><span class="STYLE7">
-                    <input name="textfield" type="text" class="STYLE1" style="height:20px; width:25px;" size="5" value="${requestScope.pageIndex }" id="goPage"/>
-                  </span></td>
-                  <td width="23" height="22" valign="middle" class="STYLE2 STYLE1">页</td>
-                  <td width="30" height="22" valign="middle"><a onclick="subGo('${requestScope.page.totalPage}')" style="cursor: hand;"><img src="../images/go.gif" width="37" height="15" /></a></td>
+                <tr id="pagep">
+
                 </tr>
               </table>
             </div></td>
@@ -293,4 +213,111 @@
   </tr>
 </table>
 </body>
+<script src="../js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+  function preUpdate(tableId) {
+    $.ajax({
+      url: "http://localhost:8080/statistics/getOneStati",
+      data: {'tableid': tableId},
+      type: "get",
+      crossDomain:true,
+      xhrFields:{withCredentials:true},
+      success: function (data) {
+        location.href="findMonthReturnCarByInfo.html"
+      }
+    });
+  }
+  function subGo(index){
+    var obj = document.getElementById('goPage').value;
+    if(obj > index){
+      alert("超出页数，请重新填写");
+      return ;
+    }else if(obj <= 0){
+      alert("输入页数有误请重新输入");
+      return ;
+    }else{
+      load(obj)
+    }
+  }
+  $(function () {
+    load(1);
+  })
+  function load (currentPage){
+
+
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      data:{"currentPage":currentPage},
+      async: false,
+      url: "http://localhost:8080/statistics/getAllStati",
+      success: function (result1) {
+        console.log(result1);
+        var str='   <tr>\n' +
+                '            <td width="4%" height="26" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>\n' +
+                '            <td width="4%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">序号</div></td>\n' +
+                '            <td width="14%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">出租单编号</div></td>\n' +
+                '            <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">起租日期</div></td>\n' +
+                '            <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">应归还日期</div></td>\n' +
+                '            <td width="6%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">客户号</div></td>\n' +
+                '             <td width="12%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">车号</div></td>\n' +
+                '              <td width="12%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">出租单状态</div></td>\n' +
+                '               <td width="12%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">服务人员编号</div></td>\n' +
+                '            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">操作</div></td>\n' +
+                '          </tr>'
+
+        if(result1.rentlist.length==0){
+          str+='<tr><td colspan="12" width="8%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2"><p style="font-size: 18px;color: #009900">未找到出租单</p></div></td></tr>'
+        }
+        $.each(result1.rentlist, function(i, rent) {
+
+          str+='<tr>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">\n' +
+                  '<input name="dels" type="checkbox" class="STYLE2" value="'+rent.tableid+'" />\n' +
+                  '</div></td>\n' +
+                  '\n' +
+                  '<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">'+(i+1)+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ rent.tableid +'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ rent.begindate+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+ rent.shouldreturndate+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+rent.customers.identity +'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+rent.cars.carNumber+'</div></td>\n' +
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+(rent.rentflag==0?'出租中':'已入库/已生成检查单')+'</div></td>\n'+
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">'+rent.users.username+'</div></td>\n'+
+                  '<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="#" onclick=preUpdate("'+rent.tableid+'") style="font-size: 10px; cursor: hand; color: blue; ">查看</a><span class="STYLE1"></span></div></td>\n' +
+                  '</tr>'
+
+        })
+        var pl='<span class="STYLE1">共 '+result1.page.totalCount+'条纪录，当前第'+result1.page.index+'/'+result1.page.totalPageCount+'页，每页'+result1.page.size +'条纪录</span>'
+
+
+        var p='';
+
+        if(result1.pageIndex>1){
+          p+='<td width="62" height="22"><div align="right"><a href="#" onclick="load ('+ (1)+')" style="cursor: hand;"><img src="../images/first.gif" width="37" height="15"/></a></div></td>\n' +
+                  '<td width="50" height="22" ><div align="right"><a href="#" onclick="load('+(result1.pageIndex -1)+')" style="cursor: hand;"><img src="../images/back2.gif" width="43" height="15" /></a></div></td>'
+        }
+
+        if(result1.pageIndex<result1.page.totalPageCount){
+          p+='<td width="54" height="22" ><div align="right"><a href="#" onclick="load ('+ (result1.pageIndex +1)+')" style="cursor: hand;"><img src="../images/next.gif" width="43" height="15" /></a></div></td>\n' +
+                  '<td width="49" height="22" ><div align="right"><a href="#" onclick="load ('+ (result1.page.totalPageCount)+')" style="cursor: hand;"><img src="../images/last.gif" width="37" height="15" /></a></div></td>'
+        }
+
+        p+='<td width="59" height="22" ><div align="right" class="STYLE2 STYLE1">转到第</div></td>\n' +
+                '            <td width="25" height="22" ><span class="STYLE7">\n' +
+                '                    <input name="textfield" oninput="value=value.replace(/[^\\d]/g,\'\')" type="text" class="STYLE1" style="height:20px; width:25px;" size="5" value="" id="goPage"/>\n' +
+                '                    </span></td>\n' +
+                '            <td width="23" height="22" class="STYLE2 STYLE1">页</td>\n' +
+                '                    <td width="30" height="22" >' +
+                '<a   onclick="subGo('+result1.page.totalPageCount+')" style="cursor: hand;">' +
+                '<img src="../images/go.gif" width="37" height="15" /></a></td>\n'
+
+        $('#pagep').html(p);
+        $('#rentlist').html(str);
+        $('#ty').html(pl);
+      }
+    });
+  }
+
+</script>
 </html>

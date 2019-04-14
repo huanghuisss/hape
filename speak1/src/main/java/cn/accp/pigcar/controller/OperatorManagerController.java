@@ -54,6 +54,15 @@ public class OperatorManagerController {
 
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
+
+	@RequestMapping("findCar")
+	public List<Cars> findCar(@RequestParam("carType")String carType){
+		Cars cars=new Cars();
+		cars.setCarType(carType);
+		cars.setCarDesc(carType);
+		cars.setColor(carType);
+		return carService.findCarBytype(cars);
+	}
 	/**
 	 * 查询数据库是否有这个身份证
 	 */
@@ -87,10 +96,10 @@ public class OperatorManagerController {
 	 * 然后生成租车单
 	 */
 	@RequestMapping("preRentCar")
-	public String preRentCar(HttpServletRequest req){
+	public Map<String, Object> preRentCar(HttpSession session){
 		//根据用户id，客户id和汽车id查询相关信息。
-		String carNumber = req.getParameter("carNumber");
-		String identity = req.getParameter("identity");
+		String carNumber = (String) session.getAttribute("ccarNumber");
+		String identity =(String) session.getAttribute("indetity");
 		//通过carnumber查询car的信息
 		Cars car = carService.getOneCar(carNumber);
 		Customers customer = custService.findOne(identity);
@@ -100,13 +109,14 @@ public class OperatorManagerController {
 		Long rentId = MyUtil.getRandomId();
 
 		//数据获得完之后将其显示在页面上
-		req.setAttribute("car", car);
-		req.setAttribute("customer", customer);
-		req.setAttribute("date", date);
-		req.setAttribute("rentId", rentId);
+		Map<String,Object> h=new HashMap<>();
+		h.put("car", car);
+		h.put("customer", customer);
+		h.put("date", date);
+		h.put("rentId", rentId);
 
 		//之后到达出租单创建页面
-		return "operatorManager/preCreateRenting";
+		return h;
 	}
 
 	@RequestMapping("sevaCarNumber")
@@ -128,25 +138,24 @@ public class OperatorManagerController {
 	 * @return
 	 */
 	@RequestMapping("addRentTable")
-	public String addRentTable(@RequestParam("rentflag")Long rentflag, Renttable rent){
+	public Boolean addRentTable(@RequestParam("rentflag")Long rentflag, Renttable rent){
 		boolean flag = rtService.addRentTable(rent);
-		if (flag) {
-			return "ok";
-		}
-		return "exception";
+		Cars car= carService.getOneCar(rent.getCarid());
+		car.setIsRenting("1");
+		int i= carService.updateCar(car);
+		return flag;
 	}
 	/**
 	 * 查询出租单表的信息，目的是为了响应ajax请求
 	 */
 	@RequestMapping("findRentTableId")
-	public void findRentTableId(String tableid,HttpServletResponse resp) throws IOException{
+	public String findRentTableId(String tableid,HttpSession session) throws IOException{
 		//查询出租单
 		Renttable renttable = rtService.findRentalByRenTableId(tableid);
-		PrintWriter writer = resp.getWriter();
 		if (null != renttable && !"".equals(renttable)) {
-			writer.print("true");
+		return "true";
 		}else{
-			writer.print("false");
+			return "false";
 		}
 
 	}
@@ -157,28 +166,37 @@ public class OperatorManagerController {
 	 * 2、检查时间
 	 */
 	@RequestMapping("findCheckTable")
-	public String findCheckTable(String tableid,HttpServletRequest req){
+	public Boolean findCheckTable(String tableid,HttpSession session){
 		//生成一个检查单的id
 		Long checkId = MyUtil.getRandomId();
 		//生成系统当前时间
 		String currentDate = MyUtil.getCurrentDate();
 		//查询出租单
 		Renttable renttable = rtService.findRentalByRenTableId(tableid);
-		req.setAttribute("rent", renttable);
-		req.setAttribute("checkId", checkId);
-		req.setAttribute("checkDate", currentDate);
-		return "operatorManager/createCheckTable";
+		Map<String,Object> h=new HashMap<>();
+		h.put("rent", renttable);
+		h.put("checkId", checkId);
+		h.put("checkDate", currentDate);
+		session.setAttribute("checkTable",h);
+		/*	return "operatorManager/createCheckTable";*/
+		return true;
+	}
+	@RequestMapping("getfindCheckTable")
+	public Object getfindCheckTable(HttpSession session){
+
+		return session.getAttribute("checkTable");
 	}
 	/**
 	 * 生成检查单，将检查单添加到数据库
 	 */
 	@RequestMapping("addCheck")
-	public String addCheck(Checktable checktable){
+	public Boolean addCheck(Checktable checktable,Renttable rent,String carNumber){
 		boolean flag = ctService.addCheckTable(checktable);
-		if (flag) {
-			return "ok";
-		}
-		return "exception";
+		Boolean ff=rtService.updateRentable(rent);
+		Cars c= carService.getOneCar(carNumber);
+		c.setIsRenting("0");
+		  carService.updateCar(c);
+		return flag;
 	}
 
 }

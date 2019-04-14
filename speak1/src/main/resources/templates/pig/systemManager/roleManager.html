@@ -1,20 +1,17 @@
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'roleManager.jsp' starting page</title>
+  <title> </title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
+
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -24,25 +21,12 @@
       background-color: #EEF2FB;
     }
   </style>
-  <script type="text/javascript">
-    function findRole(){
-      //document.getElementById('method').value="findRole";
-      document.forms[0].submit();
-      //window.location.href="car/role/findAllRole"
-    }
-    function addRole(){
-      var roleid = ${user.roles.roleid}
-        window.location.href="car/role/findRole?roleid="+roleid;
-      //document.getElementById('method').value="preAddRoleFindMenu";
-      //document.forms[0].submit();
-    }
-  </script>
+
 </head>
 
 <body>
-<form action="car/role/findAllRole" method="post">
-  <input type="hidden" name="method" id="method">
-  <h5><font color="red">${requestScope.msg }</font></h5>
+<form action="#" method="post">
+  <h5><font color="red"> </font></h5>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="17" valign="top" background="../images/mail_leftbg.gif"><img src="../images/left-top-right.gif" width="17" height="29" /></td>
@@ -70,8 +54,8 @@
 			<td width="19%">
 			<div align="left">
 			  <input type="text" name="roleName" id="roleName"/></div></td>
-			<td width="6%"><div align="left" class="left_txt"><a style="text-decoration: underline;color: blue;cursor: hand;" onclick="findRole()"><input type="submit" value="查询"/></a></div></td>
-			<td width="10%"><div align="left" class="left_txt"><a style="text-decoration: underline;color: blue;cursor: hand;" onclick="addRole()"><input type="button" value="添加角色"/></a></div></td>
+			<td width="6%"><div align="left" class="left_txt"><input type="button"  onclick="findRole()" value="查询"/></div></td>
+			<td width="10%"><div align="left" class="left_txt"><input type="button" onclick="addRole()" value="添加角色"/></div></td>
 			<td width="46%"></td>
 		</tr>
 	</table>
@@ -92,4 +76,28 @@
   </table>
 </form>
 </body>
+<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+    var roleNam= $('#roleName')
+    function findRole(){
+        $.ajax({
+            url: "http://localhost:8080/role/sevaroleName",
+            data: {'roleName': roleNam.val()},
+            type: "get",
+            crossDomain:true,
+            xhrFields:{withCredentials:true},
+            success: function (data) {
+                location.href="viewAllRole.html"
+            }
+        });
+
+    }
+    function addRole(){
+        location.href="addRole.html"
+        /* var roleid = ${user.roles.roleid}
+                 window.location.href="car/role/findRole?roleid="+roleid;*/
+        //document.getElementById('method').value="preAddRoleFindMenu";
+        //document.forms[0].submit();
+    }
+</script>
 </html>

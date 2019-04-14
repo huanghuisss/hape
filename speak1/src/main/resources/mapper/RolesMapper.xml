@@ -9,12 +9,8 @@
 	</resultMap>
 	<!-- 插入后需要的到得到主键 -->
 	<insert id="insertOneRole">
-		<selectKey keyColumn="roleid" keyProperty="roleid"
-			resultType="java.lang.Long" order="AFTER">
-			select role_seq.currval from dual
-		</selectKey>
-		insert into roles(roleid,rolename) values
-		(role_seq.nextval,#{rolename})
+		insert into roles(rolename) values
+		(#{rolename})
 	</insert>
 
 	<!-- 根据角色名称查询角色id -->
@@ -34,7 +30,7 @@
 		select roleid,rolename
 		from roles where 1=1 
 		<if test="rolename != null and rolename != ''">
-			and rolename=#{rolename}
+			and rolename like concat('%',#{rolename},'%')
 		</if>
 	</select>
 
@@ -42,12 +38,11 @@
 		此处的大于小于符号需要转义
 	 -->
 	<select id="selectRolesByNameByPage" resultMap="rolesMap">
-		select *
-		from (select rownum rn,r.* from roles r where rownum&lt;#{end}+1) ua
-		where ua.rn&gt;=#{start}+1
+		select * from roles where 1=1
 		<if test="rolename != null and rolename !=''">
-				 and rolename=#{rolename}
+			and rolename like concat('%',#{rolename},'%')
 			</if>
+			limit #{start},#{end}
 	</select>
 	
 	<!-- 通过角色id查询 -->

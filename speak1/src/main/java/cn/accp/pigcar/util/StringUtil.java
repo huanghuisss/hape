@@ -2,38 +2,29 @@ package cn.accp.pigcar.util;
 
 import cn.accp.pigcar.pojo.CarsRentMonth;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StringUtil {
-	public static String formatString(List<CarsRentMonth> monthAmount){
+	public static List<Map<String,Object>> formatString(List<CarsRentMonth> monthAmount){
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("[ ");
-
+		List<Map<String,Object>> h=new ArrayList<>();
 		for(int i= 0 ; i< monthAmount.size() ;i++){
 			CarsRentMonth carsRentMonth = monthAmount.get(i);
-			System.out.println("车的名字==="+carsRentMonth.getCarName());
-			System.out.println("车的月份map==="+carsRentMonth.getMap());
-			sb.append("{ name :'"+carsRentMonth.getCarName()+"',");
-			sb.append("data : [");
-
+			Map<String,Object> m=new HashMap<>();
+			m.put("name",carsRentMonth.getCarName());
+			List<Integer> l=new ArrayList<>();
 			for(int j = 1 ; j<= carsRentMonth.getMap().size();j++){
-				carsRentMonth.getMap().get(""+j);
-				if(j==carsRentMonth.getMap().size()){
-					sb.append(carsRentMonth.getMap().get(""+j));
-				}else{
-					sb.append(carsRentMonth.getMap().get(""+j)+",");
-				}
+				l.add(Integer.parseInt(carsRentMonth.getMap().get(""+j)));
 			}
-			if(i==(monthAmount.size()-1)){
-				sb.append(" ] }");
-			}else{
-				sb.append(" ] },");
-			}
+			m.put("data",l);
+			h.add(m);
 		}
-
-		sb.append(" ]");
-		return sb.toString();
+		return h;
 	}
 	
 }

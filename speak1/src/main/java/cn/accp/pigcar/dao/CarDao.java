@@ -17,6 +17,7 @@ public interface CarDao {
     // 查找全部车辆
     List<Cars> getAllCars(Map<String,Object> map);
 
+    List<Cars> findCarBytype(Cars cars);
     //查找单个
     Cars getOneCar(String carNumber);
 
@@ -32,4 +33,6 @@ public interface CarDao {
      * 不通过条件查询全部汽车
      */
     List<Cars> selectAllCars();
+
+    List<Cars> selectAllCarss();
 }

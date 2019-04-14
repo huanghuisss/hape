@@ -222,7 +222,6 @@ public class UserController{
      */
     @RequestMapping("deleteUsers")
     public boolean deleteUsers(String name[]){
-
         for(String x:name) {
             userService.deleteUserByUsername(x);
         }

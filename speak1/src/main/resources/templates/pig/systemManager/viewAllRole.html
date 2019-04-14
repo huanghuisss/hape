@@ -2,19 +2,15 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <base href="<%=basePath%>">
 
-  <title>My JSP 'viewAllRole.jsp' starting page</title>
+  <title> </title>
 
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
   <meta http-equiv="description" content="This is my page">
-  <link href="images/skin.css" rel="stylesheet" type="text/css" />
-  <!--
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    -->
+  <link href="../images/skin.css" rel="stylesheet" type="text/css" />
   <style type="text/css">
     body {
       margin-left: 0px;
@@ -117,73 +113,16 @@
       document.getElementById('pageIndex').value = pageIndex;
       document.forms[0].submit();
     }
-    function subGo(index){
-      var obj = document.getElementById('goPage').value;
-      if(obj > index){
-        alert("超出页数，请重新填写");
-        return ;
-      }else if(obj <= 0){
-        alert("输入页数有误请重新输入");
-        return ;
-      }else{
-        document.getElementById('pageIndex').value = obj;
-        document.forms[0].submit();
-      }
-    }
-    function checkAll(){
-      var obj = document.getElementById("all");
-      var arr = document.getElementsByName("dels");
-      for(var i = 0; i < arr.length; i++)
-      {
-        arr[i].checked = obj.checked;
 
-      }
-    }
-    function subGo(index){
-      var obj = document.getElementById('goPage').value;
-      if(obj > index){
-        alert("超出页数，请重新填写");
-        return ;
-      }else if(obj <= 0){
-        alert("输入页数有误请重新输入");
-        return ;
-      }else{
-        document.getElementById('pageIndex').value = obj;
-        document.forms[0].submit();
-      }
-    }
-    function preUpdateRole(roleId){
-      document.getElementById('method').value='preUpdateRole';
-      document.getElementById('roleId').value = roleId;
-      window.location.href="car/role/queryRoleById?roleid="+roleId;
-    }
-    function deleteRole(roleId){
-      if(window.confirm("您确定要这么做吗？")){
-        document.getElementById('method').value='deleteRole';
-        document.getElementById('roleId').value = roleId;
-        window.location.href="car/role/deleteRoleById?roleid="+roleId;
-      }else{
-        return ;
-      }
-    }
-    function checkAll(){
-      var obj = document.getElementById("all");
-      var arr = document.getElementsByName("dels");
-      for(var i = 0; i < arr.length; i++)
-      {
-        arr[i].checked = obj.checked;
 
-      }
-    }
+
+
+
   </script>
 </head>
 <body>
 <form action="car/role/findAllRole" method="post">
-  <h5><font color="red">${msg }</font></h5>
-  <input type="hidden" name="method" value="findRole" id="method"/>
-  <input type="hidden" name="roleName" value="${roleName }" id="roleName">
-  <input type="hidden" name="roleId" id="roleId"/>
-  <input type="hidden" name="pageIndex" value="" id="pageIndex">
+  <h5><font color="red"></font></h5>
 </form>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
@@ -225,19 +164,13 @@
               <td width="60"><table width="90%" border="0" cellpadding="0" cellspacing="0">
                   <tr>
                     <td class="STYLE1"><div align="center"><img src="../images/001.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">新增</div></td>
-                  </tr>
-              </table></td>
-              <td width="60"><table width="90%" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td class="STYLE1"><div align="center"><img src="images/114.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">修改</div></td>
+                    <td class="STYLE1"><div align="center"><a href="addRole.html">新增</a></div></td>
                   </tr>
               </table></td>
               <td width="52"><table width="88%" border="0" cellpadding="0" cellspacing="0">
                   <tr>
-                    <td class="STYLE1"><div align="center"><img src="images/083.gif" width="14" height="14" /></div></td>
-                    <td class="STYLE1"><div align="center">删除</div></td>
+                    <td class="STYLE1"><div align="center"><img src="../images/083.gif" width="14" height="14" /></div></td>
+                    <td class="STYLE1"><div align="center"><a href="#" onclick="pldelete()">删除</a></div></td>
                   </tr>
               </table></td>
             </tr>
@@ -250,26 +183,8 @@
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="9" background="../images/tab_12.gif">&nbsp;</td>
-        <td bgcolor="#f3ffe3"><table width="99%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#c0de98" onmouseover="changeto()"  onmouseout="changeback()">
-          <tr>
-            <td width="4%" height="26" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>
-            <td width="8%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色编号</div></td>
-            <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色名</div></td>
-            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">编辑</div></td>
-            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">删除</div></td>
-          </tr>
-           <c:forEach var="role" items="${roleList}" varStatus="st">
-           <tr>
-            <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <input name="dels" type="checkbox" class="STYLE2" value="checkbox" />
-            </div></td>
+        <td bgcolor="#f3ffe3"><table width="99%" border="0" id="rolelist" align="center" cellpadding="0" cellspacing="1" bgcolor="#c0de98" onmouseover="changeto()"  onmouseout="changeback()">
 
-            <td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">${role.roleid }</div></td>
-            <td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">${role.rolename }</div></td>
-            <td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> [</span><a onclick="preUpdateRole('${role.roleid }')" style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1">]</span></div></td>
-            <td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="../images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a onclick="deleteRole('${role.roleid }')" style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>
-          </tr>
-           </c:forEach>
         </table></td>
         <td width="9" background="../images/tab_16.gif">&nbsp;</td>
       </tr>
@@ -281,25 +196,10 @@
         <td width="15" height="29"><img src="../images/tab_20.gif" width="15" height="29" /></td>
         <td background="../images/tab_21.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="25%" height="29" nowrap="nowrap"><span class="STYLE1">共${page.totalCount }条纪录，当前第${page.index }/${page.totalPageCount }页，每页${page.size }条纪录</span></td>
+            <td width="25%" height="29" nowrap="nowrap" id="ty"> </td>
             <td width="75%" valign="top" class="STYLE1"><div align="right">
-              <table width="352" height="20" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <c:if test="${pageIndex > 1}">
-                  <td width="62" height="22" valign="middle"><div align="right"><a onclick="subForm('${1}')" style="cursor: hand;"><img src="../images/first.gif" width="37" height="15"/></a></div></td>
-                  <td width="50" height="22" valign="middle"><div align="right"><a onclick="subForm('${pageIndex -1 }')" style="cursor: hand;"><img src="../images/back2.gif" width="43" height="15" /></a></div></td>
-                  </c:if>
-                  <c:if test="${pageIndex < page.totalPage}">
-                  <td width="54" height="22" valign="middle"><div align="right"><a onclick="subForm('${pageIndex +1 }')" style="cursor: hand;"><img src="../images/next.gif" width="43" height="15" /></a></div></td>
-                  <td width="49" height="22" valign="middle"><div align="right"><a onclick="subForm('${page.totalPage}')" style="cursor: hand;"><img src="../images/last.gif" width="37" height="15" /></a></div></td>
-                 	</c:if>
-                  <td width="59" height="22" valign="middle"><div align="right" class="STYLE2 STYLE1">转到第</div></td>
-                  <td width="25" height="22" valign="middle"><span class="STYLE7">
-                    <input name="textfield" type="text" class="STYLE1" style="height:20px; width:25px;" size="5" value="${page.index }" id="goPage"/>
-                  </span></td>
-                  <td width="23" height="22" valign="middle" class="STYLE2 STYLE1">页</td>
-                  <td width="30" height="22" valign="middle"><a onclick="subGo('${page.totalPageCount}')" style="cursor: hand;"><img src="../images/go.gif" width="37" height="15" /></a></td>
-                </tr>
+              <table width="352" height="20" border="0" cellpadding="0" id="page" cellspacing="0">
+
               </table>
             </div></td>
           </tr>
@@ -322,7 +222,7 @@
         </table></td>
       </tr>
     </table></td>
-    <td background="images/mail_rightbg.gif">&nbsp;</td>
+    <td background="../images/mail_rightbg.gif">&nbsp;</td>
   </tr>
   <tr>
     <td valign="bottom" background="../images/mail_leftbg.gif"><img src="../images/buttom_left2.gif" width="17" height="17" /></td>
@@ -331,4 +231,198 @@
   </tr>
 </table>
 </body>
+<script src="../js/jquery-1.9.1.js"></script>
+<script>
+
+  /* window.location.href="car/role/queryRoleById?roleid="+roleId;*/
+  /*  window.location.href="car/role/deleteRoleById?roleid="+roleId;*/
+  function pldelete(){
+    if(confirm("确定要进行此操作吗？")) {
+      var arr = document.getElementsByName("dels");
+      var ar = new Array();
+      var o = 0;
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].checked == true) {
+
+          ar[o] = $(arr[i]).attr("value");
+          o = o + 1;
+        }
+      }
+      if(ar.length==0){
+        alert('请选择要删除的用户！')
+        return;
+      }
+      console.log(ar)
+      $.ajax({
+        url: "http://localhost:8080/role/deleteRoleByIds",
+        data: {name: ar},
+        type: "POST",
+        async: false,
+        traditional: true, //默认false
+        success: function () {
+          load(1);
+        }
+      });
+    }
+  }
+  function deleteUser(roleid){
+    if(window.confirm("您确定要这么做吗？")){
+      $.ajax({
+        url: "http://localhost:8080/role/deleteRoleById",
+        data: {"roleid": roleid},
+        type: "POST",
+        async: false,
+        success: function (data) {
+          console.log(data)
+          if(data)
+            load(1);
+          else
+            alert('删除失败！')
+        }
+      });
+    }else{
+      return ;
+    }
+  }
+  function preUpdate(roleid) {
+    $.ajax({
+      url: "http://localhost:8080/role/queryRoleById",
+      data: {"roleid": roleid},
+      type: "POST",
+      crossDomain:true,
+      xhrFields:{withCredentials:true},
+      success: function (data) {
+        location.href="updateRole.html"
+      }
+    });
+  }
+  function checkAll(){
+    var obj = document.getElementById("all");
+    var arr = document.getElementsByName("dels");
+    for(var i = 0; i < arr.length; i++)
+    {
+      arr[i].checked = obj.checked;
+
+    }
+  }
+  function subGo(index){
+
+    var obj = document.getElementById('goPage').value;
+    if(obj > index){
+      alert("超出页数，请重新填写");
+      return ;
+    }else if(obj <= 0){
+      alert("输入页数有误请重新输入");
+      return ;
+    }else{
+      load(obj)
+    }
+  }
+  load (1);
+
+  function load (currentPage){
+    var loginUser=''
+    $.ajax({
+      type:"get",
+      url:"http://localhost:8080/user/getUserlogin",
+      dataType:"json",
+      crossDomain:true,
+      async: false,
+      xhrFields:{withCredentials:true},
+      success:function (result) {
+        loginUser= result
+      }
+    })
+    var roleName;
+    $.ajax({
+      url: "http://localhost:8080/role/getsevaroleName",
+      type: "get",
+      crossDomain:true,
+      dataType:"text",
+      async:false,
+      xhrFields:{withCredentials:true},
+      success: function (data) {
+        console.log(data)
+        roleName=data;
+      }
+    });
+
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      data:{"currentPage":currentPage,"roleName":roleName},
+      async: false,
+      url: "http://localhost:8080/role/findAllRole",
+      success: function (result1) {
+        console.log(result1);
+
+
+
+
+        var str=' <tr>\n' +
+                '            <td width="4%" height="26" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">选择</div></td>\n' +
+                '            <td width="8%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色编号</div></td>\n' +
+                '            <td width="10%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2 STYLE1">角色名</div></td>\n' +
+                '            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">编辑</div></td>\n' +
+                '            <td width="7%" height="18" background="../images/tab_14.gif" class="STYLE1"><div align="center" class="STYLE2">删除</div></td>\n' +
+                '          </tr>'
+        $.each(result1.roleList, function(i, role) {
+
+          if(role.roleid==loginUser.user.roles.roleid){
+            str+='<tr>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">\n' +
+                    '<input name="dels" type="checkbox" class="STYLE2" value="' + role.roleid + '" />\n' +
+                    '</div></td>\n' +
+                    '\n' +
+                    '<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">' + role.roleid + '</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">' + role.rolename + '</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="#" onclick=preUpdate("' + role.roleid + '") style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1"></span></div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center">  </div></td>\n' +
+                    '</tr>'
+          }else {
+            str += '<tr>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE1">\n' +
+                    '<input name="dels" type="checkbox" class="STYLE2" value="' + role.roleid + '" />\n' +
+                    '</div></td>\n' +
+                    '\n' +
+                    '<td height="18" bgcolor="#FFFFFF" class="STYLE2"><div align="center" class="STYLE2 STYLE1">' + role.roleid + '</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center" class="STYLE2 STYLE1">' + role.rolename + '</div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center"><img src="../images/037.gif" width="9" height="9" /><span class="STYLE1"> </span><a href="#" onclick=preUpdate("' + role.roleid + '") style="font-size: 10px; cursor: hand; color: blue; ">编辑</a><span class="STYLE1"></span></div></td>\n' +
+                    '<td height="18" bgcolor="#FFFFFF"><div align="center"><span class="STYLE2"><img src="../images/010.gif" width="9" height="9" /> </span><span class="STYLE1">[</span><a href="#" onclick=deleteUser("' + role.roleid + '") style="font-size: 10px; cursor: hand; color: blue; ">删除</a><span class="STYLE1">]</span></div></td>\n' +
+                    '</tr>'
+          }
+
+        })
+        var pl='<span class="STYLE1">共 '+result1.page.totalCount+'条纪录，当前第'+result1.page.index+'/'+result1.page.totalPageCount+'页，每页'+result1.page.size +'条纪录</span>'
+
+
+        var p='';
+
+        if(result1.page.index>1){
+          p+='<td width="62" height="22"><div align="right"><a href="#" onclick="load ('+ (1)+')" style="cursor: hand;"><img src="../images/first.gif" width="37" height="15"/></a></div></td>\n' +
+                  '<td width="50" height="22" ><div align="right"><a href="#" onclick="load('+(result1.page.index -1)+')" style="cursor: hand;"><img src="../images/back2.gif" width="43" height="15" /></a></div></td>'
+        }
+
+        if(result1.page.index<result1.page.totalPageCount){
+          p+='<td width="54" height="22" ><div align="right"><a href="#" onclick="load ('+ (result1.page.index +1)+')" style="cursor: hand;"><img src="../images/next.gif" width="43" height="15" /></a></div></td>\n' +
+                  '<td width="49" height="22" ><div align="right"><a href="#" onclick="load ('+ (result1.page.totalPageCount)+')" style="cursor: hand;"><img src="../images/last.gif" width="37" height="15" /></a></div></td>'
+        }
+
+        p+='<td width="59" height="22" ><div align="right" class="STYLE2 STYLE1">转到第</div></td>\n' +
+                '            <td width="25" height="22" ><span class="STYLE7">\n' +
+                '                    <input name="textfield" oninput="value=value.replace(/[^\\d]/g,\'\')" type="text" class="STYLE1" style="height:20px; width:25px;" size="5" value="" id="goPage"/>\n' +
+                '                    </span></td>\n' +
+                '            <td width="23" height="22" class="STYLE2 STYLE1">页</td>\n' +
+                '                    <td width="30" height="22" >' +
+                '<a   onclick="subGo('+result1.page.totalPageCount+')" style="cursor: hand;">' +
+                '<img src="../images/go.gif" width="37" height="15" /></a></td>\n'
+
+        $('#page').html(p);
+        $('#rolelist').html(str);
+        $('#ty').html(pl);
+      }
+    });
+  }
+
+</script>
 </html>
